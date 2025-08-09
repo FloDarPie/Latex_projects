@@ -1,0 +1,54 @@
+\chapter{Outils et méthodes}
+\label{chap:automateVerifOutils}
+
+chapitre sur les outils + moyens pour détecter \medbreak
+
+
+
+\section{Modélisation d'une attaque}
+
+En sécurité informatique, la première étape, essentielle avant de développer une solution, c'est de produire un modèle du danger que l'on souhaite cibler. On parle parfois de \textit{modèle de fuite}. Cette étape de synthèse et d'abstraction est importante pour identifer les risques encourus par le futur système, souvent en identifiant les point de fuites employés par les attaques déjà publiées. \citeauthor{BewarCTSideChannel} \cite{BewarCTSideChannel} nous donne les trois modèles d'adversaires que l'on doit considérer lorsque l'on souhaite se défendre contre les attaques temporelles :
+
+\begin{table}[!ht]
+  \caption{Modèles d'adversaires pour les attaques temporelles \cite{BewarCTSideChannel}}
+  \label{tab:temporal_attacks}
+  \begin{adjustbox}{width=\textwidth}
+  \begin{tabularx}{\textwidth}{|L|L|}
+    \hline
+    \rowcolor{lightgray}
+    \multicolumn{1}{|C|}{\textbf{Type d'attaque}} & \multicolumn{1}{C|}{\textbf{Description}} \\ \hline
+    Par chronométrage & Observation du temps de calcul. \\ \hline
+    Par accès mémoire & Manipulation et observation des états d'un ou des caches mémoires. \\ \hline
+    Par récupération de trace & Suivi des appels de fonctions, des accès réussis ou manqués à la mémoire. \\ \hline
+  \end{tabularx}
+  \end{adjustbox}
+\end{table}
+
+Ces trois modèles sont notre source de méfiance et si on peut argumenter quand à l'inclusion de notre dernier modèle; des travaux comme \cite{twartingCT} portent directement sur des améliorations matériel pour contrecarrer ce type d'attaque. Considérer un attaquant plus puissant, avec des accès à des ressources supplémentaires, potentiellement hyptotétique, permet de concevoir un système plus sûr. Certains outils comme \cite{ctfuzz,DATA2} ou cette étude \cite{notThatHardCT} exploitent cette mécanique pour attester de la sécurité d'un programme.\medbreak
+
+
+Puis, avec ces modèles et les contre-mesures connus, on peut constituer un ensemble de règles qui valident ces risques. \cite{CTsaferCrypto} résume celles-ci en une liste de trois règles :
+\begin{enumerate}
+  \item Toute boucle révèle le nombre d'itérations effectuées. 
+  \item Tout accès mémoire révèle l'adresse (ou l'indice) accédé.
+  \item Toute instruction conditionnelle révèle quelle branche a été prise.
+\end{enumerate}
+
+D'autres comme \cite{binsecRel2019} emploient des modèles de fuites en représentation formelle. En s'appuyant sur les travaux de \citeauthor{formalConstantTime} \cite{formalConstantTime}
+
+Nous adoptons une position pessimiste, en supposant que chaque violation individuelle de ces règles fuit parfaitement vers l'adversaire.
+
+La règle 1 se justifie par une observation triviale : une boucle plus longue utilise plus d'opérations. En pratique, il est difficile d'observer la durée de chaque boucle dans un programme plus vaste, ce qui rend cette règle pessimiste.
+
+La règle 2 est justifiée par divers canaux auxiliaires et attaques basées sur le cache~\cite{Ber05, YGH17, CAPGATB19}. Puisque les caches ne chargent l'information qu'une ligne entière à la fois, cette règle peut sembler trop pessimiste. Peut-être que seule la ligne de cache accédée devrait rester secrète~\cite{Bri11}. Malheureusement, il est possible de mener des attaques basées sur des accès à l'intérieur d'une ligne de cache~\cite{BS13, OST06, YGH17}. C'est pourquoi nous adoptons une position pessimiste, et supposons que les accès révèlent leur adresse exacte.
+
+La justification de la règle 3 est double. Premièrement, si différentes branches d'une instruction conditionnelle exécutent un nombre différent d'opérations, on peut observer quelle branche a été prise. Deuxièmement, même si les deux branches exécutent des opérations identiques, le prédicteur de branche du processeur peut être exploité pour révéler des informations sur la branche sélectionnée~\cite{AKS06, AKS07, EPAG16}.
+
+En plus de ces règles, nous avons besoin d'un ensemble de base d'opérations de confiance pour construire nos programmes. Nous supposons que l'addition, la multiplication, les opérations logiques et les décalages, tels qu'implémentés matériellement, sont en temps constant par rapport à leurs entrées. C'est le cas sur la plupart des processeurs, une exception notable étant certains microprocesseurs~\cite{Por}. Cette hypothèse est raisonnable pour les plateformes ciblées par notre bibliothèque.
+
+\cite{binsecRel2019}
+
+
+\section{Analyse d'un programme}
+
+

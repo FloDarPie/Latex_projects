@@ -1,0 +1,6 @@
+\babel@toc {french}{}\relax 
+\beamer@sectionintoc {1}{État des lieux}{3}{0}{1}
+\beamer@sectionintoc {2}{Une chaîne de bout en bout}{6}{0}{2}
+\beamer@sectionintoc {3}{Point avec Érysichton}{10}{0}{3}
+\beamer@sectionintoc {4}{Binsec patch}{14}{0}{4}
+\beamer@sectionintoc {5}{Conclusion}{16}{0}{5}

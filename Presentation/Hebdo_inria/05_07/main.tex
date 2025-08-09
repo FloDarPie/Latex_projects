@@ -1,0 +1,479 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Copyright (c) 2023, gitlabci_gallery / latex
+%         All rights reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[A4,svgnames,9pt,aspectratio=169]{beamer}
+%% document options:
+%% - aspectratio = { 43, 169, 1610 }
+%% - utf8
+%%
+
+
+\setlength{\footskip}{300pt}
+\usepackage[french]{babel}
+
+\hypersetup{
+   allcolors   = rouge_inria,
+   pdfauthor   = {Duzés Florian},
+   pdftitle    = {\@title},
+   pdfsubject  = {Point hebdomadaire, bi-mensuel du stage},
+   pdfkeywords = {entretien, observation du travail}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[titrecourt]{Réunion flash}
+\subtitle{Point hebdomadaire}
+\date[07/05/2025]{date long}
+\author[Duzes Florian]{Duzés Florian}
+
+\usetheme{inria}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Le titre des planches de sommaire est \contentsname, sa valeur
+% est fixée ici à "Sommaire" par défaut.
+\renewcommand{\contentsname}{Sommaire}
+
+\frame{\tocpage}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+ 
+\section{État des lieux}
+\frame{\sectionpage}
+
+\begin{frame}{Point actuel}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {\parbox{3cm}{\centering Prévus \\ \tiny{Pour le 15/06}}};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Méthodologie en x86\_64
+          \item 1ère méthodologie en ARM
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Méthodologie ARM
+          \item Étendre les scripts pour le dossier \textit{/tests} en ARM
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Automatisation des .ini
+            \item Couvrir les tests
+            \item Couvrir les primitives Hacl*
+            \item RiskV - compil à la main de tests
+        \end{itemize}
+    };
+
+      \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Réalisation}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {\parbox{3cm}{\centering Prévus \\ \tiny{Pour le 15/06}}};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Journée d'intégration Inria avec les RH
+          \item Construction de la chaîne de compilation
+          \item Balade pour Risk-V sur : \href{https://riscv.org/}{https://riscv.org/}
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Méthodologie ARM
+          \item Étendre les scripts pour le dossier \textit{/tests} en ARM
+          \item Automatisation de x86\_64
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Automatisation des .ini
+            \item Couvrir les tests
+            \item Couvrir les primitives Hacl*
+            \item RiskV - compil à la main de tests
+        \end{itemize}
+    };
+
+      \end{tikzpicture}
+
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+
+\section{Automatisation}
+\frame{\sectionpage}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{La chaîne de compilation}
+  \centering
+  \begin{tikzpicture}[node distance=2cm]
+
+    % Styles des noeuds
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{intermediate} = [circle, minimum size=0.5cm, text centered, draw=white, fill=white]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    
+    % Noeuds
+    \node (hacl) [startstop] {Hacl*};
+    \node (inter) [intermediate, below of=hacl,xshift=1cm, yshift=1cm] {};
+    \node (compilateur) [process, below of=hacl] {Compilateur};
+    \node (binsec) [startstop, below of=compilateur] {Binsec};
+    
+    % Flèches
+    \draw [arrow, red] (hacl) -- node[anchor=west] {-test.c} (compilateur);
+    \draw [arrow, red] (inter) -- ++(2,0) |- node[anchor=west, pos=0.25] {.ini} (binsec);
+    \draw [arrow, blue] (compilateur) -- node[anchor=east] {.exe} (binsec);
+    
+    % Annotations
+    \node[align=center, left of=compilateur, xshift=-0.2cm] {\scriptsize x86\_64\\ \scriptsize ARM\\ \scriptsize Risk-V};
+    \node[align=center, below of=binsec, yshift=30pt] {\scriptsize Secure/Insecure/Unkown};
+    
+    \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Spécificité de x86\_64}
+  \centering
+  \begin{tikzpicture}[auto]
+
+    % Styles
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    \tikzset{zone1/.style={rectangle, rounded corners, draw=red, dashed, fill=red!10, inner sep=0.3cm}}
+    \tikzset{zone2/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.3cm}}
+    \tikzset{zone22/.style={rectangle, rounded corners, draw=none, fill=blue!10, inner sep=0.3cm}}
+    \tikzset{zone3/.style={rectangle, rounded corners, draw=green, dashed, fill=green!10, inner sep=0.3cm}}
+    
+    % Noeuds
+    \node (hacl) [startstop] {Hacl*};
+    \node (c) [below of=hacl] {.c};
+    \node (ini) [below of=c, xshift=2cm] {.ini};
+    \node (test) [below of=c, xshift=-2cm] {-test.c};
+    \node (script) [below of=c] {.script};
+    \node (compilateur) [process, below of=test] {Compilateur};
+    \node (exe) [below of=compilateur] {-test.exe};
+    \node (blanc1) [below of=script] {};
+    \node (blanc2) [below of=blanc1] {};
+    \node (gdb) [process, below of=blanc2] {GDB};
+    \node (snap) [right of=gdb, xshift=2cm] {.snapshot};
+    \node (binsec) [startstop, right of=snap, xshift=1.5cm] {Binsec};
+    
+    % Flèches
+    \draw [arrow] (hacl) -- (c);
+    \draw [arrow] (c) -- (ini);
+    \draw [arrow] (c) -- (test);
+    \draw [arrow] (c) -- (script);
+    \draw [arrow] (test) -- (compilateur);
+    \draw [arrow] (compilateur) -- (exe);
+    \draw [arrow] (exe) -- (gdb);
+    \draw [arrow] (script) -- (gdb);
+    \draw [arrow] (gdb) -- (snap);
+    \draw [arrow] (snap) -- (binsec);
+    \draw [arrow] (ini) -- (binsec);
+
+    % Zones
+    \begin{scope}[on background layer]
+        \onslide<2->{\node [zone1, fit=(c) (ini) (test) (script)] {};}
+        \onslide<3->{
+              \node [zone2, fit=(script) (gdb)] {};
+              \node [zone2, fit=(gdb) (snap) (binsec)] {};
+              \draw [zone22]
+              ([xshift=-9pt, yshift=10pt]gdb.north west) --
+              ([xshift=9pt, yshift=10pt]gdb.north east) -- 
+              ([xshift=1pt, yshift=-1pt]gdb.south east) -- 
+              ([xshift=-1pt, yshift=-1pt]gdb.south west) --
+              cycle; 
+      }
+      
+
+        \onslide<4->{\node [zone3, fit=(compilateur) (exe)] {};}
+    \end{scope}
+    
+    
+    \end{tikzpicture}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Spécificité de ARM}
+  \centering
+  \begin{tikzpicture}[auto]
+
+    % Styles
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    \tikzset{zone1/.style={rectangle, rounded corners, draw=red, dashed, fill=red!10, inner sep=0.3cm}}
+    \tikzset{zone2/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.3cm}}
+    \tikzset{zone22/.style={rectangle, rounded corners, draw=none, fill=blue!10, inner sep=0.3cm}}
+    \tikzset{zone3/.style={rectangle, rounded corners, draw=green, dashed, fill=green!10, inner sep=0.3cm}}
+    
+    % Noeuds
+    \node (hacl) [startstop] {Hacl*};
+    \node (c) [below of=hacl] {.c};
+    \node (ini) [below of=c] {.ini};
+    \node (test) [below of=c, xshift=-2cm] {-test.c};
+    \node (compilateur) [process, below of=test] {Compilateur};
+    \node (exe) [below of=compilateur] {-test.exe};
+    \node (blanc) [below of=c] {};
+    \node (blanc1) [below of=blanc] {};
+    \node (blanc2) [below of=blanc1] {};
+    \node (binsec) [startstop, below of=blanc2] {Binsec};
+    
+    % Flèches
+    \draw [arrow] (hacl) -- (c);
+    \draw [arrow] (c) -- (ini);
+    \draw [arrow] (c) -- (test);
+    \draw [arrow] (test) -- (compilateur);
+    \draw [arrow] (compilateur) -- (exe);
+    \draw [arrow] (exe) -- (binsec);
+    \draw [arrow] (ini) -- (binsec);
+
+    % Zones
+    \begin{scope}[on background layer]
+        \onslide<2->{\node [zone1, fit=(c) (ini) (test) ] {};}
+        \onslide<3->{\node [zone2, fit=(ini) (binsec)] {};}
+        \onslide<4->{\node [zone3, fit=(compilateur) (exe)] {};}
+    \end{scope}
+    
+    
+    \end{tikzpicture}
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+
+\section{Protocole ARM}
+\frame{\sectionpage}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Point de départ}
+  \begin{lstlisting}[style=INIStyle, caption={script.ini}, gobble=4]
+    #fin de la zone de .text
+    #@[sp, 8] := 0x00404860 as return_address
+    
+    #fin arbitraire : fin de calculs
+    @[sp, 8] := 0x004005c0 as return_address
+    
+    # load common sections from ELF file
+    load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
+    
+    secret global plain, aead_aad, aead_key, aead_nonce
+    
+    starting from <main>
+    with concrete stack pointer
+    
+    halt at return_address
+    explore all
+  \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Problème et solution}
+
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \begin{block}{Insatisfaisant}
+      \begin{itemize}
+        \item Arrêt prompt de l'analyse
+        \item Couverture totale probable
+      \end{itemize}
+      \end{block}
+    \end{column}
+    \pause
+    \begin{column}{0.7\textwidth}
+      \begin{block}{Solution de l'adressage}  
+        \begin{lstlisting}[style=MakefileStyle, caption={tests/Makefile}, gobble=10]
+          %.exe: %.o
+            $(CC) $(CFLAGS) $(LDFLAGS) $^ ../dist/gcc-compatible/libevercrypt.a -static -o $@
+        \end{lstlisting}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Adaptation}
+  \begin{lstlisting}[basicstyle=\footnotesize, caption={readelf -r}, gobble=4, frame=single, captionpos=b]
+    Section de réadressage '.rela.plt' à l'adresse de décalage 0x1b0 contient 7 entrées :
+    Décalage        Info           Type           Val.-symboles Noms-symb.+ Addenda
+    00000048d000  000000000408 R_AARCH64_IRELATI                    419060
+    00000048d008  000000000408 R_AARCH64_IRELATI                    4193e0
+    00000048d010  000000000408 R_AARCH64_IRELATI                    438020
+    00000048d018  000000000408 R_AARCH64_IRELATI                    419170
+    00000048d020  000000000408 R_AARCH64_IRELATI                    418570
+    00000048d028  000000000408 R_AARCH64_IRELATI                    438020
+    00000048d030  000000000408 R_AARCH64_IRELATI                    418570
+  
+  \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Solution ?}
+  \begin{lstlisting}[style=INIStyle, caption={script.ini}, gobble=4, basicstyle=\footnotesize]
+    load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
+
+    secret global plain, aead_aad, aead_key, aead_nonce
+    
+    @[0x00000048d000 ,8] := <__memmove_generic>
+    @[0x00000048d008 ,8] := <__memcpy_generic>
+    @[0x00000048d010 ,8] := <__memchr_generic>
+    @[0x00000048d018 ,8] := _dl_aarch64_cpu_features
+    @[0x00000048d020 ,8] := <__memcpy_thunderx2>
+    @[0x0000004002ac ,8] := <__memchr_generic>
+    @[0x00000048d024 ,8] := <__memchr_generic>
+    @[0x00000048d028 ,8] := <__memchr_generic>
+    @[0x00000048d030 ,8] := <__memcpy_thunderx2>
+     
+    lr<64> := 0xdeadbeef as return_address
+    
+    starting from <main>
+    with concrete stack pointer
+    
+    halt at return_address
+    explore all
+  \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Presque}
+  \begin{lstlisting}[basicstyle=\scriptsize, caption={binsec -sse -sse-depth 1000000 -sse-script study.ini -checkct chacha20poly1305-128-binsec-test.exe}, gobble=4, frame=single, captionpos=b]
+    [sse:debug] 0x00402b58 stp	q13, q11, [sp,#336]  	# <Hacl_Chacha20_Vec128_chacha20_encrypt_128> + 0x1628
+    [sse:debug] 0x00402b5c str	q9, [sp, #368]       	# <Hacl_Chacha20_Vec128_chacha20_encrypt_128> + 0x162c
+    [sse:debug] 0x00402b60 bl	0x4002a0              	# <Hacl_Chacha20_Vec128_chacha20_encrypt_128> + 0x1630
+    [sse:debug] 0x004002a0 adrp	x16, 0x48d000       
+    [sse:debug] 0x004002a4 ldr	x17, [x16,#24]       
+    [sse:debug] 0x004002a8 add	x16, x16, #0x18      
+    [sse:debug] 0x004002ac br	x17                   
+    [sse:info] Empty path worklist: halting ...
+    [sse:warning] Enumeration of jump targets @ 0x004002ac hit the limit 3 and may be incomplete
+    [sse:warning] Cut path 3 (non executable) @ 0x1c3a9965
+    [sse:warning] Cut path 2 (non executable) @ 0xffffffffffffffff
+    [sse:warning] Cut path 1 (non executable) @ 0xfffffffffffffffe
+    [sse:warning] Threat to completeness :
+                  - some jump targets may have been omitted (-sse-jump-enum)
+    [checkct:warning] Exploration is incomplete:
+                      - 3 paths fell into non executable code segments
+                      - some jump targets may have been omitted (-sse-jump-enum)
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Si je rajoute des stops}
+  \begin{lstlisting}[basicstyle=\scriptsize, caption={binsec -sse -sse-depth 1000000 -sse-script study.ini -checkct chacha20poly1305-128-binsec-test.exe}, gobble=4, frame=single, captionpos=b]
+    [sse:warning] Enumeration of jump targets @ 0x004002ac hit the limit 3 and may be incomplete
+    [sse:warning] Cut path 2 (non executable) @ 0xffffffffffffffff
+    [sse:warning] Cut path 1 (non executable) @ 0x00000000
+    [sse:warning] Threat to completeness :
+                  - some jump targets may have been omitted (-sse-jump-enum)
+    [checkct:warning] Exploration is incomplete:
+                      - 2 paths fell into non executable code segments
+                      - some jump targets may have been omitted (-sse-jump-enum)
+                      - 9 SMT solver queries remain unsolved (-fml-solver-timeout)
+  \end{lstlisting}
+\end{frame}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Conclusion}
+\frame{\sectionpage}
+
+\begin{frame}{Conclusion}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Corrections pour ARM}
+        \begin{itemize}
+          \item Fix les erreurs de compilations
+          \item Poursuivre la conception des scripts à la main sur les tests
+        \end{itemize}        
+      \end{block}
+    \end{column}
+    \pause
+    \begin{column}{0.5\textwidth}
+      \vspace{0.5cm}
+      \begin{block}{Automatisation de x86\_64}
+        \begin{itemize}
+          \item Partir des tests présents ?
+          \item Compiler depuis le code source C/F* ?
+        \end{itemize}        
+      \end{block}
+       
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Le texte est modifiable en changeant \thankyou
+%% \renewcommand{\thankyou}{Thank You.}
+\frame{\merci}
+
+
+\end{document}
+

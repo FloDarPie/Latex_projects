@@ -1,0 +1,10 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{l+m+mi}{2076}\PYG{+w}{ }\PYG{k}{static}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{bpf\PYGZus{}prog\PYGZus{}load}\PYG{p}{(}\PYG{k}{union}\PYG{+w}{ }\PYG{n+nc}{bpf\PYGZus{}attr}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{attr}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{union}\PYG{+w}{ }\PYG{n+nc}{bpf\PYGZus{}attr}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}user}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{uattr}\PYG{p}{)}
+\PYG{l+m+mi}{2077}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{l+m+mi}{2100}\PYG{+w}{         }\PYG{c+cm}{/* copy eBPF program license from user space */}
+\PYG{l+m+mi}{2101}\PYG{+w}{         }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{strncpy\PYGZus{}from\PYGZus{}user}\PYG{p}{(}\PYG{n}{license}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{u64\PYGZus{}to\PYGZus{}user\PYGZus{}ptr}\PYG{p}{(}\PYG{n}{attr}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{license}\PYG{p}{)}\PYG{p}{,}
+\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{l+m+mi}{2161}\PYG{+w}{         }\PYG{c+cm}{/* plain bpf\PYGZus{}prog allocation */}
+\PYG{l+m+mi}{2162}\PYG{+w}{         }\PYG{n}{prog}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{bpf\PYGZus{}prog\PYGZus{}alloc}\PYG{p}{(}\PYG{n}{bpf\PYGZus{}prog\PYGZus{}size}\PYG{p}{(}\PYG{n}{attr}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{insn\PYGZus{}cnt}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GFP\PYGZus{}USER}\PYG{p}{)}\PYG{p}{;}
+\end{MintedVerbatim}

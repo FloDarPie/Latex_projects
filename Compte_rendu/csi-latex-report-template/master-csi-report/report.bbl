@@ -1,0 +1,14 @@
+\begin{thebibliography}{1}
+
+\bibitem{Book1}
+Jean Dupont and Patrick Durand.
+\newblock {\em Titre du {LIVRE}}.
+\newblock Flammarion, 2014.
+
+\bibitem{Article1}
+Prenom1 Nom1, Prenom2a~Prenom2b Nom2, and Prenom3 Nom3.
+\newblock Titre de l'article.
+\newblock {\em Conf\'erence Internationale sur la s\'ecurit\'e dans le Monde},
+  2013.
+
+\end{thebibliography}

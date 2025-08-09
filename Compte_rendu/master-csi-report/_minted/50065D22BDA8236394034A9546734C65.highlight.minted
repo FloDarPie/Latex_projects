@@ -1,0 +1,18 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{+w}{  }\PYG{k+kt}{bool}\PYG{+w}{ }\PYG{n+nf}{check\PYGZus{}pwd}\PYG{p}{(}\PYG{n}{msg}\PYG{p}{,}\PYG{n}{pwd}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{c+c1}{// Hachage}
+\PYG{+w}{      }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{n}{msg\PYGZus{}hash}\PYG{p}{[}\PYG{n}{SHA256\PYGZus{}DIGEST\PYGZus{}LENGTH}\PYG{p}{]}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{sha256\PYGZus{}hash\PYGZus{}string}\PYG{p}{(}\PYG{n}{msg}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{msg\PYGZus{}hash}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{      }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{n}{pwd\PYGZus{}hash}\PYG{p}{[}\PYG{n}{SHA256\PYGZus{}DIGEST\PYGZus{}LENGTH}\PYG{p}{]}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{sha256\PYGZus{}hash\PYGZus{}string}\PYG{p}{(}\PYG{n}{pwd}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{pwd\PYGZus{}hash}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{      }\PYG{c+c1}{// Comparaison}
+\PYG{+w}{      }\PYG{k+kt}{bool}\PYG{+w}{ }\PYG{n}{equal}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{true}\PYG{p}{;}
+\PYG{+w}{      }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{SHA256\PYGZus{}DIGEST\PYGZus{}LENGTH}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{+}\PYG{o}{+}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{          }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{msg\PYGZus{}hash}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{!}\PYG{o}{=}\PYG{+w}{ }\PYG{n}{pwd\PYGZus{}hash}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{              }\PYG{n}{equal}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{equal}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n+nb}{false}\PYG{p}{;}
+\PYG{+w}{          }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{              }\PYG{n}{equal}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{equal}\PYG{+w}{ }\PYG{o}{|}\PYG{o}{|}\PYG{+w}{ }\PYG{n+nb}{false}\PYG{p}{;}
+\PYG{+w}{          }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{equal}\PYG{p}{;}
+\PYG{+w}{  }\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

@@ -1,0 +1,12 @@
+\babel@toc {french}{}\relax 
+\contentsline {part}{\partnumberline {1}Lorem ipsum dolor sit}{1}{part.1}%
+\contentsline {chapter}{\chapternumberline {1}Lorem}{3}{chapter.1}%
+\contentsline {chapter}{\chapternumberline {2}Ipsum}{5}{chapter.2}%
+\contentsline {part}{\partnumberline {2}Consectetur adipiscing elit}{7}{part.2}%
+\contentsline {chapter}{\chapternumberline {3}Consectetur}{9}{chapter.3}%
+\contentsline {chapter}{\chapternumberline {4}Adipiscing}{11}{chapter.4}%
+\contentsline {chapter}{Bibliographie}{15}{chapter*.8}%
+\contentsline {chapter}{Index}{17}{section*.9}%
+\contentsline {part}{Annexes}{20}{section*.11}%
+\contentsline {chapter}{Dolor}{21}{appendix*.12}%
+\contentsline {chapter}{Sit}{23}{appendix*.13}%

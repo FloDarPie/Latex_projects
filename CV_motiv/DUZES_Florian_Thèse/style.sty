@@ -1,0 +1,174 @@
+%%%%%%%%%%%%%%%%%%%%%%%
+% Dependencies
+% NOTE: Some packages (lastpage, hyperref) require second build!
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\usepackage{bookmark}
+\usepackage{booktabs}
+\usepackage{lastpage}
+\usepackage{graphicx} %insertion de la signature
+\usepackage{geometry}
+\usepackage{tikz}
+
+
+% justify the document
+\usepackage{ragged2e}
+\justifying
+
+
+% Serif
+\usepackage{CormorantGaramond}
+\usepackage{charter}
+
+% Colors
+% Use with \color{Name}
+% Can wrap entire heading with {\color{accent} [...] }
+\usepackage{xcolor}
+\definecolor{accentTitle}{HTML}{0e6e55}
+\definecolor{accentText}{HTML}{0e6e55}
+\definecolor{accentLine}{HTML}{a16f0b}
+
+% Misc. Options
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\urlstyle{same}
+
+% Adjust Margins
+\addtolength{\oddsidemargin}{-0.7in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-0.7in}
+\addtolength{\textheight}{1.4in}
+
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\setlength{\tabcolsep}{0pt}
+\setlength{\footskip}{3.7pt}
+\raggedbottom
+\raggedright
+
+% ATS Readability
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+%-----------------%
+% Custom Commands %
+%-----------------%
+
+% Centered title along with subtitle between HR
+% Usage: \documentTitle{Name}{Details}
+
+
+
+\newcommand{\documentTitle}[5]{
+  \begin{minipage}{0.35\textwidth}
+    \vspace{5pt}
+    \small{#2}
+    \small{#3}
+    \small{#4}
+    \small{#5}
+  \end{minipage}
+  %\hfill
+  \begin{minipage}{0.33\textwidth}
+    {\Huge\color{accentTitle} #1}
+    %\hspace{0.5\textwidth}
+  \end{minipage}
+  \begin{tikzpicture}[overlay]
+      \node[anchor=south west,inner sep=0] (image1) at (0,-0.7) {\includegraphics[scale=0.2]{pictures/LOGO_CHAMPOLLION.png}};
+      \node[anchor=south west,inner sep=0] (image2) at (3.2,-0.1) {\includegraphics[scale=0.09]{pictures/logo-univ-bordeaux.png}};
+      \node[anchor=south west,inner sep=0] (image3) at (4.1,-0.8) {\includegraphics[scale=1.4]{pictures/Inria-logo-rouge.png}};
+      \node[anchor=south west,inner sep=0] (image4) at (1.7,0.2)  {\includegraphics[scale=0.2]{pictures/logo-wakanga.jpg}};
+      \node[anchor=south west,inner sep=0] (image4) at (2,-0.9)  {\includegraphics[scale=0.19]{pictures/Logo-EEDF-5x5-Blason.jpg}};
+  \end{tikzpicture}
+}
+
+
+
+% Create a footer with correct padding
+% Usage: \documentFooter{\thepage of X}
+\newcommand{\documentFooter}[1]{
+  \setlength{\footskip}{10.25pt}
+  \fancyfoot[C]{\footnotesize #1}
+}
+
+% Simple wrapper to set up page numbering
+% Usage: \numberedPages
+% WARNING: Must run pdflatex twice!
+\newcommand{\numberedPages}{
+  \documentFooter{\thepage/\pageref{LastPage}}
+}
+
+% Section heading with horizontal rule
+% Usage: \section{Title}
+\titleformat{\section}{
+  \vspace{-5pt}
+  \color{accentText}
+  \raggedright\large\bfseries
+}{}{0em}{}[\color{accentLine}\titlerule]
+
+% Section heading with separator and content on same line
+% Usage: \tinysection{Title}
+\newcommand{\tinysection}[1]{
+  \phantomsection
+  \addcontentsline{toc}{section}{#1}
+  {\large{\bfseries\color{accentText}#1} {\color{accentLine} |}}
+}
+
+% Indented line with arguments left/right aligned in document
+% Usage: \heading{Left}{Right}
+\newcommand{\heading}[2]{
+  \hspace{10pt}#1\hfill#2\\
+}
+
+% Adds \textbf to \heading
+\newcommand{\headingBf}[2]{
+  \heading{\textbf{#1}}{\textbf{#2}}
+}
+
+% Adds \textit to \heading
+\newcommand{\headingIt}[2]{
+  \heading{\textit{#1}}{\textit{#2}}
+}
+
+% Adds italique without heading
+\newcommand{\miniIt}[1]{
+    \hspace{20pt}\textit{#1}
+}
+\newcommand{\fondIt}[1]{
+    \hfill\textit{#1}
+}
+
+% Template for itemized lists
+% Usage: \begin{resume_list} [items] \end{resume_list}
+\newenvironment{resume_list}{
+  \vspace{-7pt}
+  \begin{itemize}[itemsep=-2px, parsep=1pt, leftmargin=30pt]
+}{
+  \end{itemize}
+  %\vspace{-2pt}
+}
+
+% Formats an item to use as an itemized title
+% Usage: \itemTitle{Title}
+\newcommand{\itemTitle}[1]{
+  \item[] \underline{#1}\vspace{4pt}
+}
+
+\newcommand{\commentaire}[1]{}
+
+% Bullets used in itemized lists
+\renewcommand\labelitemi{--}
+
+%custom href
+\let\oldhref\href
+\renewcommand{\href}[2]{\oldhref{#1}{\color{blue}#2}}
+
+%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,626 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Copyright (c) 2023, gitlabci_gallery / latex
+%         All rights reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[A4,svgnames,9pt,aspectratio=169]{beamer}
+%% document options:
+%% - aspectratio = { 43, 169, 1610 }
+%% - utf8
+%%
+
+
+\setlength{\footskip}{300pt}
+\usepackage[french]{babel}
+
+\hypersetup{
+   allcolors   = rouge_inria,
+   pdfauthor   = {Duzés Florian},
+   pdftitle    = {\@title},
+   pdfsubject  = {Point hebdomadaire, bi-mensuel du stage},
+   pdfkeywords = {entretien, observation du travail}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[titrecourt]{Réunion flash}
+\subtitle{Point hebdomadaire}
+\date[25/06/2025]{date long}
+\author[Duzes Florian]{Duzés Florian}
+
+\usetheme{inria}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Le titre des planches de sommaire est \contentsname, sa valeur
+% est fixée ici à "Sommaire" par défaut.
+\renewcommand{\contentsname}{Sommaire}
+
+\frame{\tocpage}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Informations supplémentaires}
+\frame{\sectionpage}
+
+
+\begin{frame}{Point d'informations}
+
+  \begin{itemize}
+    \item Semaine du 30 juin 
+    \item Semaine du 14 juillet 
+  \end{itemize}
+  
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+ 
+\section{État des lieux}
+\frame{\sectionpage}
+
+
+\begin{frame}{Point actuel}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {Prévus};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Étendu test de p256 avec LLVM / 32 / 64
+          \item -test.json / generic json
+          \item Hacl* -> RiscV
+        \end{itemize}
+        };
+
+        % En cours
+        \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+          \begin{itemize}
+            \item Compiler Hacl* vers RiscV
+            \item Test Binsec sur RiscV
+            \item -test.json
+          \end{itemize}
+          };
+
+          % Point fixer
+          \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+            \begin{itemize}
+            \item Chaîne de bout en bout 
+            \item Couverture des architectures différentes
+            \item Couverture des compilateurs
+          \end{itemize}
+          };
+        \end{tikzpicture}
+        
+      \end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Réalisation}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {Prévus};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+      \begin{itemize}
+        \item Mise à jour de Binsec
+      \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Remplir les config
+          \item Gérer les dépendances
+          \item Activer chaîne de compilation
+          \item Compilation en x86\_64
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Chaîne de bout en bout 
+            \item Couverture des architectures différentes
+            \item Couverture des compilateurs
+        \end{itemize}
+    };
+      \end{tikzpicture}
+
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Écrire les config et les \textit{Typedef}}
+\frame{\sectionpage}
+
+\begin{frame}[fragile]{Au commencement...}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=CStyle, language=Python, gobble=8]
+        /* MIT License*/
+    
+        #ifndef __Hacl_Chacha20_H
+        #define __Hacl_Chacha20_H
+    
+        #if defined(__cplusplus)
+        extern "C" {
+        #endif
+    
+        #include <string.h>
+        #include "krml/internal/types.h"
+        #include "krml/lowstar_endianness.h"
+        #include "krml/internal/target.h"
+    
+        void
+        Hacl_Chacha20_chacha20_encrypt(
+          uint32_t len,
+          uint8_t *out,
+          uint8_t *text,
+          uint8_t *key,
+          uint8_t *n,
+        \end{lstlisting}
+        
+      \end{column}
+      
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[style=CStyle, language=Python, caption={Hacl\_AEAD\_Chacha20Poly1305.h}, gobble=8]   
+          uint32_t ctr
+        );
+
+        void
+        Hacl_Chacha20_chacha20_decrypt(
+          uint32_t len,
+          uint8_t *out,
+          uint8_t *cipher,
+          uint8_t *key,
+          uint8_t *n,
+          uint32_t ctr
+        );
+    
+        #if defined(__cplusplus)
+        }
+        #endif
+    
+        #define __Hacl_Chacha20_H_DEFINED
+        #endif
+      \end{lstlisting}
+      
+    \end{column}
+  \end{columns}
+
+
+
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{... le néant}
+
+  \begin{lstlisting}[style=global, language=Python, caption={get\_data.py}, gobble=4]
+    scheme_C = r'#if defined\(__cplusplus\)\s*\n(?:extern "C" \{\s*\n|}\s*\n)#endif\s*\n'
+    scheme_define = r'#.*?(?<!\\)\n'
+    scheme_comment = r'/\*.*?\*/'
+    scheme_debug = r'//'
+    scheme_type = r'typedef\s+(?:[^{}]|{(?:[^{}]|{[^{}]*})*})*?;'
+    scheme_krml = r'KRML_DEPRECATED'
+    
+
+    #subduction
+    try:
+        content = re.sub(scheme_C, '', content)
+        content = re.sub(scheme_define, '', content, flags=re.DOTALL)
+        content = re.sub(scheme_comment, '', content, flags=re.DOTALL)
+        content = re.sub(scheme_type, '', content, flags=re.DOTALL)
+        content = re.sub(rf'^{scheme_debug}.*;?', '', content, flags=re.MULTILINE)
+        content = re.sub(rf'^{scheme_krml}.*;?', '', content, flags=re.MULTILINE)
+  \end{lstlisting}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{La simplicité - \textit{28/05}}
+  \begin{tikzpicture}[auto, remember picture, overlay]
+    \tikzstyle{startstop} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!60]
+    \tikzstyle{arrow} = [thick,->,>=stealth, line width=1.5pt]
+
+    % Noeuds
+    \node (raw) at (2.8,-0.6)  {};
+    \node (twin) at (6.8,-1.5) {};
+    \node (twin2) at (6.8,-3.2) {};
+    \node (matching) at (4.8,-4) {};
+    \node (matching2) at (3.3,-5.5) {};
+    \node (final) at (6.8,-6.2) {};
+
+    \draw [arrow, bend left, color=blue!35] (raw) to (twin);
+    \draw [arrow, color=blue!55] (twin2) to (matching);
+    \draw [arrow, bend right, color=blue!75] (matching2) to (final);
+
+  \end{tikzpicture}
+
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+        \textit{Fonction extraite d'un .h}
+      \vspace{1cm} 
+      \begin{lstlisting}[style=CStyle, caption={matching.json}]
+{
+  "input_8_encrypt":"BUF_SIZE"
+  ,"input_len_32_encrypt":"BUF_SIZE"
+  ,"output_8_encrypt":"BUF_SIZE"
+  ,"key_8_encrypt":"KEY_SIZE"
+
+  "BUF_SIZE":16384,
+  "KEY_SIZE":32,
+}
+      \end{lstlisting}
+    \end{column}
+    \begin{column}{0.1\textwidth}
+      
+    \end{column}
+
+
+    \begin{column}{0.5\textwidth}
+
+      \begin{lstlisting}[style=CStyle, caption={twin.json}]
+{
+  "Chacha20Poly1305_encrypt":"encrypt"
+    ,"Chacha20Poly1305_decrypt":"encrypt"
+    ,"32_add":"32_add"
+    ,"32_sub":"32_add"
+    ,"32_add_mod":"32_add"
+    ,"32_sub_mod":"32_add"
+    ,"32_mul":"32_mul"
+    ,"32_sqr":"32_mul"
+    ,"32_mod":"32_mod"
+}
+      \end{lstlisting}
+      \vspace{1cm}
+      \large{\textit{function-tested}.c}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Les problèmes}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=CStyle, gobble=6]
+      typedef struct Hacl_Hash_Blake2b_blake2_params_s
+      {
+        uint8_t digest_length;
+        uint8_t key_length;
+        uint8_t fanout;
+        uint8_t depth;
+        uint32_t leaf_length;
+        uint64_t node_offset;
+        uint8_t node_depth;
+        uint8_t inner_length;
+        uint8_t *salt;
+        uint8_t *personal;
+      }
+      Hacl_Hash_Blake2b_blake2_params;
+    
+      typedef struct Hacl_Hash_Blake2b_index_s
+      {
+        uint8_t key_length;
+      \end{lstlisting}
+      
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=CStyle, caption={Hacl\_Hash\_Blake2b.h}, gobble=6]
+        uint8_t digest_length;
+        bool last_node;
+      }
+      Hacl_Hash_Blake2b_index;
+    
+      Hacl_Hash_Blake2b_state_t
+      *H_H_Blake2b_malloc_with_params_and_key(
+        Hacl_Hash_Blake2b_blake2_params *p,
+        bool last_node,
+        uint8_t *k
+      );
+    \end{lstlisting}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Solution}
+  \begin{block}{Remodéliser la génération des tests}
+    \begin{itemize}
+      \item Identifier les \textit{typedef}
+      \item Ajouter dans les fichiers config
+      \item Concevoir les tests en "pointant" vers ces définitions
+      \item \textit{Construire un compilateur C -> C}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Aperçu}
+  \begin{lstlisting}[style=CStyle, language=Python, gobble=4, caption={Hacl\_Bignum.json}]
+    {"Meta_data":{
+        "build" : "19-06-2025",
+        "version" : "0.2.3"
+    }
+    ,"Hacl_Bignum_MontArithmetic_bn_mont_ctx_u32": {
+        "len":"BUFFER_SIZE"
+      ,"*n":"BUFFER_SIZE"
+      ,"mu":"BUFFER_SIZE"
+      ,"*r2":"BUFFER_SIZE"
+      ,"BUFFER_SIZE":8
+    }
+    ,"Hacl_Bignum_MontArithmetic_bn_mont_ctx_u64": {
+        "len":"BUFFER_SIZE"
+      ,"*n":"BUFFER_SIZE"
+      ,"mu":"BUFFER_SIZE"
+      ,"*r2":"BUFFER_SIZE"
+      ,"BUFFER_SIZE":8
+    }}
+  \end{lstlisting}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Compilation avec Érysichton}
+\frame{\sectionpage}
+
+\begin{frame}{Structure}
+  \centering
+  \begin{tikzpicture}[auto]
+
+    % Styles
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    \tikzset{zone1/.style={rectangle, rounded corners, draw=red, dashed, fill=red!10, inner sep=0.3cm}}
+    \tikzset{zone2/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.3cm}}
+    \tikzset{zone22/.style={rectangle, rounded corners, draw=none, fill=blue!10, inner sep=0.3cm}}
+    \tikzset{zone3/.style={rectangle, rounded corners, draw=green, dashed, fill=green!10, inner sep=0.3cm}}
+    
+    % Noeuds
+    \node (hacl) [startstop] {Hacl*};
+    \node (c) [below of=hacl] {.h};
+    \node (ini) [below of=c, xshift=2cm] {.ini};
+    \node (test) [below of=c, xshift=-2cm] {-test.c};
+    \node (script) [below of=c] {.script};
+    \node (compilateur) [process, below of=test] {Compilateur};
+    \node (exe) [below of=compilateur] {-test.exe};
+    \node (blanc1) [below of=script] {};
+    \node (blanc2) [below of=blanc1] {};
+    \node (gdb) [process, below of=blanc2] {GDB};
+    \node (snap) [right of=gdb, xshift=2cm] {.snapshot};
+    \node (binsec) [startstop, right of=snap, xshift=1.5cm] {Binsec};
+    
+    % Flèches
+    \draw [arrow] (hacl) -- (c);
+    \draw [arrow] (c) -- (ini);
+    \draw [arrow] (c) -- (test);
+    \draw [arrow] (c) -- (script);
+    \draw [arrow] (test) -- (compilateur);
+    \draw [arrow] (compilateur) -- (exe);
+    \draw [arrow] (exe) -- (gdb);
+    \draw [arrow] (script) -- (gdb);
+    \draw [arrow] (gdb) -- (snap);
+    \draw [arrow] (snap) -- (binsec);
+    \draw [arrow] (ini) -- (binsec);
+
+    % Zones
+    \begin{scope}[on background layer]
+        \onslide<1>{\node [zone1, fit=(c) (ini) (test) (script)] {};}
+        \onslide<1>{\node [zone2, fit=(script) (gdb)] {};}
+        \onslide<1>{\node [zone2, fit=(gdb) (snap) (binsec)] {};}
+        \onslide<1>{\draw [zone22]
+        ([xshift=-9pt, yshift=10pt]gdb.north west) --
+        ([xshift=9pt, yshift=10pt]gdb.north east) -- 
+        ([xshift=1pt, yshift=-1pt]gdb.south east) -- 
+        ([xshift=-1pt, yshift=-1pt]gdb.south west) --
+        cycle; }
+        \onslide<1,2>{\node [zone3, fit=(compilateur) (exe)] {};}
+    \end{scope}
+    \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Modèle de compilation}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Réplication de la compilation de Hacl*}
+        \large{
+                  \dirtree{%
+                    .1 Érysichton.
+                    .2 Makefile.
+                    .2 build.sh.
+                    .2 x86\_64.
+                    .3 Makefile{.}config.
+                    .3 builds/.
+                    .2 ARMV7.
+                    .2 ARMV8.
+                    .2 riscv-32.
+                    .2 riscv-64.
+                  }
+                }
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=MakefileStyle, gobble=10, caption={Makefile}]
+        ################################
+        #        x86_64 section        #
+        ################################
+
+        x86_64:
+          @./build.sh x86_64
+          @make --no-print-directory -f .Makefile.generated all
+      \end{lstlisting}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Modèle de compilation}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Réplication de la compilation de Hacl*}
+        \large{
+                  \dirtree{%
+                    .1 Érysichton.
+                    .2 Makefile.
+                    .2 build.sh.
+                    .2 x86\_64.
+                    .3 Makefile{.}config.
+                    .3 builds/.
+                    .2 ARMV7.
+                    .2 ARMV8.
+                    .2 riscv-32.
+                    .2 riscv-64.
+                  }
+                }
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[style=MakefileStyle, gobble=10, caption={Makefile.config}]
+          DATA=/home/florian/Documents/recoules-hacl-star/hacl-star
+          ARCHI=x86_64
+
+          LDFLAGS="-Xlinker -z -Xlinker noexecstack -Xlinker --unresolved-symbols=report-all"
+
+          HELP=gcc
+          FORCE=Os
+        \end{lstlisting}
+    \end{column}
+  \end{columns}
+\end{frame}
+      
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Modèle de compilation}
+
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \begin{block}{Réplication de la compilation de Hacl*}
+        \large{
+                  \dirtree{%
+                    .1 Érysichton.
+                    .2 Makefile.
+                    .2 build.sh.
+                    .2 x86\_64.
+                    .3 Makefile{.}config.
+                    .3 builds/.
+                    .2 ARMV7.
+                    .2 ARMV8.
+                    .2 riscv-32.
+                    .2 riscv-64.
+                  }
+                }
+      \end{block}
+    \end{column}
+    \begin{column}{0.6\textwidth}
+        \begin{lstlisting}[style=MakefileStyle, gobble=10, caption={build.sh}]
+          # Makefile automatically generated
+          ARCHI := --target=x86_64
+          FORCE := -Os \ CC := gcc
+          CFLAGS := ... \ LDFLAGS := ...
+          BUILD_DIR := ... \ COMPIL_DIR := ...
+          SRC_DIR := make_tests/source/
+          SRC_FILES := Hacl_AEAD_Chacha20Poly1305_decrypt.c Hacl_AEAD_Chacha20Poly1305_encrypt.c
+
+          SOURCES := $(wildcard $(SRC_DIR)/*.c)
+          OBJECTS := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%,$(SOURCES))
+          EXECUTABLES := $(OBJECTS)
+
+          all:
+            echo "$(SOURCES)"
+
+          %.exe: %.o
+	          $(CC) $(CFLAGS) $(LDFLAGS) $^ ../dist/gcc-compatible/libevercrypt.a -static -o $@
+        \end{lstlisting}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Reconceptualiser les intéractions}
+  \begin{block}{Communication entre Modules}
+    \begin{itemize}
+      \item Fonctionnement pertinent
+      \item Précision manuelle pour la compilation
+      \item Activation de Binsec
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conclusion}
+\frame{\sectionpage}
+
+\begin{frame}{Conclusion}
+  \begin{block}{Objectif}
+    Finir le module x86\_64.
+  \end{block}
+
+  \begin{enumerate}
+    \item Remplir les configurations
+    \item Générer les tests
+    \item Compiler les tests
+    \item Analyser les tests
+  \end{enumerate}
+  
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Le texte est modifiable en changeant \thankyou
+%% \renewcommand{\thankyou}{Thank You.}
+\frame{\merci}
+
+
+\end{document}
+

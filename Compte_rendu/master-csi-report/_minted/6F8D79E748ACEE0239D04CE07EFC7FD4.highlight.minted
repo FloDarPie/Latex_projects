@@ -1,0 +1,34 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n+nl}{cmovznz4}\PYG{p}{:}
+\PYG{+w}{        }\PYG{n}{mv}\PYG{+w}{      }\PYG{n}{a5}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a1}
+\PYG{+w}{        }\PYG{n}{beqz}\PYG{+w}{    }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}2}
+\PYG{+w}{        }\PYG{n}{mv}\PYG{+w}{      }\PYG{n}{a5}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a2}
+\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}2}\PYG{p}{:}
+\PYG{+w}{        }\PYG{n}{beqz}\PYG{+w}{    }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}5}
+\PYG{+w}{        }\PYG{n}{addi}\PYG{+w}{    }\PYG{n}{a6}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a2}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{8}
+\PYG{+w}{        }\PYG{n}{bnez}\PYG{+w}{    }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}6}
+\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}4}\PYG{p}{:}
+\PYG{+w}{        }\PYG{n}{addi}\PYG{+w}{    }\PYG{n}{a4}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{16}
+\PYG{+w}{        }\PYG{n}{j}\PYG{+w}{       }\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}7}
+\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}5}\PYG{p}{:}
+\PYG{+w}{        }\PYG{n}{addi}\PYG{+w}{    }\PYG{n}{a6}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{8}
+\PYG{+w}{        }\PYG{n}{beqz}\PYG{+w}{    }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}4}
+\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}6}\PYG{p}{:}
+\PYG{+w}{        }\PYG{n}{addi}\PYG{+w}{    }\PYG{n}{a4}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a2}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{16}
+\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}7}\PYG{p}{:}
+\PYG{+w}{        }\PYG{n}{ld}\PYG{+w}{      }\PYG{n}{a7}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{(}\PYG{n}{a5}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{ld}\PYG{+w}{      }\PYG{n}{a5}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{(}\PYG{n}{a6}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{ld}\PYG{+w}{      }\PYG{n}{a6}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{(}\PYG{n}{a4}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{beqz}\PYG{+w}{    }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}9}
+\PYG{+w}{        }\PYG{n}{addi}\PYG{+w}{    }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a2}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{24}
+\PYG{+w}{        }\PYG{n}{j}\PYG{+w}{       }\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}10}
+\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}9}\PYG{p}{:}
+\PYG{+w}{        }\PYG{n}{addi}\PYG{+w}{    }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{24}
+\PYG{p}{.}\PYG{n+na}{LBB0\PYGZus{}10}\PYG{p}{:}
+\PYG{+w}{        }\PYG{n}{ld}\PYG{+w}{      }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{(}\PYG{n}{a0}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{sd}\PYG{+w}{      }\PYG{n}{a7}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{(}\PYG{n}{a3}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{sd}\PYG{+w}{      }\PYG{n}{a5}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{8}\PYG{p}{(}\PYG{n}{a3}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{sd}\PYG{+w}{      }\PYG{n}{a6}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{16}\PYG{p}{(}\PYG{n}{a3}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{sd}\PYG{+w}{      }\PYG{n}{a0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{24}\PYG{p}{(}\PYG{n}{a3}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{ret}
+\end{MintedVerbatim}

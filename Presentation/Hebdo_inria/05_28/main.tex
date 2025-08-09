@@ -1,0 +1,505 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Copyright (c) 2023, gitlabci_gallery / latex
+%         All rights reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[A4,svgnames,9pt,aspectratio=169]{beamer}
+%% document options:
+%% - aspectratio = { 43, 169, 1610 }
+%% - utf8
+%%
+
+
+\setlength{\footskip}{300pt}
+\usepackage[french]{babel}
+
+\hypersetup{
+   allcolors   = rouge_inria,
+   pdfauthor   = {Duzés Florian},
+   pdftitle    = {\@title},
+   pdfsubject  = {Point hebdomadaire, bi-mensuel du stage},
+   pdfkeywords = {entretien, observation du travail}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[titrecourt]{Réunion flash}
+\subtitle{Point hebdomadaire}
+\date[28/05/2025]{date long}
+\author[Duzes Florian]{Duzés Florian}
+
+\usetheme{inria}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Le titre des planches de sommaire est \contentsname, sa valeur
+% est fixée ici à "Sommaire" par défaut.
+\renewcommand{\contentsname}{Sommaire}
+
+\frame{\tocpage}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+ 
+\section{État des lieux}
+\frame{\sectionpage}
+
+\begin{frame}{Point actuel}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {\parbox{3cm}{\centering Prévus \\ \tiny{Pour le 15/06}}};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Chaîne de compilation
+          \item Identifications d'erreur de \textbf{p256}
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Automatisation des \textit{-test.c}
+          \item Préparation d'une config pour la génération des tests
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Automatisation des .ini
+            \item Couvrir les tests
+            \item Couvrir les primitives Hacl*
+            \item RiskV - compil à la main de tests
+        \end{itemize}
+    };
+
+
+
+
+      \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Réalisation}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {\parbox{3cm}{\centering Prévus \\ \tiny{Pour le 15/06}}};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item \textbf{p256} et analyse à la main
+          \item Compilator (Compiler vers différentes architectures)
+          \item Toolchain et compilation vers Risc-V
+          \item Automatisation des .ini
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Automatisation des \textit{-test.c}
+          \item Préparation d'une config pour la génération des tests
+          \item Planification du mémoire
+          \item Rédaction de documentation, protocoles et méthode
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Couvrir les tests
+            \item Couvrir les primitives Hacl*
+            \item RiscV - compil à la main de tests
+        \end{itemize}
+    };
+
+      \end{tikzpicture}
+
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Automatique, pas facile}
+\frame{\sectionpage}
+
+\begin{frame}[fragile]{Automatique et facile}
+
+  \begin{tikzpicture}[auto, remember picture, overlay]
+    \tikzstyle{startstop} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!60]
+    \tikzstyle{arrow} = [thick,->,>=stealth, line width=1.5pt]
+
+    % Noeuds
+    \node (raw) at (3,-2.9)  {};
+    \node (matching) at (6.8,-3.8) {};
+    \node (matching2) at (6.8,-4.2) {};
+    \node (final) at (3,-5.5) {};
+
+    \draw [arrow, bend right, color=blue!40] (raw) to (matching);
+    \draw [arrow, bend right, color=blue!60] (matching2) to (final);
+
+  \end{tikzpicture}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=global, caption={Hacl\_AEAD\_Chacha20Poly1305\_decrypt}, gobble=8]
+        uint32_t
+          Hacl_AEAD_Chacha20Poly1305_decrypt
+          uint8_t *output,   uint8_t *input,
+          uint32_t input_len,   uint8_t *data,
+          uint32_t data_len,   uint8_t *key,
+          uint8_t *nonce,   uint8_t *tag
+      \end{lstlisting}
+      \vspace{2cm}
+      Hacl\_AEAD\_Chacha20Poly1305\_decrypt.c
+    \end{column}
+
+
+    \begin{column}{0.5\textwidth}
+
+      \begin{lstlisting}[style=CStyle, caption={matching.json}]
+{
+  "input":"BUF_SIZE",
+  "input_len":"BUF_SIZE",
+  "output":"BUF_SIZE",
+  "output_len":"BUF_SIZE",
+  "key":"KEY_SIZE",
+  "nonce":"NONCE_SIZE",
+  "tag":"TAG_SIZE",
+  "data":"AAD_SIZE",
+  "data_len":"AAD_SIZE",
+  "BUF_SIZE":16384,
+  "KEY_SIZE":32,
+  "NONCE_SIZE":12,
+  "AAD_SIZE":12,
+  "TAG_SIZE":16
+}
+      \end{lstlisting}
+
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Coquille dans l'engrenage}
+
+      \begin{lstlisting}[style=CStyle, caption={counting.json}]
+{
+    "*output": 41,
+    "*tag": 12,
+    "*input": 35,
+    "input_len": 33,
+    "*data": 14,
+    "data_len": 14,
+    "*key": 44,
+    "*nonce": 15,
+    "*expanded_key": 2,
+    "*cipher": 6,
+    "*plain": 16,
+    "*a": 112,
+    "*b": 107,
+    "*res": 97,
+    "*n": 70,
+    "bBits": 28,
+    "*k": 79,
+    "len": 64,
+}
+      \end{lstlisting}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Besoin de plus d'information}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=CStyle, caption={Hacl\_Bignum256.h}, gobble=6]
+      /**
+      Write `a + b mod 2^256` in `res`.
+
+        This functions returns the carry.
+
+        The arguments a, b and res are meant to be 256-bit bignums, i.e. uint64_t[4]
+      */
+      uint64_t Hacl_Bignum256_add(uint64_t *a, uint64_t *b, uint64_t *res);
+    \end{lstlisting}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+    \begin{lstlisting}[style=CStyle, caption={Hacl\_Bignum256.h}, gobble=6]
+      /**
+      Write `a * b` in `res`.
+
+        The arguments a and b are meant to be 256-bit bignums, i.e. uint64_t[4].
+        The outparam res is meant to be a 512-bit bignum, i.e. uint64_t[8].
+      */
+      void Hacl_Bignum256_mul(uint64_t *a, uint64_t *b, uint64_t *res);
+    \end{lstlisting}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Affectation de signature}
+  \begin{tikzpicture}[auto, remember picture, overlay]
+    \tikzstyle{startstop} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!60]
+    \tikzstyle{arrow} = [thick,->,>=stealth, line width=1.5pt]
+
+    % Noeuds
+    \node (raw) at (2.8,-0.6)  {};
+    \node (twin) at (6.8,-1.5) {};
+    \node (twin2) at (6.8,-3.2) {};
+    \node (matching) at (4.8,-4) {};
+    \node (matching2) at (3.3,-5.5) {};
+    \node (final) at (6.8,-6.2) {};
+
+    \draw [arrow, bend left, color=blue!35] (raw) to (twin);
+    \draw [arrow, color=blue!55] (twin2) to (matching);
+    \draw [arrow, bend right, color=blue!75] (matching2) to (final);
+
+  \end{tikzpicture}
+
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+        \textit{Fonction extraite d'un .h}
+      \vspace{1cm} 
+      \begin{lstlisting}[style=CStyle, caption={matching.json}]
+{
+  "input_8_encrypt":"BUF_SIZE"
+  ,"input_len_32_encrypt":"BUF_SIZE"
+  ,"output_8_encrypt":"BUF_SIZE"
+  ,"key_8_encrypt":"KEY_SIZE"
+
+  "BUF_SIZE":16384,
+  "KEY_SIZE":32,
+}
+      \end{lstlisting}
+    \end{column}
+    \begin{column}{0.1\textwidth}
+      
+    \end{column}
+
+
+    \begin{column}{0.5\textwidth}
+
+      \begin{lstlisting}[style=CStyle, caption={twin.json}]
+{
+  "Chacha20Poly1305_encrypt":"encrypt"
+    ,"Chacha20Poly1305_decrypt":"encrypt"
+    ,"32_add":"32_add"
+    ,"32_sub":"32_add"
+    ,"32_add_mod":"32_add"
+    ,"32_sub_mod":"32_add"
+    ,"32_mul":"32_mul"
+    ,"32_sqr":"32_mul"
+    ,"32_mod":"32_mod"
+}
+      \end{lstlisting}
+      \vspace{1cm}
+      \large{\textit{function-tested}.c}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Création du tampon}
+\begin{columns}
+  \begin{column}{0.4\textwidth}
+    \begin{minipage}[t][8cm][t]{\linewidth}
+      \begin{block}{Besoin d'identification}
+        Format des données :
+        \begin{itemize}
+          \item Nom de la fonction
+          \begin{itemize}
+            \item \textit{Hacl\_family\_}[\textit{op}]
+          \end{itemize}
+          \item Type de données
+          \begin{itemize}
+            \item \textit{uint}[\textit{X}]\textit{\_f}
+          \end{itemize}
+        \end{itemize}
+      \end{block}
+      \pause
+      \begin{block}{Tampon unique}
+        parametre\_X\_op  
+      \end{block}
+    \end{minipage}
+  \end{column}
+  \begin{column}{0.6\textwidth}
+    \begin{minipage}[t][10cm][t]{\linewidth}
+      \begin{lstlisting}[style=CStyle, caption={matching.json}]
+    "a_32_32_add":"BUF_SIZE_8"
+    ,"b_32_32_add":"BUF_SIZE_8"
+    ,"res_32_32_add":"BUF_SIZE_8"
+    ,"n_32_32_add":"BUF_SIZE_8"
+    ,"BUF_SIZE_8":8
+    ,"a_32_32_mul":"BUF_SIZE_8"
+    ,"b_32_32_mul":"BUF_SIZE_8"
+    ,"res_32_32_mul":"BUF_SIZE_16"
+    ,"BUF_SIZE_16":16
+      \end{lstlisting}
+
+      \begin{lstlisting}[style=CStyle, caption={twin.json}]
+    "32_add":"32_add"
+    ,"32_sub":"32_add"
+    ,"32_add_mod":"32_add"
+    ,"32_sub_mod":"32_add"
+    ,"32_mul":"32_mul"
+    ,"32_sqr":"32_mul"
+      \end{lstlisting}
+    \end{minipage}
+  \end{column}
+\end{columns}
+  
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Risc-V me voilà}
+\frame{\sectionpage}
+
+\begin{frame}{À partir de rien}
+  \begin{block}{Conception du compilateur croisé}
+    Depuis la source officielle:
+    \begin{itemize}
+      \item \textit{https://github.com/riscv-collab/riscv-gnu-toolchain}
+      \pause
+      \item Après 3h et des poussières, ajout du compilateur : \textbf{riscv64-unknown-linux-gnu-gcc}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Analyse de Binsec}
+  \begin{block}{Le fameux p256}
+    Modifications du script \textit{.ini}:
+    \begin{enumerate}
+      \item Section "\textit{.data}" -> "\textit{.sdata}"
+      \item Ajout de l'adresse de fin
+    \end{enumerate}
+  \end{block}
+
+  \begin{lstlisting}[style=global, caption={study.ini}, gobble=2]
+  [sse:warning] Enumeration of jump targets @ 0x000104ae hit the limit 3 and may be incomplete
+  [sse:warning] Cut path 3 (non executable) @ 0x00000000
+  [sse:warning] Cut path 2 (non executable) @ 0xffffffffffffffff
+  [sse:warning] Cut path 1 (non executable) @ 0xfffffffffffffffe
+  \end{lstlisting}
+
+  \textit{Analyse corrigé en direct}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Plan pour Risc-V}
+  \begin{block}{Objectifs fixés}
+    \begin{itemize}
+      \item Étendre l'analyse Binsec sur les tests natifs de Hacl*
+      \item Intégrer la chaîne de compilation à Érysicthon
+      \item Ajouter une compilation vers l'architecture 32 bits
+      \item Ajouter la compilation via Clang et LLVM
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+
+
+\section{Conclusion}
+\frame{\sectionpage}
+
+\begin{frame}{Conclusion}
+
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \begin{minipage}[t][2cm][t]{\linewidth}
+        \begin{block}{Automatisation}
+          \begin{itemize}
+            \item Continuer la génération des fichiers \textit{-test.c}
+            \item Activer la chaîne de compilation
+          \end{itemize}
+        \end{block}
+      \end{minipage}
+    \end{column}
+    \pause
+    \begin{column}{0.3\textwidth}
+      \begin{minipage}[t][2cm][t]{\linewidth}
+        \begin{block}{Toolchain Risc-V}
+          \begin{itemize}
+            \item Compilation d'autres toolchain : 32 bits
+            \item Compiler plus de -test.c
+            \item Effectuer plus d'analyse Binsec
+          \end{itemize}
+        \end{block}
+      \end{minipage}
+    \end{column}
+    \pause
+    \begin{column}{0.3\textwidth}
+      \begin{minipage}[t][2cm][t]{\linewidth}
+        \begin{block}{Rédaction du mémoire}
+          \begin{itemize}
+            \item Poser les idées
+            \item Concevoir le puit
+            \item Plan du plan le 10/06
+          \end{itemize}
+        \end{block}
+      \end{minipage}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Le texte est modifiable en changeant \thankyou
+%% \renewcommand{\thankyou}{Thank You.}
+\frame{\merci}
+
+
+\end{document}
+

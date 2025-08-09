@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{l+m+mi}{12640}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{bpf\PYGZus{}check}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{bpf\PYGZus{}prog}\PYG{+w}{ }\PYG{o}{*}\PYG{o}{*}\PYG{n}{prog}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{union}\PYG{+w}{ }\PYG{n+nc}{bpf\PYGZus{}attr}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{attr}\PYG{p}{,}
+\PYG{l+m+mi}{12641}\PYG{+w}{               }\PYG{k}{union}\PYG{+w}{ }\PYG{n+nc}{bpf\PYGZus{}attr}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}user}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{uattr}\PYG{p}{)}
+\PYG{l+m+mi}{12642}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{l+m+mi}{12795}\PYG{+w}{         }\PYG{n}{print\PYGZus{}verification\PYGZus{}stats}\PYG{p}{(}\PYG{n}{env}\PYG{p}{)}\PYG{p}{;}
+\end{MintedVerbatim}

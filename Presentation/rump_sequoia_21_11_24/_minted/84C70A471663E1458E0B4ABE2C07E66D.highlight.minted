@@ -1,0 +1,9 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{+w}{ }\PYG{l+m+mi}{523}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{seq\PYGZus{}dentry}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{seq\PYGZus{}file}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{m}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{dentry}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{dentry}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{esc}\PYG{p}{)}
+\PYG{+w}{ }\PYG{l+m+mi}{524}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{ }\PYG{l+m+mi}{525}\PYG{+w}{         }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{buf}\PYG{p}{;}
+\PYG{+w}{ }\PYG{l+m+mi}{526}\PYG{+w}{         }\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{ }\PYG{n}{size}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{seq\PYGZus{}get\PYGZus{}buf}\PYG{p}{(}\PYG{n}{m}\PYG{p}{,}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{buf}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{ }\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{+w}{ }\PYG{l+m+mi}{529}\PYG{+w}{         }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{size}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{ }\PYG{l+m+mi}{530}\PYG{+w}{                 }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{dentry\PYGZus{}path}\PYG{p}{(}\PYG{n}{dentry}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{buf}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{size}\PYG{p}{)}\PYG{p}{;}
+\end{MintedVerbatim}

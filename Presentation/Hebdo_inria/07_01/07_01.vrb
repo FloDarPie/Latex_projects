@@ -1,0 +1,43 @@
+\frametitle{Modèle de compilation}
+
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \begin{block}{Réplication de la compilation de Hacl*}
+        \large{
+                  \dirtree{%
+                    .1 Érysichton.
+                    .2 Makefile.
+                    .2 build.sh.
+                    .2 x86\_64.
+                    .3 Makefile{.}config.
+                    .3 builds/.
+                    .2 ARMV7.
+                    .2 ARMV8.
+                    .2 riscv-32.
+                    .2 riscv-64.
+                  }
+                }
+      \end{block}
+    \end{column}
+    \begin{column}{0.6\textwidth}
+        \begin{lstlisting}[style=MakefileStyle, gobble=10, caption={build.sh}]
+          # Makefile automatically generated
+          ARCHI := --target=x86_64
+          FORCE := -Os \ CC := gcc
+          CFLAGS := ... \ LDFLAGS := ...
+          BUILD_DIR := ... \ COMPIL_DIR := ...
+          SRC_DIR := make_tests/source/
+          SRC_FILES := Hacl_AEAD_Chacha20Poly1305_decrypt.c Hacl_AEAD_Chacha20Poly1305_encrypt.c
+
+          SOURCES := $(wildcard $(SRC_DIR)/*.c)
+          OBJECTS := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%,$(SOURCES))
+          EXECUTABLES := $(OBJECTS)
+
+          all:
+            echo "$(SOURCES)"
+
+          %.exe: %.o
+	          $(CC) $(CFLAGS) $(LDFLAGS) $^ ../dist/gcc-compatible/libevercrypt.a -static -o $@
+        \end{lstlisting}
+    \end{column}
+  \end{columns}

@@ -1,0 +1,21 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+    \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{hide\PYGZus{}contiguous}\PYG{p}{(}\PYG{n}{y}\PYG{p}{,}\PYG{n}{epsilon}\PYG{p}{,} \PYG{n}{q}\PYG{p}{)} \PYG{p}{:}
+        \PYG{k}{if} \PYG{o+ow}{not} \PYG{l+m+mi}{0} \PYG{o}{\PYGZlt{}} \PYG{n}{epsilon} \PYG{o}{\PYGZlt{}}\PYG{o}{=} \PYG{l+m+mi}{1} \PYG{p}{:}
+            \PYG{k}{raise} \PYG{n+ne}{ValueError}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ \PYGZhy{} epsilon doit être entre 0 et 1.}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{y} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{y}\PYG{p}{)}
+
+        \PYG{n}{total} \PYG{o}{=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n+nb}{bin}\PYG{p}{(}\PYG{n}{q}\PYG{p}{)}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{:}\PYG{p}{]}\PYG{p}{)}
+        \PYG{n}{nb\PYGZus{}bits} \PYG{o}{=} \PYG{n}{floor}\PYG{p}{(}\PYG{n}{total}\PYG{o}{*}\PYG{n}{epsilon}\PYG{p}{)}    \PYG{c+c1}{\PYGZsh{} nb de bit de y connus}
+        \PYG{n}{unknow} \PYG{o}{=} \PYG{n}{total} \PYG{o}{\PYGZhy{}} \PYG{n}{nb\PYGZus{}bits}          \PYG{c+c1}{\PYGZsh{} nb de bits inconnus}
+
+        \PYG{c+c1}{\PYGZsh{} séparation en deux blocs initiaux ou finaux}
+        \PYG{n}{\PYGZus{}\PYGZus{}lambda} \PYG{o}{=} \PYG{n}{floor}\PYG{p}{(}\PYG{n}{random}\PYG{p}{(}\PYG{p}{)} \PYG{o}{*} \PYG{n}{nb\PYGZus{}bits}\PYG{p}{)}
+        \PYG{n}{mu} \PYG{o}{=} \PYG{n}{unknow} \PYG{o}{+} \PYG{n}{\PYGZus{}\PYGZus{}lambda}
+
+        \PYG{c+c1}{\PYGZsh{}application de masque}
+        \PYG{n}{a} \PYG{o}{=} \PYG{n}{y} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{\PYGZus{}\PYGZus{}lambda}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n}{b} \PYG{o}{=} \PYG{p}{(}\PYG{n}{y} \PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{\PYGZus{}\PYGZus{}lambda}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{p}{(}\PYG{n}{mu} \PYG{o}{\PYGZhy{}} \PYG{n}{\PYGZus{}\PYGZus{}lambda}\PYG{p}{)}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n}{c} \PYG{o}{=} \PYG{n}{y} \PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{mu}
+
+        \PYG{k}{return} \PYG{n}{a}\PYG{p}{,}\PYG{n}{b}\PYG{p}{,}\PYG{n}{c}\PYG{p}{,}\PYG{n}{\PYGZus{}\PYGZus{}lambda}\PYG{p}{,}\PYG{n}{mu}
+\end{MintedVerbatim}

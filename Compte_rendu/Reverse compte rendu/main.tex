@@ -1,0 +1,188 @@
+\documentclass{rapport}
+\usepackage{lipsum}
+\usepackage{gensymb}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{graphicx} % Required for inserting images
+\title{file title} %title of the file
+
+\begin{document}
+
+%----------- Report information ---------
+
+\logo{logos/logo.png}
+\uni{\textbf{Université de Bordeaux}}
+\ttitle{Reverse Engineering} %title of the file
+\subject{Reverse} % Subject name
+\topic{Devoir Maison} % Topic name
+
+% information related to the professor
+% ---- got direct to *.cls
+
+\students{Florian \textsc{Duzes}} % information related to the students
+
+%----------- Init -------------------
+        
+\buildmargins % display margins
+\buildcover % create the front cover of the document
+\toc % creates the table of contents
+
+%------------ Report body ----------------
+
+\section{Introduction}
+\subsection{Rétro-ingénierie}
+
+\hspace{18pt}La rétro-ingénierie (aussi connue sous le nom d'ingénierie inversée ou de rétro-conception) est une méthode qui tente d'expliquer, par déduction et analyse systémique, comment un mécanisme, un dispositif, un système ou un programme existant, accomplit une tâche sans connaissance précise de la manière dont il fonctionne. La rétro-ingénierie s'applique notamment dans les domaines de l'ingénierie mécanique, informatique, électronique, chimique, biologique et dans celui du design. Le terme équivalent en anglais est reverse engineering (ou retro-engineering). \cite{retroIngenieury}
+
+\subsection{Master CSI}
+
+\hspace{18pt}Dans le cadre de l'UE \textbf{Sécurité des systèmes} nous nous exerçons à l'exercice de la Rétro-Ingénierie. Dans un premier temps, nous avons suivi les classes de M.Delaunay et nous nous sommes initiés à l'outil \textit{IDAFree 7.6} \cite{idafree}. Ensuite, M.Fleury a repris la suite du cours et nous sommes partis effectuer le challenge ReversingHero \cite{reversingHero}. Avec ce challenge et notre professeur, nous avons pris en main l'outil \textit{Ghidra} \cite{ghidra}. Personnellement, j'ai pu valider, durant le temps de classe, les deux premiers exercices.\medbreak
+
+Dans le cadre de la validation de cette UE, nous devons étudier un binaire produit par M.Delaunay et essayer d'en extraire le code d’accès. Pour la suite de ce projet, je vais utiliser principalement \textit{Ghidra}.\bigbreak
+
+\insererfigure{logos/logo_ghidra.png}{0.5}{Logo de Ghidra}{ghidra_logo}
+
+\newpage
+\section{Premier pas}
+
+\subsection{Premier aperçu}
+
+\hspace{18pt}Nous recevons un exécutable nommé \textbf{\textit{Exam\_CSI}}. Voici ce que l'on a en l’exécutant dans notre espace sécurisé :
+\insererfigure{etude/capture_debut.png}{0.8}{Observation initiale}{ecran_start}
+
+On comprend que le logiciel attend une entrée clavier et, lorsque celle-ci est erronée, il se termine.
+
+On sait ce que l'on cherche, lançons Ghidra.
+
+\subsection{Graphe}
+
+\hspace{18pt}À l'ouverture de l'application, on peut lancer l'analyse. Cette étape "prémâche" le travail en lançant une sélection de scripts. Cela va me permettre d'avancer plus rapidement par la suite. Je laisse la sélection par défaut et je vais observer comment se présente notre logiciel.
+
+\hspace{18pt}En premier lieu, voici notre point de départ :
+\insererfigure{etude/entry.png}{0.5}{Entry Point}{entry}
+
+\hspace{18pt}On va avancer de suite dans la fameuse fonction "FUN\_140015490" et observer ce que l'on a à manger :
+
+\insererfigure{etude/graphe_init.png}{1}{Graphe de flot de contrôle}{graphe_init}
+\smallbreak
+
+\hspace{18pt}L'objectif va être pour moi de baliser tout cet espace et de comprendre l'implication de chaque bloc.
+\vspace{4em}
+
+\small{\textit{Je me rends que c'est un poil long, et qu'il va me falloir être plus malin si je veux passer les fêtes en paix.}}
+
+\newpage
+\subsection{Balisage}
+
+\hspace{18pt}Cette fonction est la première à être exécutée, je vais la renommer \textbf{main}. Grâce à l'analyse réalisée par Ghidra, de nombreuses fonctions ont déjà pu être identifiées. Je peux voir l'équivalent en décompilé avec Ghidra. Voici le point que je trouve intéressant :
+
+\begin{lstlisting}[caption={main}, label={lst:main}]
+
+int main(void)
+{
+      ...
+      puVar6 = (uint *)__p___argc();
+      _get_initial_narrow_environment();
+      uVar7 = (ulonglong)*puVar6;
+                /* lancement de la fonction principale */
+      iVar2 = FUN_140010850();
+      uVar5 = __scrt_is_managed_app();
+      if ((char)uVar5 != '\0') {
+        if (!bVar1) {
+          _cexit();
+        }
+        __scrt_uninitialize_crt(CONCAT71((int7)(uVar7 >> 8),1),'\0');
+        return iVar2;
+      }
+      exit(iVar2);
+    }
+  }
+}
+\end{lstlisting}
+
+\hspace{18pt}Ce que je trouve intéressant ici, c'est l'enchaînement logique des fonctions. J'ai l'impression que l'information d'entrée du logiciel est stockée en \textbf{puVar6}. Ensuite, cette valeur change de type, puis une fonction inconnue "\textit{FUN\_140010850}" est appelée. Enfin, on a la fermeture du logiciel. On sait que les types indiqués sur nos variables ne sont pas nécessairement corrects, alors je ne vais pas y faire attention. Je vais renommer cette fonction "\textbf{mystere}" et avancer.
+\medbreak
+
+\begin{lstlisting}[caption={main - assembleur}, label={lst:main_assembleur}]
+       14001558f 4c  8b  c0       MOV        R8 ,RAX
+       140015592 48  8b  d7       MOV        RDX ,RDI
+       140015595 8b  0b           MOV        ECX ,dword ptr [RBX]
+                        /* lancement de la fonction principale */
+       140015597 e8  b4  b2       CALL       mystere(FUN_140010850)
+                 ff  ff
+       14001559c 8b  d8           MOV        EBX ,EAX
+        14001559e e8  89  08      CALL       __scrt_is_managed_app
+                 00  00
+\end{lstlisting}
+
+\hspace{18pt}Cette fonction \textbf{main} initialise et désinitialise de nombreux processus. La version décompilée native présentée en \ref{lst:main} montre certaines incohérences que l'on observe avec l'assembleur en \ref{lst:main_assembleur}. On a bien \textit{ECX} qui stocke l'adresse mémoire de \textit{RBX}. Ensuite, on a l'appel à "\textit{mystere}" et on stocke \textit{EAX} dans \textit{EBX}. Et directement, on a un appel à \textit{\_\_scrt\_is\_managed\_app}. Cette écriture d'affectation de résultat par le décompilateur est incorrecte. \textit{iVar2} ne stocke pas d'information. En revanche, l'idée qu'il soulève est correcte. Notre fonction "\textit{mystere}" est déterminante sur ce qu'il se passe ensuite.
+
+\section{Deuxième pas}
+
+Cette fonction est plus complexe que la première. La vision en arbre m'en donne un aperçu cauchemardesque. Je joue avec les différents rendus possibles pour observer plus pleinement sa structure.
+
+\subsection{Graphe}
+\insererfigure{etude/mystere.png}{0.3}{Mystere}{mystere}
+
+\subsection{Analyse}
+
+\hspace{18pt}Cette fonction est beaucoup plus importante que la première. On peut voir deux blocs de sortie (en rouge). Le corps de la fonction est décomposé en plusieurs boucles. Je peux voir que d'autres fonctions sont appelées. 
+
+Le fouillis de boucles, d'opérations XOR, de multiplications, d'additions et de décalage binaire me fait penser qu'on a sous les yeux une fonction de hachage.
+
+\begin{lstlisting}[caption={mystère-extrait}, label={lst:mystere_boucle}]
+        uVar12 = 0x811c9dc5;
+        cVar9 = *pcVar10;
+        if (cVar9 != '\0') {
+          do {
+            pcVar10 = pcVar10 + 1;
+            uVar12 = ((int)cVar9 ^ uVar12) * 0x1000193;
+            cVar9 = *pcVar10;
+          } while (cVar9 != '\0');
+\end{lstlisting}
+
+Ce bloc est clairement une boucle. J'ai un pointeur \textit{cVar9}, qui pointe vraisemblablement vers une chaîne de caractères (grâce à la condition suivante). Et \textit{uVar12} stocke la compression du caractère pointé. On reconnaît un hachage compressif de type XOR multiplicatif.
+
+\hspace{18pt}En observant les fonctions appelées dans celle-ci, j'ai l'impression de voir une répétition de cette fonction mystère. Des morceaux sont répétés, les opérations sont reproduites.
+
+Il y a un rebond entre petites fonctions de hachage.
+
+\subsection{Idée}
+
+\hspace{18pt}Je sais que le texte donné en entrée du programme doit être lu, je vais chercher des appels à des fonctions comme \textit{read}, \textit{scanf} ou \textit{getchar}. Trouver ces appels peut me permettre de remonter la chronologie du programme.
+
+Je consulte de la documentation et lis des ouvrages intéressants mais je ne trouve pas ces appels ou la structure similaire à un \textit{read}.
+
+
+\subsection{Piétinement}
+
+\hspace{18pt}J'ai commencé à réécrire le programme, au moins des morceaux pour "dé-hacher" les entrées, mais rien d'abouti. J'ai regardé chaque fonction présentée par le décompilateur. De nombreuses se répètent, d'autres comportent peu de lignes ou juste une : 
+
+\begin{lstlisting}[caption={return\_0}, label={lst:fin}]
+        /* renomme return_0 */
+        undefined8 FUN_140015c60(void) 
+            {
+              return 0;
+            }
+\end{lstlisting}
+
+
+
+\newpage
+\section{Regard sur le parcours}
+
+\hspace{18pt}Ces travaux de rétro-ingénierie sur ce petit programme se sont déroulés tout le long du mois de décembre. J'écris cette conclusion au moment de rendre ce rapport.
+
+\hspace{18pt}Ce projet a pour moi été très instructif. Vous nous aviez parfaitement prévenus quant à la faisabilité de cet exercice au regard de nos compétences naissantes. Je me suis arrêté lorsque les périodes d'examens et des fêtes sont arrivées. Je ne l'ai pas terminé avant car, avec le temps passant, les idées mûrissent et je pensais pouvoir faire une avancée.
+
+\hspace{18pt}En revanche, il m'a apporté une idée plus précise du métier que vous êtes venus présenter lors de ces deux cours que nous avons réalisés. Je regrette que vous n'ayez pu partager plus longuement votre savoir avec nous. J'aime beaucoup la sensation que travailler sur ce projet m'apportais. Je lançais \textit{Ghidra}, je regardais une fonction et je renommais des variables, j'annotais des blocs de textes. Je me sentais bien, apaisé. Je pense que je ressentais la même chose que les gens qui font des puzzles. Et comme je sais que je ne pourrais pas réussir la décompilation de ce projet, alors je ne ressentais pas de stress.
+
+Pour conclure, est-ce que haché du message d'entrée doit valoir : \textbf{173062320} ?
+
+%---------BIBLIO -----------------
+\newpage
+\section{Bibliographie}
+
+\printbibliography
+ 
+\end{document}

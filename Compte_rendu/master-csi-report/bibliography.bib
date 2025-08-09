@@ -1,0 +1,533 @@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DIVERS & Introduction
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@inproceedings{crypto-1996-1469,
+  title={Timing Attacks on Implementations of Diffie-Hellman, RSA, DSS, and Other Systems},
+  booktitle={Advances in Cryptology - CRYPTO '96, 16th Annual International Cryptology Conference, Santa Barbara, California, USA, August 18-22, 1996, Proceedings},
+  series={Lecture Notes in Computer Science},
+  publisher={Springer},
+  volume={1109},
+  pages={104-113},
+  doi={10.1007/3-540-68697-5_9},
+  author={Paul C. Kocher},
+  year=1996
+}
+
+@book{anssi_guideForSecureprogramming,
+  author = {ANSSI},
+  editor = {},
+  publisher = {},
+  title = {Règles de programmation pour le développement sécurisé de logiciels en langage C},
+  year = {2020}
+}
+
+@book{progC_guide,
+  author = {Anne Canteaut},
+  title = {Programmation en langage C},
+  year = {2014}
+}
+
+@techreport{everest,
+  author = {Team, Project Everest},
+  institution = {Project Everest},
+  title = {Project Everest: Perspectives from Developing Industrial-grade High-Assurance Software},
+  year = {2025}
+}
+
+@misc{schneider2024breakingbadcompilersbreak,
+      title={Breaking Bad: How Compilers Break Constant-Time~Implementations}, 
+      author={Moritz Schneider and Daniele Lain and Ivan Puddu and Nicolas Dutly and Srdjan Capkun},
+      year={2024},
+      eprint={2410.13489},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR},
+      url={https://arxiv.org/abs/2410.13489}, 
+}
+
+@article{binsecRel2019,
+  author       = {Daniel, Lesly{-}Ann and
+                  Bardin, S{\'{e}}bastien and
+                  Rezk, Tamara},
+  title        = {Binsec/Rel: Efficient Relational Symbolic Execution for Constant-Time
+                  at Binary-Level},
+  journal      = {CoRR},
+  volume       = {abs/1912.08788},
+  year         = {2019},
+  url          = {http://arxiv.org/abs/1912.08788},
+  eprinttype    = {arXiv},
+  eprint       = {1912.08788},
+  timestamp    = {Fri, 03 Jan 2020 16:10:45 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-1912-08788.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{DPA_Attack,
+  author={Kocher, Paul and Jaffe, Joshua and Jun, Benjamin},
+  editor={Wiener, Michael},
+  title={Differential Power Analysis},
+  booktitle={Advances in Cryptology --- CRYPTO' 99},
+  year={1999},
+  publisher={Springer Berlin Heidelberg},
+  address={Berlin, Heidelberg},
+  pages={388--397},
+  abstract={Cryptosystem designers frequently assume that secrets will be manipulated in closed, reliable computing environments. Unfortunately, actual computers and microchips leak information about the operations they process. This paper examines specific methods for analyzing power consumption measurements to find secret keys from tamper resistant devices. We also discuss approaches for building cryptosystems that can operate securely in existing hardware that leaks information.},
+  isbn={978-3-540-48405-9}
+}
+
+@inproceedings {Thermal_Attack,
+  author = {Ramya Jayaram Masti and Devendra Rai and Aanjhan Ranganathan and Christian M{\"u}ller and Lothar Thiele and Srdjan Capkun},
+  title = {Thermal Covert Channels on Multi-core Platforms},
+  booktitle = {24th USENIX Security Symposium (USENIX Security 15)},
+  year = {2015},
+  isbn = {978-1-939133-11-3},
+  address = {Washington, D.C.},
+  pages = {865--880},
+  url = {https://www.usenix.org/conference/usenixsecurity15/technical-sessions/presentation/masti},
+  publisher = {USENIX Association},
+  month = aug
+}
+
+@inproceedings{Branch_Attack,
+  author={Ac{\i}i{\c{c}}mez, Onur and Ko{\c{c}}, {\c{C}}etin Kaya and Seifert, Jean-Pierre},
+  editor={Abe, Masayuki},
+  title={Predicting Secret Keys Via Branch Prediction},
+  booktitle={Topics in Cryptology -- CT-RSA 2007},
+  year={2006},
+  publisher={Springer Berlin Heidelberg},
+  address={Berlin, Heidelberg},
+  pages={225--242},
+  abstract={This paper announces a new software side-channel attack --- enabled by the branch prediction capability common to all modern high-performance CPUs. The penalty paid (extra clock cycles) for a mispredicted branch can be used for cryptanalysis of cryptographic primitives that employ a data-dependent program flow. Analogous to the recently described cache-based side-channel attacks our attacks also allow an unprivileged process to attack other processes running in parallel on the same processor, despite sophisticated partitioning methods such as memory protection, sandboxing or even virtualization. In this paper, we will discuss several such attacks for the example of RSA, and experimentally show their applicability to real systems, such as OpenSSL and Linux. Moreover, we will also demonstrate the strength of the branch prediction side-channel attack by rendering the obvious countermeasure in this context (Montgomery Multiplication with dummy-reduction) as useless. Although the deeper consequences of the latter result make the task of writing an efficient and secure modular exponentiation (or scalar multiplication on an elliptic curve) a challenging task, we will eventually suggest some countermeasures to mitigate branch prediction side-channel attacks.},
+  isbn={978-3-540-69328-4}
+}
+
+@inproceedings {LLC_attack,
+  author = { Liu, Fangfei and Yarom, Yuval and Ge, Qian and Heiser, Gernot and Lee, Ruby B. },
+  booktitle = { 2015 IEEE Symposium on Security and Privacy (SP) },
+  title = {{ Last-Level Cache Side-Channel Attacks are Practical }},
+  year = {2015},
+  volume = {},
+  ISSN = {1081-6011},
+  pages = {605-622},
+  abstract = { We present an effective implementation of the Prime+Probe side-channel attack against the last-level cache. We measure the capacity of the covert channel the attack creates and demonstrate a cross-core, cross-VM attack on multiple versions of GnuPG. Our technique achieves a high attack resolution without relying on weaknesses in the OS or virtual machine monitor or on sharing memory between attacker and victim. },
+  keywords = {Probes;Indexes;Multicore processing;Monitoring;Cryptography;Virtual machine monitors;Memory management},
+  doi = {10.1109/SP.2015.43},
+  url = {https://doi.ieeecomputersociety.org/10.1109/SP.2015.43},
+  publisher = {IEEE Computer Society},
+  address = {Los Alamitos, CA, USA},
+  month =May
+}
+
+@inproceedings {DRAM_Attack,
+  author = {Peter Pessl and Daniel Gruss and Cl{\'e}mentine Maurice and Michael Schwarz and Stefan Mangard},
+  title = {{DRAMA}: Exploiting {DRAM} Addressing for {Cross-CPU} Attacks},
+  booktitle = {25th USENIX Security Symposium (USENIX Security 16)},
+  year = {2016},
+  isbn = {978-1-931971-32-4},
+  address = {Austin, TX},
+  pages = {565--581},
+  url = {https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/pessl},
+  publisher = {USENIX Association},
+  month = aug
+}
+
+@inproceedings{vanbulck2018nemesis,
+    title     = {Nemesis: Studying Microarchitectural Timing Leaks in Rudimentary {CPU} Interrupt Logic},
+    author    = {Van Bulck, Jo and Piessens, Frank and Strackx, Raoul},
+    booktitle = {25th {ACM} Conference on Computer and Communications Security {(CCS)}},
+    pages     = {178--195},
+    year      = 2018,
+}
+
+@misc{cryptoeprint:2016/224,
+      author = {Yuval Yarom and Daniel Genkin and Nadia Heninger},
+      title = {{CacheBleed}: A Timing Attack on {OpenSSL} Constant Time {RSA}},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2016/224},
+      year = {2016},
+      url = {https://eprint.iacr.org/2016/224}
+}
+
+
+@article{Moghimi_2017,
+   title={MemJam: A False Dependency Attack Against Constant-Time Crypto Implementations},
+   volume={47},
+   ISSN={1573-7640},
+   url={http://dx.doi.org/10.1007/s10766-018-0611-9},
+   DOI={10.1007/s10766-018-0611-9},
+   number={4},
+   journal={International Journal of Parallel Programming},
+   publisher={Springer Science and Business Media LLC},
+   author={Moghimi, Ahmad and Wichelmann, Jan and Eisenbarth, Thomas and Sunar, Berk},
+  year={2017},
+}
+
+@misc{Fault_Attacks,
+      author = {Hagai Bar-El and Hamid Choukri and David Naccache and Michael Tunstall and Claire Whelan},
+      title = {The Sorcerer’s Apprentice Guide to Fault Attacks},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2004/100},
+      year = {2004},
+      url = {https://eprint.iacr.org/2004/100}
+}
+
+@article{faultOverview,
+  author={Avizienis, A.},
+  journal={Computer}, 
+  title={Faulty-Tolerant Computing: An Overview}, 
+  year={1971},
+  volume={4},
+  number={1},
+  pages={5-8},
+  keywords={},
+  doi={10.1109/C-M.1971.216738}
+}
+
+@INPROCEEDINGS{formalConstantTime,
+  author={Barthe, Gilles and Grégoire, Benjamin and Laporte, Vincent},
+  booktitle={2018 IEEE 31st Computer Security Foundations Symposium (CSF)}, 
+  title={Secure Compilation of Side-Channel Countermeasures: The Case of Cryptographic “Constant-Time”}, 
+  year={2018},
+  volume={},
+  number={},
+  pages={328-343},
+  keywords={Timing;Side-channel attacks;Semantics;Standards;Software;Libraries;cryptographic-constant-time;secure-compilation;formal-proofs},
+  doi={10.1109/CSF.2018.00031}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CONSTANT TIME PROGRAMMING
+
+@misc{CTsaferCrypto,
+      author = {Lúcás Críostóir Meier and Simone Colombo and Marin Thiercelin and Bryan Ford},
+      title = {Constant-Time Arithmetic for Safer Cryptography},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2021/1121},
+      year = {2021},
+      url = {https://eprint.iacr.org/2021/1121}
+}
+
+@misc{constantTimePornin,
+      author = {Thomas Pornin},
+      title = {Constant-Time Code: The Pessimist Case},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2025/435},
+      year = {2025},
+      url = {https://eprint.iacr.org/2025/435}
+}
+
+@misc{notThatHardCT,
+      author = {Jan Jancar and Marcel Fourné and Daniel De Almeida Braga and Mohamed Sabt and Peter Schwabe and Gilles Barthe and Pierre-Alain Fouque and Yasemin Acar},
+      title = {“They’re not that hard to mitigate”: What Cryptographic Library Developers Think About Timing Attacks},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2021/1650},
+      year = {2021},
+      url = {https://eprint.iacr.org/2021/1650}
+}
+
+@misc{OwlC,
+      author = {Pratap Singh and Joshua Gancher and Bryan Parno},
+      title = {{OwlC}: Compiling Security Protocols to Verified, Secure, High-Performance Libraries},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2025/1092},
+      year = {2025},
+      url = {https://eprint.iacr.org/2025/1092}
+}
+
+@inproceedings {VerifyingCT,
+  author = {Jose Bacelar Almeida and Manuel Barbosa and Gilles Barthe and Fran{\c c}ois Dupressoir and Michael Emmi},
+  title = {Verifying {Constant-Time} Implementations},
+  booktitle = {25th USENIX Security Symposium (USENIX Security 16)},
+  year = {2016},
+  isbn = {978-1-931971-32-4},
+  address = {Austin, TX},
+  pages = {53--70},
+  url = {https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/almeida},
+  publisher = {USENIX Association},
+  month = aug
+}
+
+@techreport{ctgrind,
+  author = {Adam Langley},
+  title = {ctgrind: Checking that functions are constant time with Valgrind},
+  year = {2010},
+  url = {https://github.com/agl/ctgrind}
+}
+
+@misc{BearSSL,
+  author = {Thomas Pornin},
+  title = {BearSSL:A constant time cryptographic library},
+  year = {2016},
+  url = {https://www.bearssl.org/}
+}
+
+@inproceedings{GeimerEvaluationsSideChannel,
+  author = {Geimer, Antoine and Vergnolle, Math\'{e}o and Recoules, Fr\'{e}d\'{e}ric and Daniel, Lesly-Ann and Bardin, S\'{e}bastien and Maurice, Cl\'{e}mentine},
+  title = {A Systematic Evaluation of Automated Tools for Side-Channel Vulnerabilities Detection in Cryptographic Libraries},
+  year = {2023},
+  isbn = {9798400700507},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3576915.3623112},
+  doi = {10.1145/3576915.3623112},
+  booktitle = {Proceedings of the 2023 ACM SIGSAC Conference on Computer and Communications Security},
+  pages = {1690–1704},
+  numpages = {15},
+  keywords = {automated detection, side-channels, vulnerabilities},
+  location = {Copenhagen, Denmark},
+  series = {CCS '23}
+}
+
+@article{BewarCTSideChannel,
+  author={Schneider, Dominik and Zeitschner, Jannik and Kloos, Michael and Lemke-Rust, Kerstin and Iacono, Luigi Lo},
+  journal={IEEE Security & Privacy}, 
+  title={Developers: Beware of Timing Side-Channels}, 
+  year={2025},
+  volume={23},
+  number={1},
+  pages={47-52},
+  keywords={Timing;Cryptography;Codes;Microarchitecture;Static analysis;Source coding;Side-channel attacks;Digital systems;Threat assessment;Software development management;Resilience},
+  doi={10.1109/MSEC.2024.3399330}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Compilateurs sécurisés
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@inproceedings{Borrello_2021, series={CCS ’21},
+   title={Constantine: Automatic Side-Channel Resistance Using Efficient Control and Data Flow Linearization},
+   url={http://dx.doi.org/10.1145/3460120.3484583},
+   DOI={10.1145/3460120.3484583},
+   booktitle={Proceedings of the 2021 ACM SIGSAC Conference on Computer and Communications Security},
+   publisher={ACM},
+   author={Borrello, Pietro and D’Elia, Daniele Cono and Querzoni, Leonardo and Giuffrida, Cristiano},
+   year={2021},
+   month=nov, pages={715–733},
+   collection={CCS ’21}
+}
+
+@inproceedings {Raccoon,
+  author = {Ashay Rane and Calvin Lin and Mohit Tiwari},
+  title = {Raccoon: Closing Digital {Side-Channels} through Obfuscated Execution},
+  booktitle = {24th USENIX Security Symposium (USENIX Security 15)},
+  year = {2015},
+  isbn = {978-1-939133-11-3},
+  address = {Washington, D.C.},
+  pages = {431--446},
+  url = {https://www.usenix.org/conference/usenixsecurity15/technical-sessions/presentation/rane},
+  publisher = {USENIX Association},
+  month = aug
+}
+
+@misc{CompCert,
+  author = {Leroy, Xavier and Blazy, Sandrine and Dargaye, Zaynah and Jourdan, Jacques-Henri and Schmidt, Michael and Schommer, Bernhard and Tristan, Jean-Baptiste},
+  abstract = {The CompCert C verified compiler, a high-assurance compiler for almost all of the C language (ISO C 2011), generating efficient code for the ARM, PowerPC, RISC-V and x86 processors.},
+  title = {CompCert},
+  year = {2005}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ajout pour le tableau
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{ABPV13,
+  author = {Almeida, José Bacelar and Barbosa, Manuel and Pinto, João Sousa and Vieira, Benjamin},
+  title = {Formal Verification of Side-Channel Countermeasures Using Self-Composition},
+  journal = {Science of Computer Programming},
+  volume = {78},
+  number = {7},
+  pages = {796--812},
+  year = {2013},
+  publisher = {Elsevier}
+}
+
+@inproceedings{Blazer,
+  author = {Antonopoulos, Thomas and Gazzillo, Pietro and Hicks, Michael and Koskinen, Eric and Terauchi, Tachio and Wei, Shiying},
+  title = {Decomposition Instead of Self-Composition for Proving the Absence of Timing Channels},
+  booktitle = {Proceedings of the 38th ACM SIGPLAN Conference on Programming Language Design and Implementation},
+  year = {2017},
+  publisher = {ACM}
+}
+
+@inproceedings{BPT17,
+  author = {Blazy, Sandrine and Pichardie, David and Trieu, André},
+  title = {Verifying Constant-Time Implementations by Abstract Interpretation},
+  booktitle = {Computer Security -- ESORICS 2017},
+  year = {2017},
+  publisher = {Springer}
+}
+
+@inproceedings{CacheAudit,
+  author = {Doychev, Boris and Feld, Daniel and Köpf, Benjamin and Mauborgne, Laurent and Reineke, Jan},
+  title = {CacheAudit: A Tool for the Static Analysis of Cache Side Channels},
+  booktitle = {22nd USENIX Security Symposium},
+  year = {2013},
+  organization = {USENIX Association}
+}
+
+@inproceedings{CacheD,
+  author = {Wang, Shuai and Wang, Pei and Liu, XiaoFeng and Zhang, Dinghao and Wu, Dongyan},
+  title = {Cached: Identifying Cache-Based Timing Channels in Production Software},
+  booktitle = {26th USENIX Security Symposium},
+  year = {2017},
+  organization = {USENIX Association}
+}
+
+@inproceedings{COCOCHANNEL,
+  author = {Brennan, Thomas and Saha, Subarna and Bultan, Tevfik and Pasareanu, Corina S.},
+  title = {Symbolic Path Cost Analysis for Side-Channel Detection},
+  booktitle = {Proceedings of the 27th ACM SIGSOFT International Symposium on Software Testing and Analysis},
+  year = {2018},
+  publisher = {ACM}
+}
+
+@inproceedings{ctfuzz,
+  author = {He, Sizhuo and Emmi, Michael and Ciocarlie, Gabriel F.},
+  title = {ct-fuzz: Fuzzing for Timing Leaks},
+  booktitle = {13th IEEE International Conference on Software Testing, Validation and Verification},
+  year = {2020},
+  organization = {IEEE}
+}
+
+@inproceedings{ctverif,
+  author = {Barthe, Gilles and Gaboardi, Marco and Arias, Eduardo J. and Hsu, Justin and Roth, Aaron and Strub, Pierre-Yves},
+  title = {Computer-Aided Verification for Mechanism Design},
+  booktitle = {Web and Internet Economics -- 12th International Conference, WINE 2016},
+  year = {2016},
+  publisher = {Springer}
+}
+
+@inproceedings{CTWASM,
+  author = {Watt, Connor and Renner, Jan and Popescu, Nicholas and Cauligi, Srinath and Stefan, Deian},
+  title = {Ct-wasm: Type-driven secure cryptography for the web ecosystem},
+  booktitle = {Proceedings of the ACM on Programming Languages},
+  volume = {3},
+  number = {POPL},
+  pages = {77:1--77:29},
+  year = {2019},
+  publisher = {ACM}
+}
+
+@inproceedings{DATA1,
+  author = {Weiser, Samuel and Schrammel, David and Bodner, Lukas and Spreitzer, Raphael},
+  title = {Big Numbers - Big Troubles: Systematically Analyzing Nonce Leakage in (EC)DSA Implementations},
+  booktitle = {29th USENIX Security Symposium},
+  year = {2020},
+  organization = {USENIX Association}
+}
+
+@inproceedings{DATA2,
+  author = {Weiser, Samuel and Zankl, Andreas and Spreitzer, Raphael and Miller, Kasper and Mangard, Stefan and Sigl, Georg},
+  title = {DATA - Differential Address Trace Analysis: Finding Address-Based Side-Channels in Binaries},
+  booktitle = {27th USENIX Security Symposium},
+  year = {2018},
+  organization = {USENIX Association}
+}
+
+@article{dudect,
+  author = {Reparaz, Oscar and Balasch, Josep and Verbauwhede, Ingrid},
+  title = {Dude, is my code constant time?},
+  booktitle = {Design, Automation \& Test in Europe Conference \& Exhibition},
+  year = {2017},
+  organization = {IEEE}
+}
+
+@inproceedings{FaCT,
+  author = {Cauligi, Srinath and Soeller, Craig and Johannesmeyer, Brian and Brown, Fraser and Wahby, Riad S. and Renner, Jan and Grégoire, Benjamin and Barthe, Gilles and Jhala, Ranjit and Stefan, Deian},
+  title = {FaCT: A DSL for timing-sensitive computation},
+  booktitle = {Proceedings of the 40th ACM SIGPLAN Conference on Programming Language Design and Implementation},
+  year = {2019},
+  publisher = {ACM}
+}
+
+@inproceedings{FlowTracker,
+  author = {Rodrigues, Bernardo and Pereira, Francisco M. Q. and Aranha, Diego F.},
+  title = {Sparse representation of implicit flows with applications to side-channel detection},
+  booktitle = {Proceedings of the 25th International Conference on Compiler Construction},
+  year = {2016},
+  publisher = {ACM}
+}
+
+@misc{haybale-pitchfork,
+  author = {Disselkoen, Craig},
+  title = {haybale-pitchfork},
+  howpublished = {\url{https://github.com/PLSysSec/haybale-pitchfork}},
+  year = {2020},
+}
+
+@inproceedings{KMO12,
+  author = {Köpf, Boris and Mauborgne, Laurent and Ochoa, Martín},
+  title = {Automatic quantification of cache side-channels},
+  booktitle = {Computer Aided Verification},
+  year = {2012},
+  publisher = {Springer}
+}
+
+@misc{MemSan,
+  title = {MemorySanitizer},
+  howpublished = {\url{https://clang.llvm.org/docs/MemorySanitizer.html}},
+  year = {2017},
+  author = {LLVM Team}
+}
+
+@inproceedings{MicroWalk,
+  author = {Wichelmann, Jan and Moghimi, Ahmad and Eisenbarth, Thomas and Sunar, Berk},
+  title = {Microwalk: A framework for finding side channels in binaries},
+  booktitle = {Proceedings of the 34th Annual Computer Security Applications Conference},
+  year = {2018},
+  publisher = {ACM}
+}
+
+@inproceedings{SCEliminator,
+  author = {Wu, Mingjie and Guo, Shouling and Schaumont, Patrick and Wang, Chao},
+  title = {Eliminating timing side-channel leaks using program repair},
+  booktitle = {Proceedings of the 27th ACM SIGSOFT International Symposium on Software Testing and Analysis},
+  year = {2018},
+  publisher = {ACM}
+}
+
+@inproceedings{SideTrail,
+  author = {Athanasiou, Konstantinos and Cook, Brian and Emmi, Michael and MacCárthaigh, Colm and Schwartz-Narbonne, Daniel and Tasiran, Serdar},
+  title = {Sidetrail: Verifying time-balancing of cryptosystems},
+  booktitle = {Verified Software. Theories, Tools, and Experiments},
+  year = {2018},
+  publisher = {Springer}
+}
+
+@inproceedings{Themis,
+  author = {Chen, Jie and Feng, Yu and Dillig, Isil},
+  title = {Precise detection of side-channel vulnerabilities using quantitative cartesian hoare logic},
+  booktitle = {Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security},
+  year = {2017},
+  publisher = {ACM}
+}
+
+@misc{timecop,
+  author = {Neikes, Moritz},
+  title = {Timecop},
+  howpublished = {\url{https://www.post-apocalyptic-crypto.org/timecop/}},
+  year = {2018},
+}
+
+@inproceedings{VirtualCert,
+  author = {Barthe, Gilles and Betarte, Gustavo and Campo, Juan Diego and Luna, Carlos and Pichardie, David},
+  title = {System-level non-interference for constant-time cryptography},
+  booktitle = {Proceedings of the 2014 ACM SIGSAC Conference on Computer and Communications Security},
+  year = {2014},
+  publisher = {ACM}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Micro architecture
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@INPROCEEDINGS{twartingCT,
+  author={Gaudin, Nicolas and Hatchikian-Houdot, Jean-Loup and Besson, Frédéric and Cotret, Pascal and Gogniat, Guy and Hiet, Guillaume and Lapotre, Vianney and Wilke, Pierre},
+  booktitle={2023 IEEE European Symposium on Security and Privacy Workshops (EuroS&PW)}, 
+  title={Work in Progress: Thwarting Timing Attacks in Microcontrollers using Fine-grained Hardware Protections}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={304-310},
+  keywords={Out of order;Costs;Program processors;Microcontrollers;Binary codes;Hardware;Software;Cache-based Side-Channel;Internet of Things;Security},
+  doi={10.1109/EuroSPW59978.2023.00038}
+}

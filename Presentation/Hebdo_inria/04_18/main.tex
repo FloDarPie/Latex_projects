@@ -1,0 +1,187 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Copyright (c) 2023, gitlabci_gallery / latex
+%         All rights reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[A4,svgnames,9pt,aspectratio=169]{beamer}
+%% document options:
+%% - aspectratio = { 43, 169, 1610 }
+%% - utf8
+%%
+
+%%
+%% insert list of packages
+%%
+
+\setlength{\footskip}{300pt}
+\usepackage[french]{babel}
+
+\hypersetup{
+   allcolors   = rouge_inria,
+   pdfauthor   = {Duzés Florian},
+   pdftitle    = {\@title},
+   pdfsubject  = {Point hebdomadaire, bi-mensuel du stage},
+   pdfkeywords = {entretien, observation du travail}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[titrecourt]{Réunion flash}
+\subtitle{Point hebdomadaire}
+\date[18/04/2025]{date long}
+\author[Duzes Florian]{Duzés Florian}
+
+\usetheme{inria}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Le titre des planches de sommaire est \contentsname, sa valeur
+% est fixée ici à "Sommaire" par défaut.
+\renewcommand{\contentsname}{Sommaire}
+
+\frame{\tocpage}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+ 
+\section{Bienvenue à l'INRIA}
+\frame{\sectionpage}
+
+\begin{frame}{Installation}
+      \begin{enumerate}
+         \item Prise en main du Linux
+         \item Mise en place du travailleur INRIA (accés internet, profil en ligne, boite mail, accès restauration)
+         \item Configuration des outils de travails (VS Code, LaTeX)
+         \item Installation des librairies requises pour F*, Hacl*, Binsec
+      \end{enumerate}
+\end{frame}
+
+
+
+\begin{frame}{Réunion de mardi}
+    \begin{block}{Premier contact avec mes référents}
+      Retour sur mon arrivée, et installation générale.
+      \begin{itemize}
+        \item Mail de référence.
+      \end{itemize}
+
+      \tiny{\begin{itemize}
+        \item[*] Installation de BINSEC (https://github.com/binsec/binsec) et de HACL* (https://github.com/hacl-star/hacl-star). Pour HACL*, pas besoin d'installer la toolchain F* entière (en tout cas pour l'instant), mais assure toi de réussir à compiler le code dans dist/gcc-compatible, ainsi que dans tests
+        \item[*] Familiarisation avec BINSEC: le tutoriel est disponible ici (https://github.com/binsec/binsec/tree/master/doc/sse). Il peut également être utile de parcourir certains articles de recherche, particulièrement https://binsec.github.io/assets/publications/papers/2020-sp.pdf
+        \item[*] Application de BINSEC à HACL*: Je te mets en pièce jointe un (court) document qui montre comment se servir de BINSEC pour analyser une des implémentations d'HACL* (ChachaPoly avec instructions AVX). Je te conseille avant tout d'essayer de reproduire sur ta machine le processus. Une fois que ce sera fait, essaie de l'adapter à d'autres primitives cryptographiques.
+      \end{itemize}
+      }
+      
+    \end{block}
+
+    \begin{block}{Missions claires}
+      \begin{itemize}
+        \item Tutoriel Binsec à finir.
+      \end{itemize}
+    \end{block}
+
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{À l'assaut du tutoriel}
+\frame{\sectionpage}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Assimilation}
+  \begin{block}{Travail réalisé en deux temps}
+    \begin{itemize}
+      \item Temps de lecture et compréhension des mécanismes
+      \item Temps de reproduction et compilation des travaux
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Difficultés et ralentissement}
+
+  \begin{itemize}
+    \item Compilation - manquement de librairies
+    \item Prise en main, lecture de documentation (radare2)
+  \end{itemize}
+  
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Fin du tutoriel}
+  Tutoriel terminé jeudi \footnote{Je me suis appuyé sur le mail et j'ai lu les deux articles données. Constant-Time:The Pessimist Case}. J'ai des fichiers récapitulatif/généraux qui font office de mémo.
+  \begin{itemize}
+    \item protocole.md
+    \item binsec\_ref.md
+  \end{itemize}
+
+  Dans la branche \textit{git/binsec} installée en locale, j'ai modifié le tutoriel pour passer outre des difficultés rencontrés.
+
+  
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Calendrier prévisionnel}
+\frame{\sectionpage}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Missions enregistrées}
+  \begin{itemize}
+    \item TUTO BINSEC -> a finir d'ici vendredi
+    \item => 1er résult à reproduire
+    \begin{itemize}
+      \item étendre à d'autre plateforme, exploration de noyaux
+      \item étendre à d'autres algo
+    \end{itemize}
+    
+    \item Core dump à protocoler
+  \end{itemize}
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Conclusion}
+\begin{frame}{Conclusion}
+
+    \begin{block}{Cap fixé, à l'aventure}
+      Prochain résultats :
+      \begin{enumerate}
+        \item Reproduction du travail de mes aînés.
+        \item Avancement dans les architectures
+        \begin{enumerate}
+          \item x86\_64
+          \item ARM 
+        \end{enumerate}
+      \end{enumerate}
+    Objectif pour le 6 mai (reste 10 jours).
+    \end{block}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Le texte est modifiable en changeant \thankyou
+%% \renewcommand{\thankyou}{Thank You.}
+\frame{\merci}
+
+
+\end{document}
+
+

@@ -1,0 +1,85 @@
+% mybiblatex.sty
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bibmemoir}[Custom style for bibliography]
+
+% Load biblatex with your desired options
+\RequirePackage[backend=biber, style=alphabetic, sorting=ynt]{biblatex}
+
+% Redefine the bibliography driver for articles
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printtext[title]{%
+    \printfield{title}%
+    \setunit{\addcomma\space}%
+    \printnames{author}%
+    \setunit{\addcomma\space}%
+    \printfield{year}%
+    \setunit{\addcomma\space}%
+    \printfield{citekey}%
+    \setunit{\addcomma\space}%
+    \printfield{url}}%
+  \usebibmacro{finentry}}
+
+
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printtext[title]{%
+    \printfield{title}%
+    \setunit{\addcomma\space}%
+    \printnames{author}%
+    \setunit{\addcomma\space}%
+    \printfield{year}%
+    \setunit{\addcomma\space}%
+    \printfield{citekey}%
+    \setunit{\addcomma\space}%
+    \printfield{url}}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printtext[title]{%
+    \printfield{title}%
+    \setunit{\addcomma\space}%
+    \printnames{author}%
+    \setunit{\addcomma\space}%
+    \printfield{year}%
+    \setunit{\addcomma\space}%
+    \printfield{citekey}%
+    \setunit{\addcomma\space}%
+    \printfield{url}}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{misc}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printtext[title]{%
+    \printfield{title}%
+    \setunit{\addcomma\space}%
+    \printnames{author}%
+    \setunit{\addcomma\space}%
+    \printfield{year}%
+    \setunit{\addcomma\space}%
+    \printfield{citekey}%
+    \setunit{\addcomma\space}%
+    \printfield{url}}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{techreport}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printtext[title]{%
+    \printfield{title}%
+    \setunit{\addcomma\space}%
+    \printnames{author}%
+    \setunit{\addcomma\space}%
+    \printfield{year}%
+    \setunit{\addcomma\space}%
+    \printfield{citekey}%
+    \setunit{\addcomma\space}%
+    \printfield{url}}%
+  \usebibmacro{finentry}}
+
+\endinput

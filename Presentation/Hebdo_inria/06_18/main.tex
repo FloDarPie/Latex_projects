@@ -1,0 +1,504 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Copyright (c) 2023, gitlabci_gallery / latex
+%         All rights reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[A4,svgnames,9pt,aspectratio=169]{beamer}
+%% document options:
+%% - aspectratio = { 43, 169, 1610 }
+%% - utf8
+%%
+
+
+\setlength{\footskip}{300pt}
+\usepackage[french]{babel}
+
+\hypersetup{
+   allcolors   = rouge_inria,
+   pdfauthor   = {Duzés Florian},
+   pdftitle    = {\@title},
+   pdfsubject  = {Point hebdomadaire, bi-mensuel du stage},
+   pdfkeywords = {entretien, observation du travail}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[titrecourt]{Réunion flash}
+\subtitle{Point hebdomadaire}
+\date[18/06/2025]{date long}
+\author[Duzes Florian]{Duzés Florian}
+
+\usetheme{inria}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Le titre des planches de sommaire est \contentsname, sa valeur
+% est fixée ici à "Sommaire" par défaut.
+\renewcommand{\contentsname}{Sommaire}
+
+\frame{\tocpage}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+ 
+\section{État des lieux}
+\frame{\sectionpage}
+
+\begin{frame}{Général information}
+  \begin{block}{Information exterieur}
+    \begin{itemize}
+      \item Entretien avec Maria Mishtaq
+      \item Réunion Mercredi 2 juillet - 15h30
+    \end{itemize}
+    
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Point actuel}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {Prévus};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Toolchains RiscV
+          \item Tests p256 avec gcc RiscV
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item test p256 avec d'autres compilateurs
+          \item Compiler Hacl* vers RiscV
+          \item Test Binsec sur RiscV
+          \item -test.json
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Chaîne de bout en bout 
+            \item Couverture des architectures différentes
+            \item Couverture des compilateurs
+        \end{itemize}
+    };
+      \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Réalisation}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {Prévus};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Étendu test de p256 avec LLVM / 32 / 64
+          \item -test.json / generic json
+          \item Hacl* -> RiscV
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Compiler Hacl* vers RiscV
+          \item Test Binsec sur RiscV
+          \item -test.json
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Chaîne de bout en bout 
+            \item Couverture des architectures différentes
+            \item Couverture des compilateurs
+        \end{itemize}
+    };
+      \end{tikzpicture}
+
+\end{frame}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Compilation de RiscV}
+\frame{\sectionpage}
+
+\begin{frame}{Préambule}
+
+  \begin{block}{Informations générales}
+    \begin{itemize}
+      \item Construction de la toolchain LLVM
+      \begin{itemize}
+        \item \textit{GCC}
+        \item \textit{LLVM}
+        \begin{itemize}
+          \item Architecure 64bits : \textbf{--with-arch=rv64gc --with-abi=lp64d}
+          \item - 32bits : \textbf{--with-arch=rv32gc --with-abi=lp32d}
+        \end{itemize}
+      \end{itemize}
+      \item Niveau d'optimisation testé
+      \begin{itemize}
+        \item \textit{-O0, -O1, -O2, -O3, -Oz, -Os}
+      \end{itemize}
+      \item Code analysé de \textit{cmovznz4}
+    \end{itemize}
+    
+  \end{block}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Compilation vers riscV-64}
+\begin{columns}
+  
+  \begin{column}{0.4\textwidth}
+    \begin{center}
+
+  \begin{tabular}{|c|c|c|}
+    \hline
+     & \textbf{GCC} & \textbf{CLANG+LLVM} \\
+    \hline
+    -O0 & \~{} & \~{} \\
+    \hline
+    -O1 & \checkmark & \onslide<1,2,3>{X}\onslide<4>{\checkmark} \\
+    \hline
+    -O2 & \checkmark & \onslide<1,2,3>{X}\onslide<4>{\checkmark} \\
+    \hline
+    -O3 & \checkmark & \onslide<1,2,3>{X}\onslide<4>{\checkmark} \\
+    \hline
+    -Os & \checkmark & \onslide<1,2,3>{X}\onslide<4>{\checkmark} \\
+    \hline
+    -Oz & \checkmark & \onslide<1,2,3>{X}\onslide<4>{\checkmark} \\
+    \hline
+    \end{tabular}
+  \end{center}
+  \end{column}
+  \begin{column}{0.6\textwidth}
+    \begin{itemize}
+      \pause
+    \item \textbf{-O0} error - Binsec ISA definition
+    \item Clang error - \textbf{beqz}
+    \pause
+    \item Passage \textit{InstCombinePass}
+    \item patch : \textit{\# pragma clang optimise <off/on>}
+  \end{itemize}
+  
+\end{column}
+
+\end{columns}
+  
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Compilation vers riscV-32}
+\begin{columns}
+  
+  \begin{column}{0.4\textwidth}
+    \begin{center}
+
+  \begin{tabular}{|c|c|c|}
+    \hline
+     & \textbf{GCC} & \textbf{CLANG+LLVM} \\
+    \hline
+    -O0 & \~{} & \onslide<1>{\checkmark}\onslide<2>{\checkmark} \\
+    \hline
+    -O1 & \checkmark & \onslide<1>{X}\onslide<2>{\checkmark}  \\
+    \hline
+    -O2 & \checkmark & \onslide<1>{X}\onslide<2>{\checkmark} \\
+    \hline
+    -O3 & \checkmark & \onslide<1>{X}\onslide<2>{\checkmark} \\
+    \hline
+    -Os & \checkmark & \onslide<1>{X}\onslide<2>{\checkmark} \\
+    \hline
+    -Oz & \checkmark & \onslide<1>{X}\onslide<2>{\checkmark} \\
+    \hline
+    \end{tabular}
+  \end{center}
+  \end{column}
+  \begin{column}{0.6\textwidth}
+    \begin{itemize}
+    \item \textbf{Gcc} error - Binsec ISA definition
+    \item Clang error - \textbf{beqz}
+  \end{itemize}
+  
+\end{column}
+
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Compilation croisé HACL*}
+\frame{\sectionpage}
+
+\begin{frame}{HACL* compilation}
+
+  \begin{block}{Cible}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{itemize}
+          \item aarch64-none-linux-android
+          \item aarch64-none-linux-gnu
+          \item aarch64-apple-darwin
+          \item aarch64-apple-ios
+          \item x86\_64-apple-ios-simulator
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item \textit{riscv64-unknown-linux-gnu}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \end{block}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Érisychton v2}
+\frame{\sectionpage}
+
+\begin{frame}{Architecture reconstruite}
+  \begin{block}{Amicalement débogable}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{minipage}[t][4cm][t]{\linewidth}
+          \large{
+            \dirtree{%
+              .1 Érysichton.
+              .2 make\_test.
+              .3 source.
+              .4 test1{.}c.
+              .4 test2{.}c.
+              .4 \ldots.
+              .3 make\_test{.}py.
+              .3 utils{.}py.
+              .3 config{.}json.
+              .3 matching{.}json.
+            }
+          }
+        \end{minipage}
+      \end{column}
+
+      \begin{column}{0.5\textwidth}
+        \begin{minipage}[t][4cm][t]{\linewidth}
+          \large{
+            \dirtree{%
+              .1 Érysichton.
+              .2 andhrimnir (make\_test).
+              .3 source.
+              .4 test1{.}c.
+              .4 test1{.}json.
+              .4 \ldots.
+              .3 config.
+              .4 (header){.}json.
+              .3 make\_test{.}py.
+              .3 lib.
+              .4 lexer{.}py.
+              .4 backend{.}py.
+              .4 utils{.}py.
+              .4 \ldots.
+            }
+          }
+        \end{minipage}
+      \end{column}
+    \end{columns}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Fabrication des json}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_Curve25519\_64.json}]
+    {
+    "Meta_data":{
+        "build" : "17-06-2025",
+        "version" : "0.2.0"
+    }
+
+    ,"Hacl_Curve25519_64_scalarmult": {
+        "*out":""
+      ,"*priv":""
+      ,"*pub":""
+    }
+
+    ,"Hacl_Curve25519_64_secret_to_public": {
+        "*pub":""
+      ,"*priv":""
+    }
+
+    ,"Hacl_Curve25519_64_ecdh": {
+        "*out":""
+      ,"*priv":""
+      ,"*pub":""
+    }
+    }
+  \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Remplissage des json}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=CStyle, gobble=8, caption={Hacl\_AEAD\_Chacha20Poly1305\_Simd128.json (1)}]
+        {
+        "Meta_data":{
+            "build" : "13-06-2025",
+            "version" : "0.2.0"
+        }
+    
+        ,"Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt": {
+            "*output":"BUF_SIZE"
+          ,"*input":"BUF_SIZE"
+          ,"input_len":"BUF_SIZE"
+          ,"*data":"AAD_SIZE"
+          ,"data_len":"AAD_SIZE"
+          ,"*key":"KEY_SIZE"
+          ,"*nonce":"NONCE_SIZE"
+          ,"*tag":"TAG_SIZE"
+          ,"BUF_SIZE":16384
+          ,"TAG_SIZE":16
+          ,"AAD_SIZE":12
+          ,"KEY_SIZE":32
+          ,"NONCE_SIZE":12
+        }
+      \end{lstlisting}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=CStyle, gobble=8, caption={Hacl\_AEAD\_Chacha20Poly1305\_Simd128.json (2)}]
+        ,"Hacl_AEAD_Chacha20Poly1305_Simd128_decrypt": {
+            "*output":"BUF_SIZE"
+          ,"*input":"BUF_SIZE"
+          ,"input_len":"BUF_SIZE"
+          ,"*data":"AAD_SIZE"
+          ,"data_len":"AAD_SIZE"
+          ,"*key":"KEY_SIZE"
+          ,"*nonce":"NONCE_SIZE"
+          ,"*tag":"TAG_SIZE"
+          ,"BUF_SIZE":16384
+          ,"TAG_SIZE":16
+          ,"AAD_SIZE":12
+          ,"KEY_SIZE":32
+          ,"NONCE_SIZE":12
+          }
+        }
+      \end{lstlisting}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Construction des tests}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_AEAD\_Chacha20Poly1305\_Simd128.json}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.2.2
+    // 17-06-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_AEAD_Chacha20Poly1305.h"
+
+    #define tag TAG_SIZE
+    #define output BUF_SIZE
+    #define data AAD_SIZE
+    #define nonce NONCE_SIZE
+    #define key KEY_SIZE
+    #define input BUF_SIZE
+
+    #define BUF_SIZE 16384
+    #define AAD_SIZE 12
+    #define TAG_SIZE 16
+    #define NONCE_SIZE 12
+    #define KEY_SIZE 32
+
+    uint8_t output[BUF_SIZE];    uint8_t tag[TAG_SIZE];
+    uint8_t input[BUF_SIZE];     uint8_t data[AAD_SIZE];
+    uint8_t key[KEY_SIZE];       uint8_t nonce[NONCE_SIZE];
+
+    int main (int argc, char *argv[]){
+    Hacl_AEAD_Chacha20Poly1305_encrypt(output, tag, input, BUF_SIZE, data, AAD_SIZE, key, nonce);
+      exit(0);
+    }
+  \end{lstlisting}
+\end{frame}
+
+\section{Conclusion}
+\frame{\sectionpage}
+
+\begin{frame}{Conclusion}
+  \begin{block}{Objectif}
+    \begin{center}
+      Finir le module x86\_64.
+    \end{center}
+  \end{block}
+\pause
+  \begin{enumerate}
+    \item Remplir les configurations
+    \item Générer les tests
+    \item Compiler les tests
+    \item Analyser les tests
+  \end{enumerate}
+  
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\merci}
+
+
+\end{document}
+

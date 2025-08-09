@@ -1,0 +1,6 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{l+m+mi}{135}\PYG{+w}{ }\PYG{k}{static}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{show\PYGZus{}mountinfo}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{seq\PYGZus{}file}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{m}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{vfsmount}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{mnt}\PYG{p}{)}
+\PYG{l+m+mi}{136}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{l+m+mi}{150}\PYG{+w}{                 }\PYG{n}{seq\PYGZus{}dentry}\PYG{p}{(}\PYG{n}{m}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{mnt}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{mnt\PYGZus{}root}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{ }\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{;}
+\end{MintedVerbatim}

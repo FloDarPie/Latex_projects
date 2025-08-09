@@ -1,0 +1,741 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Copyright (c) 2023, gitlabci_gallery / latex
+%         All rights reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[A4,svgnames,9pt,aspectratio=169]{beamer}
+%% document options:
+%% - aspectratio = { 43, 169, 1610 }
+%% - utf8
+%%
+
+
+\setlength{\footskip}{300pt}
+\usepackage[french]{babel}
+
+\hypersetup{
+   allcolors   = rouge_inria,
+   pdfauthor   = {Duzes Florian},
+   pdftitle    = {\@title},
+   pdfsubject  = {Point hebdomadaire, bi-mensuel du stage},
+   pdfkeywords = {entretien, observation du travail}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[titrecourt]{Réunion flash}
+\subtitle{Point hebdomadaire}
+\date[22/05/2025]{date long}
+\author[Duzes Florian]{Duzés Florian}
+
+\usetheme{inria}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Le titre des planches de sommaire est \contentsname, sa valeur
+% est fixée ici à "Sommaire" par défaut.
+\renewcommand{\contentsname}{Sommaire}
+
+\frame{\tocpage}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+ 
+\section{État des lieux}
+\frame{\sectionpage}
+
+\begin{frame}{Point actuel}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {\parbox{3cm}{\centering Prévus \\ \tiny{Pour le 15/06}}};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Méthodologie x86\_64 
+          \item Méthodologie ARM
+          \item Schémas de compilation
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Automatisation des \textit{-test.c}
+          \item Préparation d'une config pour la génération des tests
+          \item Vérification de \textbf{p256} en ARM
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Automatisation des .ini
+            \item Couvrir les tests
+            \item Couvrir les primitives Hacl*
+            \item RiskV - compil à la main de tests
+        \end{itemize}
+    };
+
+      \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Réalisation}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {\parbox{3cm}{\centering Prévus \\ \tiny{Pour le 15/06}}};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Chaîne de compilation
+          \item Identifications d'erreur de \textbf{p256}
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Automatisation des \textit{-test.c}
+          \item Préparation d'une config pour la génération des tests
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Automatisation des .ini
+            \item Couvrir les tests
+            \item Couvrir les primitives Hacl*
+            \item RiskV - compil à la main de tests
+        \end{itemize}
+    };
+
+      \end{tikzpicture}
+
+\end{frame}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Couverture de Hacl*}
+\frame{\sectionpage}
+
+\begin{frame}[fragile]{Fabrication des tests}
+  \begin{block}{Premiers scripts pondus}
+    \tiny{La semaine dernière}
+      \begin{lstlisting}[style=global, caption={Hacl\_AEAD\_Chacha20Poly1305\_decrypt}, gobble=8, label=lst:lastweek]
+        uint32_t
+          Hacl_AEAD_Chacha20Poly1305_decrypt
+          uint8_t *output,   uint8_t *input,
+          uint32_t input_len,   uint8_t *data,
+          uint32_t data_len,   uint8_t *key,
+          uint8_t *nonce,   uint8_t *tag
+      \end{lstlisting}
+  \end{block}
+\end{frame}
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Fabrication des tests}
+  \begin{block}{Premiers scripts pondus}
+      \begin{lstlisting}[style=CStyle, caption={Hacl\_AEAD\_Chacha20Poly1305\_decrypt.c}, gobble=8]
+        #include <stdlib.h>
+        #include Hacl_AEAD_Chacha20Poly1305.h
+        #define BUF_SIZE 16384
+        #define KEY_SIZE 32
+        #define TAG_SIZE 16
+        #define AAD_SIZE 12
+        #define NONCE_SIZE 12
+        uint8_t output[BUF_SIZE];
+        uint8_t input[BUF_SIZE];
+        uint8_t data[AAD_SIZE];
+        uint8_t key[KEY_SIZE];
+        uint8_t nonce[NONCE_SIZE];
+        uint8_t tag[TAG_SIZE];
+        int main (int argc, char *argv[]){
+        uint32_t a =    Hacl_AEAD_Chacha20Poly1305_decrypt
+              (output, input, BUF_SIZE, data, AAD_SIZE, key, nonce, tag);
+          exit(0);
+        }
+      \end{lstlisting}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Chaîne de fabrication}
+  \centering
+  \begin{tikzpicture}[auto]
+
+    % Styles
+    \tikzstyle{startstop} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!60]
+    \tikzstyle{process} = [rectangle, rounded corners,minimum width=1cm, minimum height=1cm, text centered, draw=black, fill=magenta!40]
+    \tikzstyle{process2} = [rectangle, rounded corners, minimum width=0.8cm, minimum height=0.3cm, text centered, draw=black, fill=blue!30]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    
+    % Noeuds
+    \node (control) [startstop] {\parbox{3cm}{\centering Érysichthons \\ \tiny{Control panel}}};
+    \node (blank) [below of=control] {};
+    \node (test) [process, below of=blank, xshift=2cm] {Make\_test};
+    \node (enum) [process2, below of=test, xshift=2cm] {enumerate};
+    \node (parse) [process2, below of=enum] {parse};
+    \node (make) [process2, below of=parse] {Make\_tests};
+    \onslide<2>{\node (config) [process2, fill=orange!30, below of=make] {matching.json};}
+
+    % Flèches
+    \draw [arrow] (control) -- ++(0,-2) -- (test);
+    \draw [arrow] (test) -- ++(0,-1) -- (enum);
+    \draw [arrow] (test) -- ++(0,-2) -- (parse);
+    \draw [arrow] (test) -- ++(0,-3) -- (make);
+    \onslide<2>{\draw [dashed, ->, thick, >=stealth] (test) -- ++(0,-4) -- (config);}
+
+    \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Phase de transformation}
+ 
+  \begin{tikzpicture}[auto, remember picture, overlay]
+    \tikzstyle{startstop} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!60]
+    \tikzstyle{arrow} = [thick,->,>=stealth, line width=1.5pt]
+    
+    % Noeuds
+    \node (raw) at (3,-2.9)  {};
+    \node (matching) at (6.8,-3.8) {};
+    \node (matching2) at (6.8,-4.2) {};
+    \node (final) at (3,-5.5) {};
+    
+    \onslide<2,3>{\draw [arrow, bend right, color=blue!40] (raw) to (matching);}
+    \onslide<3>{\draw [arrow, bend right, color=blue!60] (matching2) to (final);}
+    
+  \end{tikzpicture}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=global, caption={Hacl\_AEAD\_Chacha20Poly1305\_decrypt}, gobble=8]
+        uint32_t
+          Hacl_AEAD_Chacha20Poly1305_decrypt
+          uint8_t *output,   uint8_t *input,
+          uint32_t input_len,   uint8_t *data,
+          uint32_t data_len,   uint8_t *key,
+          uint8_t *nonce,   uint8_t *tag
+      \end{lstlisting}
+      \vspace{2cm}
+      \onslide<3>{Hacl\_AEAD\_Chacha20Poly1305\_decrypt.c}
+    \end{column}
+
+
+    \begin{column}{0.5\textwidth}
+      \pause
+      \begin{lstlisting}[style=CStyle, caption={matching.json}]
+{
+  "input":"BUF_SIZE",
+  "input_len":"BUF_SIZE",
+  "output":"BUF_SIZE",
+  "output_len":"BUF_SIZE",
+  "key":"KEY_SIZE",
+  "nonce":"NONCE_SIZE",
+  "tag":"TAG_SIZE",
+  "data":"AAD_SIZE",
+  "data_len":"AAD_SIZE",
+  "BUF_SIZE":16384,
+  "KEY_SIZE":32,
+  "NONCE_SIZE":12,
+  "AAD_SIZE":12,
+  "TAG_SIZE":16
+}
+      \end{lstlisting}
+  
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Reproduction de bug}
+\frame{\sectionpage}
+
+\begin{frame}{Etude de ARM}
+  \begin{block}{État de l'art}
+    \begin{itemize}
+      \item Compilation des tests \pause
+      \item Analyse Binsec difficile sur \textit{p256-test.c}\pause
+      \begin{itemize}
+        \item Simplification des tests
+        \item Remonté d'une erreur au sein même de la fonction
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{À la poursuite de l'erreur}
+  \begin{block}{Cible :}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[style=CStyle, caption={Hacl\_P256.h/cmovznz4}, gobble=10]
+          static void cmovznz4(uint64_t cin, uint64_t *x, uint64_t *y, uint64_t *r)
+          {
+            uint64_t mask = ~FStar_UInt64_eq_mask(cin, (uint64_t)0U);
+            uint64_t r0 = (y[0U] & mask) | (x[0U] & ~mask);
+            uint64_t r1 = (y[1U] & mask) | (x[1U] & ~mask);
+            uint64_t r2 = (y[2U] & mask) | (x[2U] & ~mask);
+            uint64_t r3 = (y[3U] & mask) | (x[3U] & ~mask);
+            r=[r0,r1,r2,r3];
+          }
+      \end{lstlisting}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[style=CStyle, caption={Hacl\_P256.h/bn\_cmovznz4}, gobble=10]
+          static inline void bn_cmovznz4(uint64_t *res, uint64_t cin, uint64_t *x, uint64_t *y)
+          {
+            uint64_t mask = ~FStar_UInt64_eq_mask(cin, 0ULL);
+            KRML_MAYBE_FOR4(i,
+              0U,
+              4U,
+              1U,
+              uint64_t *os = res;
+              uint64_t uu____0 = x[i];
+              uint64_t x1 = uu____0 ^ (mask & (y[i] ^ uu____0));
+              os[i] = x1;);
+          }
+      \end{lstlisting}
+      \end{column}
+    \end{columns}
+  \end{block}
+  
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Prise en main de Clang+LLVM}
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \tiny{
+        \dirtree{%
+            .1 Documents.
+            .2 cross\_compilation.
+            .3 arm-gnu-toolchain-12.2.rel1-x86\_64-arm-none-linux-gnueabihf.
+            .3  clang+llvm-14.0.6-x86\_64-linux-gnu-rhel-8.4.
+            .3  clang+llvm-15.0.6-x86\_64-linux-gnu-ubuntu-18.04.
+            .3  clang+llvm-16.0.4-x86\_64-linux-gnu-ubuntu-22.04.
+            .3  clang+llvm-17.0.6-x86\_64-linux-gnu-ubuntu-22.04.
+            .3  clang+llvm-18.1.8-x86\_64-linux-gnu-ubuntu-18.04.
+          }
+      }
+    \end{column}
+    \begin{column}{0.6\textwidth}
+      \begin{lstlisting} [style=MakefileStyle, caption={Makefile}, gobble=8]
+        define compile
+        $(BUILD_DIR)/$(version)/%.exe: $(SRC_DIR)/%.c
+          @mkdir -p $$(dir $$@)
+          $(COMPIL)/$(version)/bin/clang $(ARCHI) $(CFLAGS) $(FORCE) -c $$< -o $$(patsubst %.exe,%.o,$$@)
+          $(COMPIL)/$(version)/bin/clang $(ARCHI) $(CFLAGS) $(LDFLAGS) $(FORCE) $$(patsubst %.exe,%.o,$$@) -static -o $$@
+          @rm $(BUILD_DIR)/$(version)/*.o
+          @cp binsec_script/$(INI)/* $(BUILD_DIR)/$(version)/
+        endef
+      \end{lstlisting}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Résultats}
+    \begin{center}
+      \onslide<2,3>{--target=aarch64-none-linux-gnu}
+      \renewcommand{\arraystretch}{1.5} 
+      \begin{tabular}{|c|cc|cc|cc|cc|cc|}
+        \hline
+        \rowcolor{blue!30}
+        \textbf{Clang+LLVM} & \multicolumn{2}{c|}{\textbf{14.0.6}} & \multicolumn{2}{c|}{\textbf{15.0.6}} & \multicolumn{2}{c|}{\textbf{16.0.4}} & \multicolumn{2}{c|}{\textbf{17.0.6}} & \multicolumn{2}{c|}{\textbf{18.1.8}} \\
+        \hline
+        \rowcolor{blue!10}
+        \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{src} & cmovznz4 & bn\_cmovznz4 & cmov & bn & cmov & bn & cmov & bn & cmov & bn \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Os} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Oz} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark \\
+        \hline
+      \end{tabular}
+    \end{center}
+    \pause \pause
+    \begin{block}{Armv7}
+      --target=gcc-arm-none-eabi -mcpu=cortex-a9 -marm
+    \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Résultats Armv7}
+    \begin{center}
+      --target=armv7-none-linux-gnueabihf \pause
+      \renewcommand{\arraystretch}{1.5} 
+      \begin{tabular}{|c|cc|cc|cc|cc|cc|}
+        \hline
+        \rowcolor{blue!30}
+        \textbf{Clang+LLVM} & \multicolumn{2}{c|}{\textbf{14.0.6}} & \multicolumn{2}{c|}{\textbf{15.0.6}} & \multicolumn{2}{c|}{\textbf{16.0.4}} & \multicolumn{2}{c|}{\textbf{17.0.6}} & \multicolumn{2}{c|}{\textbf{18.1.8}} \\
+        \hline
+        \rowcolor{blue!10}
+        \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{src} & cmovznz4 & bn\_cmovznz4 & cmov & bn & cmov & bn & cmov & bn & cmov & bn \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Os} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Oz} & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde \\
+        \hline
+      \end{tabular}
+    \end{center}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Focus on 15.0.6}
+  \begin{block}{Fast}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting} [style=CStyle, caption={FStar\_UInt64\_eq\_mask}, gobble=12]
+            static uint64_t FStar_UInt64_eq_mask(uint64_t a, uint64_t b)
+            {
+              uint64_t x = a ^ b;
+              uint64_t minus_x = ~x + 1ULL;
+              uint64_t x_or_minus_x = x | minus_x;
+              uint64_t xnx = x_or_minus_x >> 63U;
+              return xnx - 1ULL;
+            }
+          \end{lstlisting}
+      \end{column}
+
+
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting} [style=CStyle, caption={FStar\_UInt64\_eq\_mask}, gobble=12]
+            #include "Hacl_P256.h"
+          \end{lstlisting}
+      \end{column}
+    \end{columns}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Focus on 15.0.6}
+  \begin{block}{Fast}
+    \begin{lstlisting} [style=INIStyle, caption={study.ini}, gobble=8]
+        load sections .text, .rodata, .data, .got, .bss from file
+
+        secret global  r, cin, y, x
+
+
+        @[sp, 4] := 0x0000000000075570 as fin
+        starting from <main>
+        with concrete stack pointer
+        halt at fin
+        explore all
+      \end{lstlisting}
+    \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Binsec}
+  \begin{lstlisting} [style=global2, caption={make binsec}, gobble=6]
+      [sse:info] SMT queries
+                  Preprocessing simplifications
+                    total          1
+                    true           0
+                    false          0
+                    constant enum  1
+                  
+                  Satisfiability queries
+                    total          28
+                    sat            2
+                    unsat          26
+                    unknown        0
+                    time           0.57
+                    average        0.02
+                  
+                Exploration
+                  total paths                      4
+                  completed/cut paths              0
+                  pending paths                    0
+                  stale paths                      4
+                  failed assertions                0
+                  branching points                 1
+                  max path depth                   24
+                  visited instructions (unrolled)  24
+                  visited instructions (static)    24
+
+      [checkct:result] Program status is : unknown (0.678)
+      [checkct:info] 0 visited path covering 24 instructions
+      [checkct:info] 1 / 1 control flow checks pass
+      [checkct:info] 29 / 29 memory access checks pass
+    \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Debug}
+  \begin{lstlisting} [style=global, caption={FStar\_UInt64\_eq\_mask}, gobble=6]
+      [sse:debug] 0x00075560 vst1.64	{d16, d17}, [r0 :128]	# <main> + 0x70
+      [sse:debug] 0x00075564 mov	r0, #0               	# <main> + 0x74
+      [sse:debug] 0x00075568 ldmia	sp!, {r4, pc}      	# <main> + 0x78
+      [sse:info] Empty path worklist: halting ...
+  \end{lstlisting}
+  \pause
+  \begin{lstlisting} [style=global, caption={disas}, gobble=6]
+    75564:	e3a00000 	mov	r0, #0
+    75568:	e8bd8010 	pop	{r4, pc}
+    7556c:	000266c0 	andeq	r6, r2, r0, asr #13
+    75570:	000266b4 			@ <UNDEFINED> instruction: 0x000266b4
+  \end{lstlisting}
+  \pause
+  \begin{lstlisting} [style=INIStyle, caption={study.ini}, gobble=6]
+    lr<32> := 0x7556c
+  \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Solution finale}
+  \begin{lstlisting} [style=global, caption={study.ini}, gobble=6]              
+      [checkct:result] Program status is : secure (4.969)
+      [checkct:info] 1 visited path covering 37 instructions
+      [checkct:info] 2 / 2 control flow checks pass
+      [checkct:info] 33 / 33 memory access checks pass
+    \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Binsec - version include}
+    \begin{lstlisting} [style=global2, caption={study.ini}, gobble=6]
+      Preprocessing simplifications
+          total          2
+          true           0
+          false          0
+          constant enum  2
+        
+        Satisfiability queries
+          total          31
+          sat            4
+          unsat          27
+          unknown        0
+          time           4.64
+          average        0.15
+        
+      Exploration
+        total paths                      4
+        completed/cut paths              0
+        pending paths                    0
+        stale paths                      4
+        failed assertions                0
+        branching points                 2
+        max path depth                   36
+        visited instructions (unrolled)  36
+        visited instructions (static)    36
+                  
+                
+      [checkct:result] Program status is : unknown (4.707)
+      [checkct:info] 0 visited path covering 36 instructions
+      [checkct:info] 2 / 2 control flow checks pass
+      [checkct:info] 33 / 33 memory access checks pass
+    \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Debug - version include}
+  \begin{lstlisting} [style=global, caption={debug.trace}, gobble=6]
+      [sse:debug] 0x00075544 vst1.64	{d16, d17}, [r0 :128]	# <main> + 0x54
+      [sse:debug] 0x00075548 mov	r0, #0               	# <main> + 0x58
+      [sse:debug] 0x0007554c bx	lr                    	# <main> + 0x5c
+      [sse:info] Empty path worklist: halting ...
+  \end{lstlisting}
+  \pause
+  \begin{lstlisting} [style=global, caption={FStar\_UInt64\_eq\_mask}, gobble=6]
+      75548:	e3a00000 	mov	r0, #0
+      7554c:	e12fff1e 	bx	lr
+      75550:	00026694 	muleq	r2, r4, r6
+      75554:	00026688 	andeq	r6, r2, r8, lsl #13
+  \end{lstlisting}
+  \pause
+  \begin{lstlisting} [style=INIStyle, caption={FStar\_UInt64\_eq\_mask}, gobble=4]
+    lr<32> := 0x75550
+  \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Solution finale - version include}
+  \begin{lstlisting} [style=global, caption={study.ini}, gobble=6]              
+      [arm:error] Probable parse error at line 5, column 1
+                  Lexeme was: undefined
+                  Entry was: (address . 0x00075550)
+      (opcode . 0x00026694)
+      (size . 4)
+      (mnemonic . "; Unknown ARM instruction")
+      (undefined)
+
+                  Getting basic infos only ... 
+      [sse:error] Cut path 1 (uninterpreted "; Unknown ARM instruction") @ 0x00075550
+    \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Résultats Armv7 - hypothétique}
+    \begin{center}
+      --target=armv7-none-linux-gnueabihf
+      \renewcommand{\arraystretch}{1.5} 
+      \begin{tabular}{|c|cc|cc|cc|cc|cc|}
+        \hline
+        \rowcolor{blue!30}
+        \textbf{Clang+LLVM} & \multicolumn{2}{c|}{\textbf{14.0.6}} & \multicolumn{2}{c|}{\textbf{15.0.6}} & \multicolumn{2}{c|}{\textbf{16.0.4}} & \multicolumn{2}{c|}{\textbf{17.0.6}} & \multicolumn{2}{c|}{\textbf{18.1.8}} \\
+        \hline
+        \rowcolor{blue!10}
+        \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{src} & cmovznz4 & bn\_cmovznz4 & cmov & bn & cmov & bn & cmov & bn & cmov & bn \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Os} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark & \cellcolor{yellow!30!green!30}\checkmark \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Oz} & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde & \cellcolor{orange!60}\textasciitilde \\
+        \hline
+      \end{tabular}
+    \end{center}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Résultats Armv7 - Frais du 22/05}
+    \begin{center}
+      --target=armv7-none-linux-gnueabihf
+      \renewcommand{\arraystretch}{1.5} 
+      \begin{tabular}{|c|cc|cc|cc|cc|cc|}
+        \hline
+        \rowcolor{blue!30}
+        \textbf{Clang+LLVM} & \multicolumn{2}{c|}{\textbf{14.0.6}} & \multicolumn{2}{c|}{\textbf{15.0.6}} & \multicolumn{2}{c|}{\textbf{16.0.4}} & \multicolumn{2}{c|}{\textbf{17.0.6}} & \multicolumn{2}{c|}{\textbf{18.1.8}} \\
+        \hline
+        \rowcolor{blue!10}
+        \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{src} & cmovznz4 & bn\_cmovznz4 & cmov & bn & cmov & bn & cmov & bn & cmov & bn \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Os} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Oz} & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde &  \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde &  \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde &  \cellcolor{green!60}\checkmark & \cellcolor{orange!60}\textasciitilde\\
+        \hline
+      \end{tabular}
+    \end{center}
+    \textit{Sous condition spéciale, voir démo.}
+\end{frame}
+
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Conclusion}
+\frame{\sectionpage}
+
+\begin{frame}{Conclusion}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Automatisation}
+        \begin{itemize}
+          \item Continuer la génération des fichiers \textit{-test.c}
+          \item Activer la chaîne de compilation
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \pause
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Reproduction de bug}
+        \begin{itemize}
+          \item Observation de nouveaux opcodes
+          \item Sûrement \textit{insecure}
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Le texte est modifiable en changeant \thankyou
+%% \renewcommand{\thankyou}{Thank You.}
+\frame{\merci}
+
+
+\end{document}
+

@@ -1,0 +1,26 @@
+
+\begin{table}[!ht]
+  \caption{Liste des options de compilations et leurs effets (non exhaustive)}
+  \label{tab:compile_option}
+  \small
+  \begin{adjustwidth}{-2.5cm}{-2cm}
+  \begin{center}
+    \begin{tabular}{ll}
+    \hlineB{2}
+    \textbf{Option de compilation} & \textbf{Effet} \\
+    \rowcolor{lightgray}
+    -O0 & Compile le plus vite possible \\
+    -O1 / -O & Compile en optimisant la taille et le temps d'exécution \\
+    \rowcolor{lightgray}
+    -O2 & Comme -O1 mais en plus fort, temps de compilation plus élevé mais exécution plus rapide\\
+    -O3 & Comme -O2, avec encore plus d'options, optimisation du binaire\\
+    \rowcolor{lightgray}
+    -Os & Comme -O2 avec des options en plus, réduction de la taille du binaire au détriment du temps d'exécution  \\
+    -Ofast & optimisations de la vitesse de compilation\\
+    \rowcolor{lightgray}
+    -Oz & optimisation agressive  sur la taille du binaire\\
+    \hlineB{2}
+    \end{tabular}
+  \end{center}
+  \end{adjustwidth}
+\end{table}

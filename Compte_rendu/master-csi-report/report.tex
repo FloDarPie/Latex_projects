@@ -1,0 +1,95 @@
+% This LaTeX template is intended for the students of CSI Master from
+% University of Bordeaux to make their reports.
+%
+% This template can be used and modified with no restriction.
+%
+% %%% History %%%
+%
+% * April 22, 2014: First version (Emmanuel Fleury <fleury@labri.fr>)
+%
+% %%% Tips and Tricks %%%
+%
+% --- The memoir LaTeX class ---
+% This template use the 'memoir' class, for more information about
+% customization of this class see: http://www.ctan.org/pkg/memoir
+%
+% --- Rubber ---
+% The Makefile are using the Rubber tool, install the 'rubber' package
+% to use it properly.
+%
+\documentclass{backend}
+
+%%%%% Document %%%%%
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+\thispagestyle{empty}
+
+\input{chapters/declaration}
+
+\justifying
+
+\input{chapters/abstract}
+
+\cleardoublepage
+\tableofcontents*
+
+\part{Introduction}
+\input{chapters/introduction}
+
+\input{chapters/préambule.tex}
+
+\mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{\textit{Constant time} ou pourquoi poser un lapin n'est pas une option}
+
+\input{chapters/constantTimePresentation.tex}
+\input{chapters/constantTimeSolution.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Automatisme et vérification ou comment développer un détecteur de menace}
+
+\input{chapters/automateVerifOutils}
+\input{chapters/automateVerifAutomatisme}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Érysichton ou avoir tellement faim que tu finis par manger ton corps}
+
+\input{chapters/erysichtonConception.tex}
+\input{chapters/erysichtonUsage.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Microarchitecture sécurisé ou comment concevoir un support sûr même s'il nous quitte des mains}
+
+\input{chapters/microArchActu.tex}
+\input{chapters/microArchProjection.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapters/conclusion}
+
+\backmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Ressources}
+\nocite{*}
+
+\printbibliography
+
+\printindex
+
+\renewcommand\listoflistingscaption{Listes des codes}
+\listoffigures
+\listoflistings
+\listoftables
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part*{Annexes}
+
+\addcontentsline{toc}{part}{Annexes}
+\appendix
+\input{chapters/annexe.tex}
+
+
+\end{document}

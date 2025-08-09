@@ -1,0 +1,652 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Copyright (c) 2023, gitlabci_gallery / latex
+%         All rights reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[A4,svgnames,9pt,aspectratio=169]{beamer}
+%% document options:
+%% - aspectratio = { 43, 169, 1610 }
+%% - utf8
+%%
+
+
+\setlength{\footskip}{300pt}
+\usepackage[french]{babel}
+
+\hypersetup{
+   allcolors   = rouge_inria,
+   pdfauthor   = {Duzés Florian},
+   pdftitle    = {\@title},
+   pdfsubject  = {Point hebdomadaire, bi-mensuel du stage},
+   pdfkeywords = {entretien, observation du travail}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[titrecourt]{Réunion flash}
+\subtitle{Point hebdomadaire}
+\date[30/04/2025]{date long}
+\author[Duzes Florian]{Duzeé Florian}
+
+\usetheme{inria}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Le titre des planches de sommaire est \contentsname, sa valeur
+% est fixée ici à "Sommaire" par défaut.
+\renewcommand{\contentsname}{Sommaire}
+
+\frame{\tocpage}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+ 
+\section{Un peu de hauteur}
+\frame{\sectionpage}
+
+\begin{frame}{État des missions}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {\parbox{3cm}{\centering Prévus \\ \tiny{Pour le 06/05}}};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+        \begin{itemize}
+          \item Implémentation à l'inria
+          \item Configurations des outils  
+          \item Tutoriels de Binsec
+        \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+            \item Reproduction des premiers résultats en x86\_64
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Scripts d'analyse pour le dossier \textit{/tests} en x86\_64 
+            \item Basculer sur l'architecture ARM
+        \end{itemize}
+    };
+
+      \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Travail réalisé}
+  \begin{tikzpicture}[
+        node distance=2cm,
+        box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+        arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+        contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+    ]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {Prévus};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBox, below=0.5cm of fait,fill=enCoursColor!15] (un) {
+        \begin{itemize}
+          \item Reproduction des premiers résultats en x86\_64
+        \end{itemize}
+    };
+
+    \node[contentBox, below=0.05cm of un, fill=aFaireColor!15] {
+      \begin{itemize}
+        \item Scripts d'analyse pour le dossier \textit{/tests} en x86\_64 
+        \item Basculer sur l'architecture ARM
+      \end{itemize}
+  };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!5] {
+        \begin{itemize}
+            \item Étendre les scripts pour le dossier \textit{/tests} en ARM
+            \item Vérification de la méthode
+        \end{itemize}
+    };
+
+    % Objectif court
+    \node[below=0.5cm of a_faire, text width=3cm, align=center] {
+        \begin{itemize}
+            \item 
+        \end{itemize}
+    };
+
+      \end{tikzpicture}
+
+\end{frame}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Protocole x86\_64}
+\frame{\sectionpage}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{En amont}
+
+  \begin{columns}
+  \begin{column}{0.3\textwidth}
+    \begin{block}{Avant la compilation}
+      \begin{itemize}
+        \item Cibler la fonction à analyser
+      \end{itemize}
+    \end{block}      
+  \end{column}
+
+
+  \begin{column}{0.7\textwidth}
+  \begin{lstlisting}[style=CStyle, caption={chacha20Poly1305-128-binsec-test.c}, gobble=4]
+    int main (int argc, char *argv[])
+    {
+      Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt
+        (cipher, tag, plain, BUF_SIZE, aead_aad, AAD_SIZE, aead_key, aead_nonce);
+      exit(0);
+    }
+  \end{lstlisting}
+  \end{column}
+  \end{columns}
+\end{frame}
+\begin{frame}[fragile, noframenumbering]{En amont}
+
+  \begin{columns}
+  \begin{column}{0.3\textwidth}
+    \begin{block}{Avant la compilation}
+      \begin{itemize}
+        \item Cibler la fonction à analyser
+        \item Dresser la structure des paramètres
+      \end{itemize}
+    \end{block}      
+  \end{column}
+
+
+  \begin{column}{0.7\textwidth}
+    \begin{lstlisting}[style=CStyle, caption={Hacl\_AEAD\_Chacha20Poly1305\_Simd128\_encrypt.h}, gobble=6]
+      void
+      Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt(
+        uint8_t *output,
+        uint8_t *tag,
+        uint8_t *input,
+        uint32_t input_len,
+        uint8_t *data,
+        uint32_t data_len,
+        uint8_t *key,
+        uint8_t *nonce
+      );
+    \end{lstlisting}
+  \end{column}
+  \end{columns}
+\end{frame}
+\begin{frame}[fragile, noframenumbering]{En amont}
+
+  \begin{columns}
+  \begin{column}{0.3\textwidth}
+    \begin{block}{Avant la compilation}
+      \begin{itemize}
+        \item Cibler la fonction à analyser
+        \item Dresser la structure des paramètres
+        \item Identifier nos paramètres
+      \end{itemize}
+    \end{block}      
+  \end{column}
+
+
+  \begin{column}{0.7\textwidth}
+    \begin{lstlisting}[style=CStyle, caption={Hacl\_AEAD\_Chacha20Poly1305\_Simd128\_encrypt.h},, gobble=6]
+      void
+      Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt(
+        uint8_t *output,
+        uint8_t *tag,         
+        uint8_t *input,       //secret
+        uint32_t input_len,   //secret
+        uint8_t *data,        //secret
+        uint32_t data_len,    //secret
+        uint8_t *key,         //secret
+        uint8_t *nonce        //secret
+      );
+    \end{lstlisting}
+  \end{column}
+  \end{columns}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{En aval}
+
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \begin{block}{Après la compilation}
+        \begin{itemize}
+          \item Réalisation du coredump
+        \end{itemize}
+      \end{block}      
+    \end{column}
+  
+  
+    \begin{column}{0.7\textwidth}
+    \begin{lstlisting}[style=GDBStyle, caption={script\_dump}, gobble=6]
+      break Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt
+      run
+      generate-core-file core.snapshot
+      kill
+      quit
+    \end{lstlisting}
+    \end{column}
+    \end{columns}
+  
+\end{frame}
+\begin{frame}[fragile, noframenumbering]{En aval}
+
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \begin{block}{Après la compilation}
+        \begin{itemize}
+          \item Réalisation du coredump
+          \item Réalisation du script.ini
+        \end{itemize}
+      \end{block}      
+    \end{column}
+  
+  
+    \begin{column}{0.7\textwidth}
+      \begin{lstlisting}[style=INIStyle, caption={study.ini}, label={lst:ini}, gobble=8]
+        starting from core
+
+        halt at @[rsp, 8]
+
+        hook <Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt>
+            (cipher, mac, msg, len, aad, aad_len, key, nonce) with
+          @[len, 16384] := secret
+          for i<64> in 0 to len - 1 do
+            @[msg + i] := secret
+          end
+          @[aad_len, 12] := secret
+          for i<64> in 0 to aad_len - 1 do
+            @[aad + i] := secret
+          end
+          @[key, 32] := secret
+          @[nonce, 12] := secret
+        end
+
+        explore all
+    \end{lstlisting}
+    \end{column}
+    \end{columns}
+  
+\end{frame}
+\begin{frame}[fragile, noframenumbering]{En aval}
+
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \begin{block}{Après la compilation}
+        \begin{itemize}
+          \item Réalisation du coredump
+          \item Réalisation du script.ini
+          \item Exécution de Binsec
+        \end{itemize}
+      \end{block}      
+    \end{column}
+  
+  
+    \begin{column}{0.7\textwidth}
+    \begin{lstlisting}[style=MakefileStyle, caption={Makefile}, gobble=6]
+      TARGET = $(wildcard *.exe)
+      SNAP=core.snapshot
+      SCRIPT = study.ini
+
+      all: core-dump binsec
+
+      core-dump: 
+        gdb -x script_coredump $(TARGET)
+
+      binsec:
+        binsec -sse -sse-depth 1000000 -sse-script $(SCRIPT) -checkct $(SNAP)
+    \end{lstlisting}
+    \end{column}
+    \end{columns}
+  
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Protocole ARM}
+\frame{\sectionpage}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Point de départ}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Objectif fort}
+        Ne pas utiliser de \textit{coredump}.
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+  \end{column}
+  
+  
+  \end{columns}
+\end{frame}
+\begin{frame}[noframenumbering]{Point de départ}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Objectif fort}
+        Ne pas utiliser de \textit{coredump}.
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+    \begin{block}{Conclusion}
+      Analyser le binaire.
+    \end{block}
+  \end{column}
+  
+  
+  \end{columns}
+\end{frame}
+\begin{frame}[noframenumbering]{Point de départ}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Objectif fort}
+        Ne pas utiliser de \textit{coredump}.
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+    \begin{block}{Conclusion}
+      Analyser le binaire.
+      \begin{itemize}
+        \item Adresse de la fonction cible.
+        \item Adresse des paramètres
+        \item Adresse de fin de fonction
+      \end{itemize}
+    \end{block}
+  \end{column}
+  
+  
+  \end{columns}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Premier essai}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=INIStyle, gobble=8]
+        sp<64> := 0x400fc0
+
+        # End of disas binsec
+        @[sp, 64] := 0x401120 as return_address
+
+        # Information from the objdump -x
+        @[<.plt>, 22] from file
+        @[<.text>, 348] from file
+        @[<.fini>, 2] from file
+        @[<.rodata>, 30] from file
+        @[<.eh_frame_hdr>, 17] from file
+        @[<.eh_frame>, 84] from file
+        @[<.init_array>, 1] from file
+        @[<.fini_array>, 1] from file
+        @[<.dynamic>, 60] from file
+        @[<.got>, 2] from file
+        @[<.got.plt>, 12] from file
+        @[<.data>, 42] from file
+        @[<.bss>, 0] from file
+        \end{lstlisting}      
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{lstlisting}[style=INIStyle, caption={something\_like\_that.ini}, gobble=8]
+
+        # Looking in binsec disas
+        @[0x400fc0, 64] := 0x4294967184 as Hacl_Chacha20_chacha20_encrypt
+        hook <Hacl_Chacha20_chacha20_encrypt> (len, out, text, key, n, ctr) with
+          for i<64> in 0 to len - 1 do
+            @[out + i] := secret
+          end
+          for i<64> in 0 to len - 1 do
+            @[text + i] := secret
+          end
+          @[key, 32] := secret
+          @[n, 12] := secret
+        end
+
+        starting from <main>
+        explore all
+      \end{lstlisting}
+      
+    \end{column}
+  \end{columns}
+  
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Essai n°?}
+  \begin{lstlisting}[style=INIStyle, caption={script.ini}, gobble=4]
+    #fin de la zone de .text
+    #@[sp, 8] := 0x00404860 as return_address
+    
+    #fin arbitraire : fin de calculs
+    @[sp, 8] := 0x004005c0 as return_address
+    
+    # load common sections from ELF file
+    load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
+    
+    secret global plain, aead_aad, aead_key, aead_nonce
+    
+    starting from <main>
+    with concrete stack pointer
+    
+    halt at return_address
+    explore all
+  \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Ça marche !?}
+
+  \begin{block}{Exécution Binsec ne lève pas d'erreur}
+        \begin{itemize}[<+->]
+          \item \textit{\textbf{Uknwon}} avec l'adresse de fin de la section \textit{.text} - fin d'exécution de Binsec.
+          \item \textit{\textbf{Secure}} avec l'adresse de fin d'exécution (section \textit{.plt}).
+        \end{itemize}
+  \vspace{1cm}
+  \begin{center}
+  \end{center}
+  \end{block}
+\end{frame}
+
+\begin{frame}[noframenumbering]{Ça marche !?}
+
+  \begin{block}{Exécution Binsec ne lève pas d'erreur}
+        \begin{itemize}
+          \item \textit{\textbf{Uknwon}} avec l'adresse de fin de la section \textit{.text} - fin d'exécution de Binsec.
+          \item \textit{\textbf{Secure}} avec l'adresse de fin d'exécution (section \textit{.plt}).
+        \end{itemize}
+  \vspace{1cm}
+  \begin{center}
+    Est-ce que la fonction est entièrement analysée ?
+  \end{center}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Vérification}
+
+  
+  \begin{block}{Tentatives sur cas simple}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[style=CStyle, caption={good\_ct.c}, gobble=10]
+          void f(uint8_t msg[BUF_SIZE], uint8_t key[KEY_SIZE])
+          {
+              for (int i=0; i<BUF_SIZE; i++)
+              {
+                  msg[i] = msg[i] ^ key[i%KEY_SIZE];
+              }
+          }
+        \end{lstlisting}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[style=CStyle, caption={bad\_ct.c}, gobble=10]
+          void f(uint8_t msg[BUF_SIZE], uint8_t key[KEY_SIZE])
+          {
+                  if( key[0] > key[1] )
+                  {
+                      msg[0] = msg[0] ^ key[0];    
+                  }
+          }
+        \end{lstlisting}
+      \end{column}
+    \end{columns}
+  \end{block}
+
+
+\end{frame}
+
+\begin{frame}[fragile, ,noframenumbering]{Vérification}
+
+  
+  \begin{block}{Tentatives sur cas simple}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[style=CStyle, caption={good\_ct.c}, gobble=10]
+          void f(uint8_t msg[BUF_SIZE], uint8_t key[KEY_SIZE])
+          {
+              for (int i=0; i<BUF_SIZE; i++)
+              {
+                  msg[i] = msg[i] ^ key[i%KEY_SIZE];
+              }
+          }
+        \end{lstlisting}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[style=CStyle, caption={bad\_ct.c}, gobble=10]
+          void f(uint8_t msg[BUF_SIZE], uint8_t key[KEY_SIZE])
+          {
+                  if( key[0] > key[1] )
+                  {
+                      msg[0] = msg[0] ^ key[0];    
+                  }
+          }
+        \end{lstlisting}
+      \end{column}
+    \end{columns}
+  \end{block}
+  \vspace{0.5cm}
+  \setbeamercolor{block title}{bg=board_lightGray, fg=white}
+  \setbeamercolor{block body}{bg=board_lightGray!20, fg=black}
+  \begin{block}{Binsec :}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{center}
+          \textit{\textbf{Secure}}
+        \end{center}
+        \vfill
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{center}
+          \textit{\textbf{Insecure}}
+        \end{center}
+        \vfill
+      \end{column}
+    \end{columns}
+  \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Comment vérifier ?}
+  \begin{block}{Idées de vérifications}
+    Dans l'objectif d'automatisation:
+    \begin{itemize}[<+->]
+      \item Détection fine des adresses de fin.
+      \item Application d'une fonction "\textit{fin\_test}".
+    \end{itemize}
+    
+  \end{block}
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Conclusion}
+\frame{\sectionpage}
+
+\begin{frame}{Conclusion}
+  \vspace{2cm}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Protocole x86\_64}
+        \begin{itemize}
+          \item terminé
+        \end{itemize}        
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \vspace{0.5cm}
+      \begin{block}{Protocole ARM}
+        \begin{itemize}
+          \item target=aarch64-none-linux-gnu
+          \item à éclaircir/terminé
+        \end{itemize}        
+      \end{block}
+       
+    \end{column}
+  \end{columns}
+
+  \vspace{2cm}
+  \small{\textit{Lancement vers d'autres architectures ou avancement dans l'automatisation ?}}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Le texte est modifiable en changeant \thankyou
+%% \renewcommand{\thankyou}{Thank You.}
+\frame{\merci}
+
+
+\end{document}
+
+

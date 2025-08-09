@@ -1,0 +1,38 @@
+\frametitle{Résultat final}
+\begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_MAC\_Poly1305\_Simd256\_reset.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.3.0
+    // 09-07-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_MAC_Poly1305_Simd256.h"
+
+    #define BUF_KEY 1
+    uint8_t key[BUF_KEY];
+
+    #define BUFFER 1
+    uint8_t key[BUFFER];
+    Hacl_MAC_Poly1305_Simd256_state_t state = Hacl_MAC_Poly1305_Simd256_malloc(key);
+
+    int main (int argc, char *argv[]){
+    Hacl_MAC_Poly1305_Simd256_reset(state, key);
+      exit(0);
+    }
+  \end{lstlisting}
+  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+
+    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.7}}
+    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.7}}
+    \tikzset{collage/.style={rectangle, rounded corners, draw=magenta, fill=magenta!50, inner sep=0.3cm, opacity=0.7}}
+    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.7}}
+
+    \onslide<2>{
+    \node[intro, fit={(0.2,5.4) (8.2,7.5)}] {};
+    \node[definition, fit={(0.2,4.4) (8.2,4.7)}] {};
+    \node[collage, fit={(0.2,3) (8.2,3.7)}] {};
+    \node[main, fit={(0.2,1.4) (8.2,2.3)}] {};
+    }
+  \end{tikzpicture}
+

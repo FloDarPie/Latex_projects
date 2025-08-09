@@ -1,0 +1,358 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{ynt/global//global/global/global}
+    \entry{ctgrind}{report}{}{}
+      \name{author}{1}{}{%
+        {{hash=9f7c1bea618246029e139c169baaf321}{%
+           family={Langley},
+           familyi={L\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{9f7c1bea618246029e139c169baaf321}
+      \strng{fullhash}{9f7c1bea618246029e139c169baaf321}
+      \strng{fullhashraw}{9f7c1bea618246029e139c169baaf321}
+      \strng{bibnamehash}{9f7c1bea618246029e139c169baaf321}
+      \strng{authorbibnamehash}{9f7c1bea618246029e139c169baaf321}
+      \strng{authornamehash}{9f7c1bea618246029e139c169baaf321}
+      \strng{authorfullhash}{9f7c1bea618246029e139c169baaf321}
+      \strng{authorfullhashraw}{9f7c1bea618246029e139c169baaf321}
+      \field{labelalpha}{Lan10}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ctgrind: Checking that functions are constant time with Valgrind}
+      \field{type}{techreport}
+      \field{year}{2010}
+      \verb{urlraw}
+      \verb https://github.com/agl/ctgrind
+      \endverb
+      \verb{url}
+      \verb https://github.com/agl/ctgrind
+      \endverb
+    \endentry
+    \entry{DATA2}{inproceedings}{}{}
+      \name{author}{6}{}{%
+        {{hash=1ae32f24fe608a18aa8e5ac07e3be1e9}{%
+           family={Weiser},
+           familyi={W\bibinitperiod},
+           given={Samuel},
+           giveni={S\bibinitperiod}}}%
+        {{hash=ec0e68bf3e3ce42b497c488dd70fb407}{%
+           family={Zankl},
+           familyi={Z\bibinitperiod},
+           given={Andreas},
+           giveni={A\bibinitperiod}}}%
+        {{hash=478cb26575b332844a85bdf567e700c7}{%
+           family={Spreitzer},
+           familyi={S\bibinitperiod},
+           given={Raphael},
+           giveni={R\bibinitperiod}}}%
+        {{hash=3092c6f1767865ff718c28767d8389d4}{%
+           family={Miller},
+           familyi={M\bibinitperiod},
+           given={Kasper},
+           giveni={K\bibinitperiod}}}%
+        {{hash=1cdffbc482347edefd718f61814abbc3}{%
+           family={Mangard},
+           familyi={M\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e667bb75f672d6b53b669f117a54dc64}{%
+           family={Sigl},
+           familyi={S\bibinitperiod},
+           given={Georg},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {USENIX Association}%
+      }
+      \strng{namehash}{e7d2858967d32ee75adf3970f094fcae}
+      \strng{fullhash}{7b6639c144c7e5d2235febdfb195bf28}
+      \strng{fullhashraw}{7b6639c144c7e5d2235febdfb195bf28}
+      \strng{bibnamehash}{e7d2858967d32ee75adf3970f094fcae}
+      \strng{authorbibnamehash}{e7d2858967d32ee75adf3970f094fcae}
+      \strng{authornamehash}{e7d2858967d32ee75adf3970f094fcae}
+      \strng{authorfullhash}{7b6639c144c7e5d2235febdfb195bf28}
+      \strng{authorfullhashraw}{7b6639c144c7e5d2235febdfb195bf28}
+      \field{labelalpha}{Wei+18}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{27th USENIX Security Symposium}
+      \field{title}{DATA - Differential Address Trace Analysis: Finding Address-Based Side-Channels in Binaries}
+      \field{year}{2018}
+    \endentry
+    \entry{binsecRel2019}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=51cd2dbaeede4728647c0f9ae86f3835}{%
+           family={Daniel},
+           familyi={D\bibinitperiod},
+           given={Lesly{-}Ann},
+           giveni={L\bibinitperiod}}}%
+        {{hash=eb954e364f1afc57e577c208b799c3bd}{%
+           family={Bardin},
+           familyi={B\bibinitperiod},
+           given={Sébastien},
+           giveni={S\bibinitperiod}}}%
+        {{hash=a2a0dc5c758dbd51d2e91a72d561819e}{%
+           family={Rezk},
+           familyi={R\bibinitperiod},
+           given={Tamara},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{f6a9e89b2c747927e4154e1e37d84da2}
+      \strng{fullhash}{f6a9e89b2c747927e4154e1e37d84da2}
+      \strng{fullhashraw}{f6a9e89b2c747927e4154e1e37d84da2}
+      \strng{bibnamehash}{f6a9e89b2c747927e4154e1e37d84da2}
+      \strng{authorbibnamehash}{f6a9e89b2c747927e4154e1e37d84da2}
+      \strng{authornamehash}{f6a9e89b2c747927e4154e1e37d84da2}
+      \strng{authorfullhash}{f6a9e89b2c747927e4154e1e37d84da2}
+      \strng{authorfullhashraw}{f6a9e89b2c747927e4154e1e37d84da2}
+      \field{labelalpha}{DBR19}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Binsec/Rel: Efficient Relational Symbolic Execution for Constant-Time at Binary-Level}
+      \field{volume}{abs/1912.08788}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1912.08788
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1912.08788
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1912.08788
+      \endverb
+    \endentry
+    \entry{ctfuzz}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=c3301f92cd5bb1a6f0b5ff38a3c94e50}{%
+           family={He},
+           familyi={H\bibinitperiod},
+           given={Sizhuo},
+           giveni={S\bibinitperiod}}}%
+        {{hash=06fcc20b362c9e69aa584ccfc7c282e4}{%
+           family={Emmi},
+           familyi={E\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=88753fb2e0f6438b01acfa1d03a4857f}{%
+           family={Ciocarlie},
+           familyi={C\bibinitperiod},
+           given={Gabriel\bibnamedelima F.},
+           giveni={G\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{4416c7d1e055e4bc920e96e354fe99fc}
+      \strng{fullhash}{4416c7d1e055e4bc920e96e354fe99fc}
+      \strng{fullhashraw}{4416c7d1e055e4bc920e96e354fe99fc}
+      \strng{bibnamehash}{4416c7d1e055e4bc920e96e354fe99fc}
+      \strng{authorbibnamehash}{4416c7d1e055e4bc920e96e354fe99fc}
+      \strng{authornamehash}{4416c7d1e055e4bc920e96e354fe99fc}
+      \strng{authorfullhash}{4416c7d1e055e4bc920e96e354fe99fc}
+      \strng{authorfullhashraw}{4416c7d1e055e4bc920e96e354fe99fc}
+      \field{labelalpha}{HEC20}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{13th IEEE International Conference on Software Testing, Validation and Verification}
+      \field{title}{ct-fuzz: Fuzzing for Timing Leaks}
+      \field{year}{2020}
+    \endentry
+    \entry{CTsaferCrypto}{misc}{}{}
+      \name{author}{4}{}{%
+        {{hash=b5644003f67ba428a37e18f741873249}{%
+           family={Meier},
+           familyi={M\bibinitperiod},
+           given={Lúcás\bibnamedelima Críostóir},
+           giveni={L\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=6448095de02008f4ab3696692def8e6c}{%
+           family={Colombo},
+           familyi={C\bibinitperiod},
+           given={Simone},
+           giveni={S\bibinitperiod}}}%
+        {{hash=2be50fe91732694f06a8bc8259c945cc}{%
+           family={Thiercelin},
+           familyi={T\bibinitperiod},
+           given={Marin},
+           giveni={M\bibinitperiod}}}%
+        {{hash=5a50d3ad145a7f008cb2a77765952811}{%
+           family={Ford},
+           familyi={F\bibinitperiod},
+           given={Bryan},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{7c0ac6873b3adf0e69e628bcee95040f}
+      \strng{fullhash}{cc85469f71369d3b4de9418f57a17a9a}
+      \strng{fullhashraw}{cc85469f71369d3b4de9418f57a17a9a}
+      \strng{bibnamehash}{7c0ac6873b3adf0e69e628bcee95040f}
+      \strng{authorbibnamehash}{7c0ac6873b3adf0e69e628bcee95040f}
+      \strng{authornamehash}{7c0ac6873b3adf0e69e628bcee95040f}
+      \strng{authorfullhash}{cc85469f71369d3b4de9418f57a17a9a}
+      \strng{authorfullhashraw}{cc85469f71369d3b4de9418f57a17a9a}
+      \field{labelalpha}{Mei+21}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Cryptology {ePrint} Archive, Paper 2021/1121}
+      \field{title}{Constant-Time Arithmetic for Safer Cryptography}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://eprint.iacr.org/2021/1121
+      \endverb
+      \verb{url}
+      \verb https://eprint.iacr.org/2021/1121
+      \endverb
+    \endentry
+    \entry{twartingCT}{inproceedings}{}{}
+      \name{author}{8}{}{%
+        {{hash=8adfa7e02aa6d82e87ca412709bcf401}{%
+           family={Gaudin},
+           familyi={G\bibinitperiod},
+           given={Nicolas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=758da16562cc8072ee424e689b5ce536}{%
+           family={Hatchikian-Houdot},
+           familyi={H\bibinithyphendelim H\bibinitperiod},
+           given={Jean-Loup},
+           giveni={J\bibinithyphendelim L\bibinitperiod}}}%
+        {{hash=9bbc3bb93162edf652641ff78d80d1d4}{%
+           family={Besson},
+           familyi={B\bibinitperiod},
+           given={Frédéric},
+           giveni={F\bibinitperiod}}}%
+        {{hash=ec2ec81eed395c1212e4b0743a8e27da}{%
+           family={Cotret},
+           familyi={C\bibinitperiod},
+           given={Pascal},
+           giveni={P\bibinitperiod}}}%
+        {{hash=dfa3e9e4471353083111707d1a1ddd57}{%
+           family={Gogniat},
+           familyi={G\bibinitperiod},
+           given={Guy},
+           giveni={G\bibinitperiod}}}%
+        {{hash=72305a66e62a613c6b8f457c34d60a37}{%
+           family={Hiet},
+           familyi={H\bibinitperiod},
+           given={Guillaume},
+           giveni={G\bibinitperiod}}}%
+        {{hash=0db3641f7c0811684a1d3d03018300bc}{%
+           family={Lapotre},
+           familyi={L\bibinitperiod},
+           given={Vianney},
+           giveni={V\bibinitperiod}}}%
+        {{hash=d63681e62d87d862e3d24d8777a9a7d2}{%
+           family={Wilke},
+           familyi={W\bibinitperiod},
+           given={Pierre},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{78079b0ad36b535f0964836953a354e3}
+      \strng{fullhash}{6905f1dbde5ec2889d3efac07f01488a}
+      \strng{fullhashraw}{6905f1dbde5ec2889d3efac07f01488a}
+      \strng{bibnamehash}{78079b0ad36b535f0964836953a354e3}
+      \strng{authorbibnamehash}{78079b0ad36b535f0964836953a354e3}
+      \strng{authornamehash}{78079b0ad36b535f0964836953a354e3}
+      \strng{authorfullhash}{6905f1dbde5ec2889d3efac07f01488a}
+      \strng{authorfullhashraw}{6905f1dbde5ec2889d3efac07f01488a}
+      \field{labelalpha}{Gau+23}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2023 IEEE European Symposium on Security and Privacy Workshops (EuroS&PW)}
+      \field{title}{Work in Progress: Thwarting Timing Attacks in Microcontrollers using Fine-grained Hardware Protections}
+      \field{year}{2023}
+      \field{pages}{304\bibrangedash 310}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1109/EuroSPW59978.2023.00038
+      \endverb
+      \keyw{Out of order;Costs;Program processors;Microcontrollers;Binary codes;Hardware;Software;Cache-based Side-Channel;Internet of Things;Security}
+    \endentry
+    \entry{BewarCTSideChannel}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=a93f3c2a1ff9779ea578e2d09634a903}{%
+           family={Schneider},
+           familyi={S\bibinitperiod},
+           given={Dominik},
+           giveni={D\bibinitperiod}}}%
+        {{hash=5e4d892063a46bf8e2628a5e4ce0c884}{%
+           family={Zeitschner},
+           familyi={Z\bibinitperiod},
+           given={Jannik},
+           giveni={J\bibinitperiod}}}%
+        {{hash=59490251381960682349d46f18db4ad8}{%
+           family={Kloos},
+           familyi={K\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=864481ac2878328fd26c13c1f7c468db}{%
+           family={Lemke-Rust},
+           familyi={L\bibinithyphendelim R\bibinitperiod},
+           given={Kerstin},
+           giveni={K\bibinitperiod}}}%
+        {{hash=fab033e725125a127dcdddb45b103770}{%
+           family={Iacono},
+           familyi={I\bibinitperiod},
+           given={Luigi\bibnamedelima Lo},
+           giveni={L\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{00b216d2a33820baf673a5d65245fbaf}
+      \strng{fullhash}{6433dcb051413956b07b7838d3bdbf83}
+      \strng{fullhashraw}{6433dcb051413956b07b7838d3bdbf83}
+      \strng{bibnamehash}{00b216d2a33820baf673a5d65245fbaf}
+      \strng{authorbibnamehash}{00b216d2a33820baf673a5d65245fbaf}
+      \strng{authornamehash}{00b216d2a33820baf673a5d65245fbaf}
+      \strng{authorfullhash}{6433dcb051413956b07b7838d3bdbf83}
+      \strng{authorfullhashraw}{6433dcb051413956b07b7838d3bdbf83}
+      \field{labelalpha}{Sch+25}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Security & Privacy}
+      \field{number}{1}
+      \field{title}{Developers: Beware of Timing Side-Channels}
+      \field{volume}{23}
+      \field{year}{2025}
+      \field{pages}{47\bibrangedash 52}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/MSEC.2024.3399330
+      \endverb
+      \keyw{Timing;Cryptography;Codes;Microarchitecture;Static analysis;Source coding;Side-channel attacks;Digital systems;Threat assessment;Software development management;Resilience}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

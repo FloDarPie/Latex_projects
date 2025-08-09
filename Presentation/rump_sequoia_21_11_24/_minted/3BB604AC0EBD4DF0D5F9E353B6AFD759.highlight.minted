@@ -1,0 +1,23 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{+w}{    }\PYG{l+m+mi}{168}\PYG{+w}{ }\PYG{k+kt}{ssize\PYGZus{}t}\PYG{+w}{ }\PYG{n}{seq\PYGZus{}read\PYGZus{}iter}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{kiocb}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{iocb}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{iov\PYGZus{}iter}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{iter}\PYG{p}{)}\PYG{p}{\PYGZob{}}
+\PYG{+w}{ }\PYG{l+m+mi}{170}\PYG{+w}{         }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{seq\PYGZus{}file}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{iocb}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{ki\PYGZus{}filp}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{private\PYGZus{}data}\PYG{p}{;}
+\PYG{+w}{ }\PYG{l+m+mi}{205}\PYG{+w}{         }\PYG{c+cm}{/* grab buffer if we didn\PYGZsq{}t have one */}
+\PYG{+w}{ }\PYG{l+m+mi}{206}\PYG{+w}{         }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{n}{m}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{buf}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{ }\PYG{l+m+mi}{207}\PYG{+w}{                 }\PYG{n}{m}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{buf}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{seq\PYGZus{}buf\PYGZus{}alloc}\PYG{p}{(}\PYG{n}{m}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{size}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{PAGE\PYGZus{}SIZE}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{ }\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{+w}{ }\PYG{l+m+mi}{210}\PYG{+w}{         }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{ }\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{+w}{ }\PYG{l+m+mi}{220}\PYG{+w}{         }\PYG{c+c1}{// get a non\PYGZhy{}empty record in the buffer}
+\PYG{+w}{ }\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{+w}{ }\PYG{l+m+mi}{223}\PYG{+w}{         }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{ }\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{+w}{ }\PYG{l+m+mi}{227}\PYG{+w}{                 }\PYG{n}{err}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{m}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{op}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{show}\PYG{p}{(}\PYG{n}{m}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{ }\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{+w}{ }\PYG{l+m+mi}{236}\PYG{+w}{                 }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{n}{seq\PYGZus{}has\PYGZus{}overflowed}\PYG{p}{(}\PYG{n}{m}\PYG{p}{)}\PYG{p}{)}\PYG{+w}{ }\PYG{c+c1}{// got it}
+\PYG{+w}{ }\PYG{l+m+mi}{237}\PYG{+w}{                         }\PYG{k}{goto}\PYG{+w}{ }\PYG{n}{Fill}\PYG{p}{;}
+\PYG{+w}{ }\PYG{l+m+mi}{238}\PYG{+w}{                 }\PYG{c+c1}{// need a bigger buffer}
+\PYG{+w}{ }\PYG{p}{.}\PYG{p}{.}\PYG{p}{.}
+\PYG{+w}{ }\PYG{l+m+mi}{240}\PYG{+w}{                 }\PYG{n}{kvfree}\PYG{p}{(}\PYG{n}{m}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{buf}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{ }\PYG{l+m+mi}{242}\PYG{+w}{                 }\PYG{n}{m}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{buf}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{seq\PYGZus{}buf\PYGZus{}alloc}\PYG{p}{(}\PYG{n}{m}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{size}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{o}{\PYGZlt{}}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{ }\PYG{l+m+mi}{246}\PYG{+w}{         }\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

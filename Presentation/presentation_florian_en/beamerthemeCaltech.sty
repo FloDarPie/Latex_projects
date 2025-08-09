@@ -1,0 +1,58 @@
+% Formally establish Beamer theme package
+\ProvidesPackage{beamerthemeCaltech}
+
+% --------  Invoke presentation mode  ----------------
+\mode<presentation>
+
+% --------  Set color, inner theme, frame title formats, etc.  ------------
+\usecolortheme{CaltechBeaver}
+\useinnertheme{circles}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+
+% --------  Define behavior for theme option "minimal"  -----------
+\DeclareOptionBeamer{minimal}{
+    \setbeamertemplate{frametitle}
+    {
+        \nointerlineskip
+        \begin{beamercolorbox}[sep=0.3cm,ht=27pt,wd=\paperwidth]{frametitle}
+            \vbox{}\vskip-2ex%
+            \strut\insertframetitle\strut
+            \vskip-0.8ex%
+        \end{beamercolorbox}
+    }
+    \logo{\includegraphics[width=2.2cm]{./img/logo/Inria-logo-rouge.png}}
+}
+
+% --------  Define behavior for theme option "sidebarleft"  -----------
+\DeclareOptionBeamer{sidebarleft}{
+    \useoutertheme[height=27pt,width=50pt,left]{sidebar}
+    \logo{\includegraphics[scale = 0.8]{./img/logo/Inria-logo-rouge.png}}
+}
+
+% --------  Define behavior for theme option "sidebarright"  -----------
+\DeclareOptionBeamer{sidebarright}{
+    \useoutertheme[height=27pt,width=50pt,right]{sidebar}
+    \logo{\includegraphics[scale = 0.8]{./img/logo/Inria-logo-rouge.png}}
+}
+
+\ProcessOptionsBeamer
+
+
+% --------  Remove navigation symbols from appearing  ----------------
+\setbeamertemplate{navigation symbols}{}
+
+% --------  Footer  ----------------
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{\begin{beamercolorbox}[wd=\paperwidth,ht=0ex,dp=0ex,right]{frame number}%
+    \vskip0pt
+    \usebeamerfont{footline}\usebeamercolor[fg]{footline}
+    \insertframenumber/\inserttotalframenumber \hspace{5pt}
+    \vskip.5ex
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+
+% --------  Invoke all mode
+\mode<all>

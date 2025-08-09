@@ -1,0 +1,607 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Copyright (c) 2023, gitlabci_gallery / latex
+%         All rights reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[A4,svgnames,9pt,aspectratio=169]{beamer}
+%% document options:
+%% - aspectratio = { 43, 169, 1610 }
+%% - utf8
+%%
+
+
+\setlength{\footskip}{300pt}
+\usepackage[french]{babel}
+
+\hypersetup{
+   allcolors   = rouge_inria,
+   pdfauthor   = {Duzés Florian},
+   pdftitle    = {\@title},
+   pdfsubject  = {Point hebdomadaire, bi-mensuel du stage},
+   pdfkeywords = {entretien, observation du travail}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[titrecourt]{Réunion flash}
+\subtitle{Point hebdomadaire}
+\date[09/07/2025]{date long}
+\author[Duzes Florian]{Duzés Florian}
+
+\usetheme{inria}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Le titre des planches de sommaire est \contentsname, sa valeur
+% est fixée ici à "Sommaire" par défaut.
+\renewcommand{\contentsname}{Sommaire}
+
+\frame{\tocpage}
+
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+ 
+\section{État des lieux}
+\frame{\sectionpage}
+
+\begin{frame}{Point actuel}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {Prévus};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+      \begin{itemize}
+        \item Activer chaîne de compilation
+        \item Compilation en x86\_64
+        \item \textit{Introduction} du mémoire
+      \end{itemize}
+    };
+
+    % En cours
+    \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Remplir les config
+          \item Régler les problèmes d'analyse de Binsec
+          \item Chaîne de bout en bout x86\_64 
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Couverture des architectures différentes
+            \item Couverture des compilateurs
+        \end{itemize}
+    };
+      \end{tikzpicture}
+
+\end{frame}
+
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Réalisation}
+  \begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={rectangle, draw=black, thick, minimum width=3cm, minimum height=1cm, text centered, rounded corners, font=\bfseries},
+    arrow/.style={->, >=Stealth, thick, draw=arrowColor},
+    contentBoxDone/.style={rectangle, draw=black, thick, fill=board_lightGray!40, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center},
+    contentBox/.style={rectangle, draw=black, thick, rounded corners, minimum width=3cm, minimum height=2cm, text width=3cm, align=center}
+]
+
+    % DESSINS
+    \node[box, fill=faitColor] (fait) {Fait};
+    \node[box, fill=enCoursColor, right=of fait] (en_cours) {En cours};
+    \node[box, fill=aFaireColor, right=of en_cours] (a_faire) {Prévus};
+    \draw[arrow] (fait) -- (en_cours);
+    \draw[arrow] (en_cours) -- (a_faire);
+
+    % Choses réalisées
+    \node[contentBoxDone, below=0.5cm of fait] {
+      \begin{itemize}
+        \item Remplir les config
+        \item Appel des fonctions voisines
+      \end{itemize}
+      };
+      
+      % En cours
+      \node[contentBox, below=0.5cm of en_cours, fill=enCoursColor!15] {
+        \begin{itemize}
+          \item Affiner la génération des tests pour \textit{Krmllib.h} et \textit{Hacl\_Hash\_Blake2b.h}
+          \item Chaîne de bout en bout x86\_64 
+          \item \textit{Introduction} du mémoire + section 1
+        \end{itemize}
+    };
+
+    % Point fixer
+    \node[contentBox, below=0.5cm of a_faire, fill=aFaireColor!15] {
+        \begin{itemize}
+            \item Couverture des architectures différentes
+            \item Couverture des compilateurs
+        \end{itemize}
+    };
+      \end{tikzpicture}
+
+\end{frame}
+
+%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%--%%
+
+\section{Génération des tests}
+\frame{\sectionpage}
+
+\begin{frame}{Point de vue général}
+  
+    \begin{block}{Problèmes encore en cours la semaine dernière}
+      \begin{itemize}
+        \item Remplissage des configs à 1/3
+        \item Gestion des exceptions
+        \item Appel aux fonctions voisines
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\subsection{Fichiers de configuration}
+\frame{\subsectionpage}
+
+\begin{frame}[fragile]{Retour sur les fichiers de configuration}
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+    \begin{lstlisting}[style=CStyle, basicstyle=\tiny\ttfamily,gobble=4, caption={Hacl\_Hash\_Blake2b.h}, label={lst:Hacl_Hash_Blake2b_h}]
+    ,"Hacl_Hash_Blake2b_malloc_with_params_and_key": {
+        "*p":"Hacl_Hash_Blake2b_blake2_params"
+      ,"last_node":"false"
+      ,"*k":"BUF"
+      ,"BUF":1
+    }
+
+    ,"Hacl_Hash_Blake2b_malloc_with_key": {
+        "*k":"BUF_KEY"
+      ,"kk":"KEY"
+      ,"BUF_KEY":1
+      ,"KEY":1
+    }
+    \end{lstlisting}
+    
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+    \begin{lstlisting}[style=CStyle, basicstyle=\tiny\ttfamily, caption={Hacl\_HPKE\_Curve51\_CP128\_SHA512.h}, gobble=4]
+     ,"Hacl_HPKE_Curve51_CP128_SHA512_setupBaseR": {
+        "o_ctx":"Hacl_HPKE_Interface_Hacl_Impl_HPKE_Hacl_Meta_HPKE"
+      ,"*enc":"BUFFER"
+      ,"*skR":"BUFFER"
+      ,"infolen":"BUFFER"
+      ,"*info":"BUFFER"
+      ,"BUFFER":1
+    }
+    ,"Hacl_HPKE_Curve51_CP128_SHA512_sealBase": {
+        "*skE":"BUFFER"
+      ,"*pkR":"BUFFER"
+      ,"infolen":"BUFFER"
+      ,"*info":"BUFFER"
+      ,"aadlen":"BUFFER"
+      ,"*aad":"BUFFER"
+      ,"plainlen":"BUFFER"
+      ,"*plain":"BUFFER"
+      ,"*o_enc":"BUFFER"
+      ,"*o_ct":"BUFFER"
+      ,"BUFFER":1
+    }
+  \end{lstlisting}
+  \end{column}
+\end{columns}
+  
+\end{frame}
+
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\subsection{Construction d'un test de A à Z}
+\frame{\subsectionpage}
+
+
+\begin{frame}[fragile]{Production d'un test - 1}
+  \begin{lstlisting}[style=CStyle, basicstyle=\tiny\ttfamily, gobble=4, caption={Hacl\_AEAD\_Chacha20Poly1305\_encrypt.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.2.2
+    // 17-06-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_AEAD_Chacha20Poly1305.h"
+
+    #define tag TAG_SIZE
+    #define output BUF_SIZE
+    #define data AAD_SIZE
+    #define nonce NONCE_SIZE
+    #define key KEY_SIZE
+    #define input BUF_SIZE
+
+    #define BUF_SIZE 16384
+    #define AAD_SIZE 12
+    #define TAG_SIZE 16
+    #define NONCE_SIZE 12
+    #define KEY_SIZE 32
+
+    uint8_t output[BUF_SIZE];    uint8_t tag[TAG_SIZE];
+    uint8_t input[BUF_SIZE];     uint8_t data[AAD_SIZE];
+    uint8_t key[KEY_SIZE];       uint8_t nonce[NONCE_SIZE];
+
+    int main (int argc, char *argv[]){
+    Hacl_AEAD_Chacha20Poly1305_encrypt(output, tag, input, BUF_SIZE, data, AAD_SIZE, key, nonce);
+      exit(0);
+    }
+  \end{lstlisting}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Production d'un test - 2}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_EC\_K256\_felem\_sqr.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.3.0
+    // 09-07-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_EC_K256.h"
+
+    #define BUFFER_SIZE 5
+    uint64_t a[BUFFER_SIZE];
+    uint64_t out[BUFFER_SIZE];
+
+
+    int main (int argc, char *argv[]){
+    Hacl_EC_K256_felem_sqr(a, out);
+      exit(0);
+    }
+  \end{lstlisting}
+\end{frame}
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}[fragile]{Forme générique d'un test}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_EC\_K256\_felem\_sqr.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.3.0
+    // 09-07-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_EC_K256.h"
+
+    #define BUFFER_SIZE 5
+    uint64_t a[BUFFER_SIZE];
+    uint64_t out[BUFFER_SIZE];
+
+
+    int main (int argc, char *argv[]){
+    Hacl_EC_K256_felem_sqr(a, out);
+      exit(0);
+    }
+  \end{lstlisting}
+  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+    
+    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.7, font=\bfseries}}
+    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.7, font=\bfseries}}
+    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.7, font=\bfseries}}
+    
+    \tikzset{labelshift/.style={xshift=1cm, yshift=0.5cm}}
+    
+    \onslide<2>{
+    \node[intro, fit={(0.2,4.6) (8.2,6.6)}] {};
+    \node[definition, fit={(0.2,3) (8.2,3.9)}] {};
+    \node[main, fit={(0.2,1.4) (8.2,2.3)}] {};
+    }
+    \onslide<3>{
+    \node[intro, fit={(0.2,4.6) (8.2,6.6)}, label={[labelshift]center:Phase de déclaration : 8 lignes}]{};
+    \node[definition, fit={(0.2,3) (8.2,3.9)}, label={[labelshift]center:Phase variables}]{};
+    \node[main, fit={(0.2,1.4) (8.2,2.3)}, label={[labelshift]center:Phase principales : 4 lignes}]{};
+    }
+  \end{tikzpicture}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+
+\subsection{Gestion des appels de fonctions par collage}
+\frame{\subsectionpage}
+
+\begin{frame}[fragile]{Appel aux fonctions voisines}
+  \begin{lstlisting}[style=CStyle,gobble=4, caption={Hacl\_MAC\_Poly1305\_Simd256.json}]
+    ,"Hacl_MAC_Poly1305_Simd256_reset": {
+       "*state":"Hacl_MAC_Poly1305_Simd256_malloc"
+      ,"*key":"BUF_KEY"
+      ,"BUF_KEY":1
+    }
+  \end{lstlisting}
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+\begin{frame}{Schéma de construction d'un test}
+  \begin{tikzpicture}[auto]
+    % Définition des styles pour les boîtes et flèches
+    \tikzset{
+      box1/.style={rectangle, draw=black, fill=cyan!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box2/.style={rectangle, draw=black, fill=orange!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box3/.style={rectangle, draw=black, fill=yellow!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box4/.style={rectangle, draw=black, fill=green!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box5/.style={rectangle, draw=black, fill=blue!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box6/.style={rectangle, draw=black, fill=magenta!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box65/.style={rectangle, draw=black, fill=magenta!60, thick, rounded corners, minimum width=1.5cm, minimum height=0.6cm, align=center},
+      box7/.style={rectangle, draw=black, fill=red!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box8/.style={rectangle, draw=black, fill=blue!45, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      arrow1/.style={->, thick, color=cyan!70!black},
+      arrow2/.style={->, thick, color=orange!80!black},
+      arrow3/.style={->, thick, color=yellow!80!black},
+      arrow4/.style={->, thick, color=green!80!black},
+      arrow5/.style={->, thick, color=blue!80!black},
+      arrow6/.style={->, thick, color=magenta!80!black},
+      arrow7/.style={->, thick, color=red!80!black},
+      arrow8/.style={->, thick, color=gray!80!black}
+    }
+
+    % Noeuds principaux (ligne du haut)
+    \node[box1] (build_test) at (0,0) {build\_test};
+    \node[box2, below of=build_test, yshift=-0.3cm] (parse_h) {Lecture du .h};
+    \node[box3, right=1cm of parse_h] (read_json) {Lecture json générique};
+    \node[box4, right=1cm of read_json] (build_local_json) {Capture des informations};
+
+    % Ligne du bas (génération du .c)
+    \node[box5, below=1cm of build_local_json] (build_intro) {Gen. introduction};
+    \node[box6, left=1cm of build_intro] (build_def) {Gen. definition};
+    \node[box7, left=1cm of build_def] (add_main) {Gen. main};
+    \node[box8, left=1cm of add_main] (fichier_c) {fichier .c};
+
+    % Flèches horizontales principales
+    \draw[arrow1] (build_test) -- (parse_h);
+    \draw[arrow2] (parse_h) -- (read_json);
+    \draw[arrow3] (read_json) -- (build_local_json);
+    \draw[arrow4] (build_local_json) -- (build_intro);
+    \draw[arrow5] (build_intro) -- (build_def);
+    \draw[arrow6] (build_def) -- (add_main);
+    \draw[arrow7] (add_main) -- (fichier_c);
+    
+    \onslide<2->{
+    % Branche auxiliaire depuis build introduction
+    \node[box5, left of = build_intro, yshift=-1cm] (detect_aux) {Détection appel auxiliaire};
+    % Ajout de deux barres obliques sur la flèche build_intro -> build_def
+    \draw[thick] ($(build_intro)!0.5!(build_def) + (0,0.3)$) -- ($(build_intro)!0.5!(build_def) + (0,-0.54)$);
+    \draw[thick] ($(build_intro)!0.55!(build_def) + (0,0.3)$) -- ($(build_intro)!0.55!(build_def) + (0,-0.54)$);
+    
+    }
+    \onslide<3>{
+
+
+    \node[box3, left=1cm of detect_aux, yshift=-1cm] (test_exist) {test si fichier existe};
+    \draw[arrow5] (detect_aux) -- (test_exist);
+
+    % Oui -> Collage -> build definition
+    \node[box65, above of = test_exist] (collage) {\footnotesize{Collage}};
+    \draw[->, thick, color=green!80!black] (test_exist) -- node[font=\scriptsize] {Oui} (collage);
+    \draw[arrow6] (collage) -- (build_def);
+
+    % Non -> Stocker dans liste_temporisée
+    \node[box8, left=0.8cm of test_exist, yshift=-0.8cm] (liste_temp) {Stocker dans liste\_temporisée};
+    \draw[arrow7] (test_exist) -- node[font=\scriptsize] {Non} (liste_temp);
+
+    }
+    
+  \end{tikzpicture}
+  
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+
+\begin{frame}[fragile]{Résultat final}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_MAC\_Poly1305\_Simd256\_reset.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.3.0
+    // 09-07-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_MAC_Poly1305_Simd256.h"
+  \end{lstlisting}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+
+\begin{frame}[fragile]{Résultat final}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_MAC\_Poly1305\_Simd256\_reset.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.3.0
+    // 09-07-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_MAC_Poly1305_Simd256.h"
+
+    #define BUF_KEY 1
+    uint8_t key[BUF_KEY];
+  \end{lstlisting}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+
+\begin{frame}[fragile]{Résultat final}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_MAC\_Poly1305\_Simd256\_reset.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.3.0
+    // 09-07-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_MAC_Poly1305_Simd256.h"
+
+    #define BUF_KEY 1
+    uint8_t key[BUF_KEY];
+    
+    #define BUFFER 1
+    uint8_t key[BUFFER];
+    Hacl_MAC_Poly1305_Simd256_state_t state = Hacl_MAC_Poly1305_Simd256_malloc(key);
+  \end{lstlisting}
+
+\end{frame}
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+
+\begin{frame}[fragile]{Résultat final}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_MAC\_Poly1305\_Simd256\_reset.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.3.0
+    // 09-07-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_MAC_Poly1305_Simd256.h"
+
+    #define BUF_KEY 1
+    uint8_t key[BUF_KEY];
+        
+    #define BUFFER 1
+    uint8_t key[BUFFER];
+    Hacl_MAC_Poly1305_Simd256_state_t state = Hacl_MAC_Poly1305_Simd256_malloc(key);
+  \end{lstlisting}
+
+\end{frame}
+
+
+%  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  %
+
+
+\begin{frame}[fragile]{Résultat final}
+  \begin{lstlisting}[style=CStyle, gobble=4, caption={Hacl\_MAC\_Poly1305\_Simd256\_reset.c}]
+    //
+    // Made by
+    // ANDHRÍMNIR - 0.3.0
+    // 09-07-2025
+    //
+
+    #include <stdlib.h>
+    #include "Hacl_MAC_Poly1305_Simd256.h"
+
+    #define BUF_KEY 1
+    uint8_t key[BUF_KEY];
+
+    #define BUFFER 1
+    uint8_t key[BUFFER];
+    Hacl_MAC_Poly1305_Simd256_state_t state = Hacl_MAC_Poly1305_Simd256_malloc(key);
+
+    int main (int argc, char *argv[]){
+    Hacl_MAC_Poly1305_Simd256_reset(state, key);
+      exit(0);
+    }
+  \end{lstlisting}
+  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+    
+    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.7}}
+    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.7}}
+    \tikzset{collage/.style={rectangle, rounded corners, draw=magenta, fill=magenta!50, inner sep=0.3cm, opacity=0.7}}
+    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.7}}
+    
+    \onslide<2>{
+    \node[intro, fit={(0.2,5.4) (8.2,7.5)}] {};
+    \node[definition, fit={(0.2,4.4) (8.2,4.7)}] {};
+    \node[collage, fit={(0.2,3) (8.2,3.7)}] {};
+    \node[main, fit={(0.2,1.4) (8.2,2.3)}] {};
+    }
+  \end{tikzpicture}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Binsec en x86\_64}
+\frame{\sectionpage}
+
+\begin{frame}{Génération des scripts}
+  \begin{block}{Problème d'analyse}
+    \begin{itemize}
+      \item Temps de compilation ++
+      \item Crash de binsec // crash machine
+      \item Trop d'information ?
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}{Démo}
+  \begin{center}
+    Test ensemble ?
+  \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conclusion}
+\frame{\sectionpage}
+
+\begin{frame}{Conclusion}
+  \begin{block}{Objectif}
+    Finir le module x86\_64.
+  \end{block}
+
+  \begin{enumerate}
+    
+    \item[{\makebox[0pt][l]{$\square$}\raisebox{.15ex}{\hspace{0.1em}$\checkmark$}}] \sout{Remplir les configurations}
+    \item[{\makebox[0pt][l]{$\square$}\raisebox{.15ex}{\hspace{0.1em}$\checkmark$}}] \sout{Générer les tests}*\footnote{* : encore quelques fonctions/tests qui résistent -> ficher de config pas idéal}
+    \item[{\makebox[0pt][l]{$\square$}\raisebox{.15ex}{\hspace{0.1em}$\checkmark$}}] \sout{Compiler les tests}*
+    \item[{\makebox[0pt][l]{$\square$}\raisebox{.15ex}{\hspace{0.1em}$\checkmark$}}] Analyser les tests
+  \end{enumerate}
+  
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Le texte est modifiable en changeant \thankyou
+%% \renewcommand{\thankyou}{Thank You.}
+\frame{\merci}
+
+
+\end{document}
+
