@@ -16,10 +16,10 @@ $(MAIN).pdf: $(SRCTEX)
 
 clean:
 	$(RUBBER) --pdf --clean $(MAIN)
-# 	@rm -f *~ *.aux *.log *.bbl *.blg *.vrb \
-# 	       *.toc *.nav *.out *.snm *.idx *.ilg *.ind\
-# 		   *.dvi *fdb_latexmk *.fls *.rubbercache
-# 	@rm -rf _minted-*
+	@rm -f *~ *.aux *.log *.bbl *.blg *.vrb \
+	       *.toc *.nav *.out *.snm *.idx *.ilg *.ind\
+		   *.dvi *fdb_latexmk *.fls *.rubbercache *.lol *.bcf
+	@rm -rf _minted-*
 
 distclean: clean
 	@rm -fr $(MAIN).pdf

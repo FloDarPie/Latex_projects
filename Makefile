@@ -1,7 +1,10 @@
 .PHONY: submakefile fast biblio pdf all latexmk
 
-#path du projet
+# Chemin du projet
 p ?= .
+
+# Règle additionnelle
+r ?= 
 
 # Variables
 TEX_DIR = $(p)
@@ -53,4 +56,4 @@ clean_all: clean clean_pdf
 pdf: latexmk
 
 submakefile:
-	cd $(TEX_DIR) && $(MAKE) -f $(notdir $(SUB_MAKEFILE))
+	cd $(TEX_DIR) && $(MAKE) -f $(notdir $(SUB_MAKEFILE)) $(r)
