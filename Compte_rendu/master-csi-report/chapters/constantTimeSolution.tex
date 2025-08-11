@@ -1,43 +1,43 @@
 \chapter{Protection}
 \label{chap:constantTimeSolution}
 
-Ce deuxième chapitre montre les innovations nécessaires pour se protéger des attaques temporelles. On y découvre les bonne pratiques de programmation, les premiers outils automatique de vérification de code ainsi que les limitations auquel est confronté le développeur qui souhaite être résistant à ces attaques.
+Ce deuxième chapitre montre les innovations nécessaires pour se protéger des attaques temporelles. On y découvre les bonnes pratiques de programmation, les premiers outils automatique de vérification de code ainsi que les limitations auquelles est confronté le développeur qui souhaite être résistant à ces attaques.
 
 
 \section{Bonne pratique et usages}
 
-Face à la menace des attaques temporelles, qu'elles solutions peuvent être mises en place pour protéger nos systèmes informatiques ? Cette attaque a besoin d'un accès au système et d'un chronomètre. Comme on est dans un contexte de systèmes accessibles par internet, altérer ou retirer l'accès signifie perdre en qualité ou supprimer le service proposé. Il faut donc que notre approche cible plutôt l'utilisation du chronomètre.
+Face à la menace des attaques temporelles, quelles solutions peuvent être mises en place pour protéger nos systèmes informatiques ? Cette attaque a besoin d'un accès au système et d'un chronomètre. Comme on est dans un contexte de systèmes accessibles par internet, altérer ou retirer l'accès signifie perdre en qualité ou supprimer le service proposé. Il faut donc que notre approche cible plutôt l'utilisation du chronomètre.
 
 Il faut donc programmer de tel sorte que sur toutes les entrées possibles de notre système informatique aucune variation de temps ne peut être observée entre les exécutions.
 Trois méthodes existent pour pallier à ce problème.\medbreak
 
 \subsection*{Programmation en temps constant}
-La programmation en temps constant, \textit{Constant-Time Programming}, est une pratique de programmation qui vise a résoudre exactement ce problème. Directement lié à la compléxité algorithmique, cette pratique modifie et adapte les algorithmes pour que toutes les opérations effectuées est un temps d'exécution identique.
+La programmation en temps constant, \textit{Constant-Time Programming}, est une pratique de programmation qui vise à résoudre exactement ce problème. Directement lié à la compléxité algorithmique, cette pratique modifie et adapte les algorithmes pour que toutes les opérations effectuées aient un temps d'exécution identique.
 
 \citeauthor{BearSSL} \cite{BearSSL} présente tous les éléments à adapter pour configurer un code respectant la politique de programmation en temps constant. Si les opérations élémentaires respectent "naturellement" cette politique; les \textbf{accès mémoires}, les \textbf{sauts conditionnels}, les \textbf{sopérations de décalages/rotations} et les \textbf{divisions/multiplications} sont les opérations à adapter en fonction de la plateforme cible. Les descriptions rapportées ci-dessous sont issues de \cite{BearSSL}.\smallbreak
 
 \begin{CitationBox}{Accès mémoire}
-  Un chargement depuis la mémoire d'une information est une source de variation. On a vus précedemment \cite{LLC_attack,DRAM_Attack} que l'usage d'un cache mémoire est un canal d'accès pour réaliser une attaque. En effet, l'utilisation d'un cache permet de distinguer les appels entre les données déjà mise en mémoire ou pas encore; de plus, les changement de valeurs dans celui-ci peuvent aussi être observé après exécution.
+  Un chargement depuis la mémoire d'une information est une source de variation. On a vs précedemment \cite{LLC_attack,DRAM_Attack} que l'usage d'un cache mémoire est un canal d'accès pour réaliser une attaque. En effet, l'utilisation d'un cache permet de distinguer les appels entre les données déjà mises en mémoire ou pas. De plus, les changements de valeur dans celui-ci peuvent aussi être observé après exécution.
 \end{CitationBox}
 \vspace{0.1cm}
 \begin{CitationBox}{Décalage et rotation}
-  Ces opérations binaires sont ou ne sont pas en temps constant en fonction des CPU sur lequel le code est exécuté. Certain ont un "barrel shifter" qui permet d'effectuer directement les instructions correspondantes. Cela impacte directement les algorithmes dépendant de décalages logiques comme le chiffrement RC5.
+  Ces opérations binaires sont ou ne sont pas en temps constant en fonction des CPU sur lequel le code est exécuté. Certains ont un "barrel shifter" qui permet d'effectuer directement les instructions correspondantes. Cela impacte directement les algorithmes dépendant de décalages logiques comme le chiffrement RC5.
 \end{CitationBox}
 \vspace{0.1cm}
 \begin{CitationBox}{Saut conditionnel}
-  Les saut conditionnels sont des instructions qui, comme pour les accès mémoires, demandent de charger les adresses des instructions suivantes. Or, comme un compilateur tend à précharger les instructions suivantes, il va charger les deux côtés du saut conditionnel puis defausser la branche inutile; ce qui entraîne un léger alentissement. En revanche, il est important de noter que si le branchement est indépendant d'une variable secrète, il n'est pas nécessaire de le modifier, par exemple si j'ai un compteur et que mon programme doit terminer après un certain nombre d'itérations, aucune fuite ne sera observée.
+  Les saut conditionnels sont des instructions qui, comme pour les accès mémoires, demandent de charger les adresses des instructions suivantes. Or, comme un compilateur tend à précharger les instructions suivantes, il va charger les deux côtés du saut conditionnel puis defausser la branche inutile; ce qui entraîne un léger alentissement. En revanche, il est important de noter que si le branchement est indépendant d'une variable secrète, il n'est pas nécessaire de le modifier. Par exemple si j'ai un compteur et que mon programme doit terminer après un certain nombre d'itérations, aucune fuite ne sera observée.
 \end{CitationBox}
 \vspace{0.1cm}
 \begin{CitationBox}{Division}
-  Certaines architectures ont des instructions de divisions spécifiques qui permettent d'accélérer le calcul, les autres emploient des sous-programmes dédiées souvent optimisés en opération de masquage et de décalages. La norme C entraîne elle aussi de la confusion car elle impose $(-1)/2 = 0$; il faut donc être familier avec les spécificités du processeur pour affiner l'usage de cette opération.
+  Certaines architectures ont des instructions de divisions spécifiques qui permettent d'accélérer le calcul, les autres emploient des sous-programmes dédiées souvent optimisés en opération de masquage et de décalage. La norme C entraîne elle aussi de la confusion car elle impose $(-1)/2 = 0$; il faut donc être familier avec les spécificités du processeur pour affiner l'usage de cette opération.
 \end{CitationBox}
 \vspace{0.1cm}
 \begin{CitationBox}{Multiplication}
-  Enfin, la multiplication, elle aussi dépendante des variable d'entrées, présente une fuite d'information importante, mais les CPU les plus récents (rédigé en 2016) ont implémenté cette opération en temps constant. Cela suit l'évolution des compilateurs et des processeurs qui tendent à accélérer les opérations et réduire le nombre d'instruction total.
+  Enfin, la multiplication, elle aussi dépendante des variable d'entrées, présente une fuite d'information importante. Mais les CPU les plus récents (rédigé en 2016) ont implémenté cette opération en temps constant. Cela suit l'évolution des compilateurs et des processeurs qui tendent à accélérer les opérations et réduire le nombre d'instruction total.
 \end{CitationBox}
 \vspace{0.1cm}
 
-En reprennant ces règles, on peut modifier notre exemple de code \ref{lst:timing_attack_example} et appliquer des modifications sur lignes que l'on a déjà ciblées comme fuites d'informations. Les modifications sont libre au choix du concepteur, voici une correction qui peut être réalisée :
+En reprennant ces règles, on peut modifier notre exemple de code \ref{lst:timing_attack_example} et appliquer des modifications sur lignes que l'on a déjà ciblées comme fuites d'informations. Les modifications sont libre au choix du concepteur. Voici une correction qui peut être réalisée :
 
 \begin{listing}[!htb]
     \caption{Exemple de correction pour rendre un code résistant aux attaques temporelles}
@@ -62,9 +62,9 @@ En reprennant ces règles, on peut modifier notre exemple de code \ref{lst:timin
     \end{minted}
 \end{listing}
 
-On voit que le premier branchement a été remplacé par un hachage des paramètres d'entrées, cette opération est considérée ici en temps constant mais peut ne pas l'être. Il faut être vigilant sur toutes les briques d'algorithmes que l'on souhaite utiliser. Enfin, le second branchement conditionnel est purement supprimé, le parcours des tableaux se fait entièrement.\bigbreak
+On voit que le premier branchement a été remplacé par un hachage des paramètres d'entrées. Cette opération est considérée ici en temps constant mais peut ne pas l'être. Il faut être vigilant sur toutes les briques d'algorithme que l'on souhaite utiliser. Enfin, le second branchement conditionnel est purement supprimé, le parcours des tableaux se fait entièrement.\bigbreak
 
-Avec cette modification, on a un code \ref{lst:timing_attack_CT_example} qui ne présente plus de fuite de données. Pourtant, on peut avoir un doute sur l'usage de la fonction "\textit{sha256\_hash\_string}". Si cette fonction n'est pas elle même implémentée selon la politique temps constant, on a alors introduis une nouvelle surface de fuite d'information. Il faut vérifier notre code pour supprimer ce doute.\medbreak
+Avec cette modification, on a un code \ref{lst:timing_attack_CT_example} qui ne présente plus de fuite de données. Pourtant, on peut avoir un doute sur l'usage de la fonction "\textit{sha256\_hash\_string}". Si cette fonction n'est pas elle même implémentée selon la politique temps constant, on a alors introduis une nouvelle surface de fuite d'informations. Il faut vérifier notre code pour supprimer ce doute.\medbreak
 
 \subsection*{Outils de garanties}
 
