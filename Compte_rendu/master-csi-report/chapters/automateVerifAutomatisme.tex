@@ -7,6 +7,8 @@ les problèmes et les enjeux
 
 les benchmarks en place
 
+introduction Binsec
+
 
 \section{Outils et mode d'emploi}
 
@@ -16,3 +18,6 @@ les benchmarks en place
 Le premier outil à être créé est \textit{ctgrind} \cite{ctgrind}, en 2010. Il s'agit d'une extension à \textit{Valgrind} observe le binaire associé au code cible et signale si une attaque temporelle peut être exécuter. En réalité, \textit{ctgrind} utilise l'outil de détection d'erreur mémoire de \textit{Valgrind} : Memcheck. Celui-ci détecte les branchement conditionnels et les accès mémoire calculés vers des régions non initialisée, alors les vulnérabilités peuvent être trouvées en marquant les variables secrètes comme non définies, au travers d'une annotation de code spécifique. Puis, durant son exécution, Memcheck associe chaque bit de données manipulées par le programme avec un bit de définition V qu'il propage tout au long de l'analyse et vérifie lors d'un calcul d'une adresse ou d'un saut. Appliquée à \textit{Valgrind} l'analyse est pertinente, cependant, dans le cadre de la recherche de faille temporelle cette approche produit un nombre considérable de faux positifs, car des erreurs non liées aux valeurs secrètes sont également rapportées.\medbreak
 
 
+
+
+https://blog.cr.yp.to/20240803-clang.html

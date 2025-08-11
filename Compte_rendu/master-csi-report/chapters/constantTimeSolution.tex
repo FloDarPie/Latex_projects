@@ -12,7 +12,7 @@ Il faut donc programmer de tel sorte que sur toutes les entrées possibles de no
 Trois méthodes existent pour pallier à ce problème.\medbreak
 
 \subsection*{Programmation en temps constant}
-La programmation en temps constant, \textit{Constant-Time Programming}, est une pratique de programmation qui vise à résoudre exactement ce problème. Directement lié à la compléxité algorithmique, cette pratique modifie et adapte les algorithmes pour que toutes les opérations effectuées aient un temps d'exécution identique.
+La programmation en temps constant ou <<\textit{Constant-Time Programming}>>, est une pratique de programmation qui vise à résoudre exactement ce problème. Directement lié à la compléxité algorithmique, cette pratique modifie et adapte les algorithmes pour que toutes les opérations effectuées aient un temps d'exécution identique.
 
 \citeauthor{BearSSL} \cite{BearSSL} présente tous les éléments à adapter pour configurer un code respectant la politique de programmation en temps constant. Si les opérations élémentaires respectent "naturellement" cette politique; les \textbf{accès mémoires}, les \textbf{sauts conditionnels}, les \textbf{sopérations de décalages/rotations} et les \textbf{divisions/multiplications} sont les opérations à adapter en fonction de la plateforme cible. Les descriptions rapportées ci-dessous sont issues de \cite{BearSSL}.\smallbreak
 
@@ -71,7 +71,7 @@ Avec cette modification, on a un code \ref{lst:timing_attack_CT_example} qui ne 
 Plusieurs outils existent est peuvent être utilisés tous au long du processus de développement d'un système sécurisé. Cela peut être durant la phase de conception du code source, au moment de la compilation ou encore en vérification de la compilation.\smallbreak
 
 
-Une solution légère est de ce servir du système libre "\textbf{Compiler Explorer}"\footnote{\url{https://godbolt.org/}}. Avec à disposition un éditeur de texte, il est possible de voir comment sera généré le code assembleur. En reprenant une partie du code \ref{fig:timing_attack_example}, on peut voir sur la figure \ref{img:godbolt_example} que le choix du compilateur, ici sa version, introduit une légère modification. Ce changement n'est pas perceptible sans observation directe ce perçoit directement grâce à la petite taille du code observé.
+Une solution légère est de ce servir du système libre <<\textbf{Compiler Explorer}\footnote{\url{https://godbolt.org/}}>>. Avec à disposition un éditeur de texte, il est possible de voir comment sera généré le code assembleur. En reprenant une partie du code \ref{fig:timing_attack_example}, on peut voir sur la figure \ref{img:godbolt_example} que le choix du compilateur, ici sa version, introduit une légère modification. Ce changement n'est pas perceptible sans observation directe ce perçoit directement grâce à la petite taille du code observé.
 
 \begin{figure}[!h]
   \begin{adjustwidth}{-2.5cm}{-2cm}
@@ -163,7 +163,7 @@ Nous avons découvert que \texttt{gcc -O0} et des optimisations de \texttt{clang
 
 Cette annonce a ensuite été prise en compte par \citeauthor{schneider2024breakingbadcompilersbreak} qui a mené une enquête sur les bibliothèques cryptographiques sécurisées et résistantes aux attaques temporelles : \cite{schneider2024breakingbadcompilersbreak}. La conclusion principale est que les compilateurs modernes sont devenus assez performant pour voir à travers les astuces employées et qu'une mauvaise utilisation d'optimisation implique l'introduction de faille de sécurité. \smallbreak
 
-Voici un exemple communiqué par \citeauthor{schneider2024breakingbadcompilersbreak} auprès des chercheurs de Hacl*. On peut voir deux fonctions dans le code \ref{lst:Hacl_masking}, \textit{cmovznz4} et \textit{FStar\_UInt64\_eq\_mask}. La première appelle la seconde pour générer un masque qui sera ensuite appliqué au entrée de \textit{cmovznz4}. On a ici une fonction qui agit comme un branchement conditionnel. Si \texttt{cin} vaut 1, alors $r = x$ sinon $r = y$.
+Voici un exemple communiqué par \citeauthor{schneider2024breakingbadcompilersbreak} auprès des chercheurs de Hacl*. On peut voir deux fonctions dans le code \ref{lst:Hacl_masking}, <<\textit{cmovznz4}>> et <<\textit{FStar\_UInt64\_eq\_mask}>>. La première appelle la seconde pour générer un masque qui sera ensuite appliqué au entrée de <<\textit{cmovznz4}>>. On a ici une fonction qui agit comme un branchement conditionnel. Si \texttt{cin} vaut 1, alors $r = x$ sinon $r = y$.
 
 \begin{listing}[!ht]
     \caption{Fonction de masquage issu de \textit{Hacl*}}
@@ -195,7 +195,7 @@ void cmovznz4(uint64_t cin, uint64_t *x, uint64_t *y, uint64_t *r)
     \end{minted}
 \end{listing}
 
-Avec le compilateur \texttt{RISC-V rv64gc clang 15.0.0}, si on entre les options de compilation \texttt{-O0} ou \texttt{-O1} on peut observer différents résultats. Le plus notable ici est l'apparition de l'instruction \texttt{beqz}, qui est un branchement conditionnel. Les optimisations appelées par l'option \texttt{-O1} permettent d'identifier le tour de passe passe qui lui été proposé. Le code \ref{subcode:O0} suient les instructions précisées par le code source, le compilateur avec cette optimisation compile vite, à l'inverse du code \ref{subcode:O1} où les sauts succesifs entre les \texttt{beqz} permet une exécution plus rapide. Les options de compialtions sont rapportées en annexe \ref{tab:compile_option}\footnote{\url{https://gcc.gnu.org/}}.
+Avec le compilateur \texttt{RISC-V rv64gc clang 15.0.0}, si on entre les options de compilation \texttt{-O0} ou \texttt{-O1} on peut observer différents résultats. Le plus notable ici est l'apparition de l'instruction \texttt{beqz}, qui est un branchement conditionnel, ainsi que la suppression de la fonction de masquage <<\textit{FStar\_UInt64\_eq\_mask}>>. Les optimisations appelées par l'option \texttt{-O1} permettent d'identifier le tour de passe passe qui lui été proposé. Le code \ref{subcode:O0} suient les instructions précisées par le code source, le compilateur avec cette optimisation compile vite. Au contraire du code \ref{subcode:O1} produit par une analyse plus longue du compilateur où les sauts succesifs entre les \texttt{beqz} permettent une exécution plus rapide. Les options de compilations sont rapportées en annexe \ref{tab:compile_option}\footnote{\url{https://gcc.gnu.org/}}.
 
 \begin{figure}[h]
     \begin{subfigure}[b]{0.5\textwidth}

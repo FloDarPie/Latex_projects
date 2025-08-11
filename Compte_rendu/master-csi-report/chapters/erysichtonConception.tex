@@ -1,18 +1,85 @@
-\chapter{Érysichton à jamais affamé}
+\chapter{Implémentations pour un usage industriel}
 \label{chap:erysichtonConception}
 
 
-conception, modèle, difficulté problèmes, specificité des lib...
-
-- motivations
-
 - prise en main
-
 - corrections BINSEC
-
-- liste des taches a realiser
-
 - difficultes
+
+
+\section{Identification des besoins et spécificités}
+
+On a pus voir grâce aux chapitres précédents que la conception et l'implémentation d'une système sécurisé est un problème difficile. Une première étape est de concevoir des primitives et protocoles mathématiquement sécurisés. Une seconde étape est de s’assurer que leurs implémentations sont effectivement sécurisées, d’abord d’un point de vue mathématique contre des attaques logiques (aspect fonctionnel : le code implémente correctement les bons concepts cryptographiques), mais aussi contre des attaques très bas niveau, les attaques temporelles. \medbreak
+
+Avec l'objectif de concevoir un sytème sûr, il nous faut donc identifier toutes les tâches à réaliser pour arriver à bout de ce projet. En plus de ce travail de planification, l'identification et l'intégration d'outils déjà implémenté nous permettra de d'avancer plus rapidement vers cet objectif.\smallbreak
+
+
+\subsection*{Point de départ}
+
+En reprenant ces deux étapes, on va identifier quels sont nos leviers et nos possibilités pour un développeur pour avancer dans la conception de notre graal.\smallbreak
+
+La première étape de conception de primitives cryptologiques et de protocole n'est pas du ressort du développeur. Elle appartient aux cryptologues et aux chercheurs en sécurité mathématique. Ce sont eux qui concoivent et maintiennent des librairies cryptographiques, des boîtes à outils qui propose les briques de sécurité nécessaires aux systèmes sécurisés.\medbreak
+
+Plusieurs librairies existent \cite{OpenSSL, BearSSL, polubelova2020haclxn} et remplissent différents objectifs :  rétro-compatiblité, politique temps constant\etc Notre choix est à réaliser en fonction des spécifités du produits que l'on cherche à déployer.\medbreak
+
+La seconde étape est à distinguer en deux parties. Cette opération de vérification de la sécurité de l'implémentation peut-être réaliser sur le produit fini et sur les librairies employés par le produit. Comme introduit, cette étape à pour objectif la vérification formelle du code du programme et la vérification matérielle au niveau assembleur.\medbreak
+
+Utiliser la bibliothèque \textbf{Hacl*} \cite{polubelova2020haclxn, Hacl*} permet d'avancer la première étape et la première partie de la seconde étape. Cette bibliothèque a été conçue formellement et vient avec les preuves mathématique de la sécurité de son implémentation. Comme présenté en \nameref{chap:prelude}, cette librairie est programmée en F*. Le projet permet une exploitation en C et en assembleur \cite{Hacl*}.\medbreak
+
+En revanche, la seconde étape de la seconde partie nous demande une vérification au niveau de l'assembleur. Si certaine partie de cette librairie sont codées en assembleur, la majorité du projet reste du F* traduit vers C. Il faut réaliser une analyse. Dans le cadre de cette étude, l'outil d'analyse binaire retenu pour réaliser cette tâche est \textbf{Binsec}. Cette outil est implémenté en Ocaml et est maintenu par une équipe de chercheurs ingénieurs géographiquement proche de l'équipe PROSECCO Inria. Cet avantage permet des échanges plus directs et donc une facilité quand à la mise en place du projet.\medbreak
+
+L'objectif est donc d'analyser Hacl* dans son entièreté. Avec cette analyse complète, si elle est correcte, alors les deux étapes de réalisation d'un système sûr seront réalisées. Cela signifie que la première librairie cryptographique formellement sûre et résistante aux attaques temporelles sera conçus.
+
+\subsection*{Objectifs à réaliser}
+
+Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red}{"ref vers fonctionement de Binsec"}, l'analyse se réalise sur un fichier binaire à l'aide d'un carnet d'instructions à préciser. Avec ce point de départ, on peut commencer à construire notre carnet de spécifications.
+
+\textbf{Fichier binaire.} Il faut donc des fichiers binaires à fournir à Binsec. Or comme chacun le sait, plus un binaire est imposant, plus son analyse est difficile. Et comme Binsec emploi l'analyse symbolique, explorer un binaire imposant a un coût de mémoire quadratique sur le parcours des instructions du binaire. L'idéal est donc d'analyser plein de petits fichiers binaires.\smallbreak
+
+\textbf{Analyse complète.} Chaque fonction de Hacl* doit être analysée. En poursuivant la condition précédente, on peut essayer de concevoir un binaire par fonction analysé. On distribue ainsi l'analyse et on parcourt ainsi toute les fonctions présentent dans la librairie.\medbreak
+
+\textbf{Analyse correcte.} Si on se rappel comment fonctionne les optimisations (voir le tableau \ref{tab:compile_option}) il faut faire attention avec certaines optimisations qui simplifient le code par soustraction d'oprations. Le fichier ne doit pas seulement contenir un appel de fonction, il faut une légère mise contexte.
+
+\begin{listing}[!ht]
+    \caption{Code d'anlayse de la fonction Hacl\_AEAD\_Chacha20Poly1305\_Simd128\_encrypt, testé lors de la prise main de Binsec et Hacl*}
+    \label{lst:prise_en_main}
+    \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,linenos, gobble=8]{C}
+        #include <stdlib.h>
+
+        #include "Hacl_AEAD_Chacha20Poly1305_Simd128.h"
+
+        #define BUF_SIZE 16384
+        #define KEY_SIZE 32
+        #define NONCE_SIZE 12
+        #define AAD_SIZE 12
+        #define TAG_SIZE 16
+
+        uint8_t plain[BUF_SIZE];
+        uint8_t cipher[BUF_SIZE];
+        uint8_t aead_key[KEY_SIZE];
+        uint8_t aead_nonce[NONCE_SIZE];
+        uint8_t aead_aad[AAD_SIZE];
+        uint8_t tag[16];
+
+        int main (int argc, char *argv[])
+        {
+        Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt
+            (cipher, tag, plain, BUF_SIZE, aead_aad, AAD_SIZE, aead_key, aead_nonce);
+        exit(0);
+        }
+    \end{minted}
+\end{listing}
+
+De même, comme nos fichiers analysés font appel à la librairie extérieur Hacl*, l'emploi de l'option \texttt{-static} est nécessaire pour prévenir la mise place de lien vers la librairie partagée dans le ficher binaire. Cette option ne nuit pas à la qualité de l'analyse, elle permet en revanche d'avoir tous les éléments sous la main lorsque l'on déassemble un fichier binaire. Retirer cette option lors de la compilation, c'est se rajouter des lourdeurs et rallonger la temps requis pour la vérification manuelle d'un fichier.\medbreak
+
+\textbf{Couverture de compilateur.} Les travaux de \citeauthor{schneider2024breakingbadcompilersbreak} \cite{schneider2024breakingbadcompilersbreak} ont clairement mis en évidence que le choix du compilateur est à considérer. Il faut donc identifier quel compilateur nous permet d'avoir des fichiers binaires les plus sécurisés. On peut aussi identifier quels optimisations produisent la rupture de sécurité dans le binaire en étudiant plus en avant le comportement de ceux-ci.
+
+\textbf{Couverture d'architectures.} x86\_64 et ARM sont les architectures matérielles les plus répandues dans le monde. Étendre l'analyse vers différentes plateformes et observer les différences qui émergent nous permettraient d'avancer dans la direction de la conception d'une librairie cryptographique universelle. On aussi étendre l'analyse vers d'autres architectures comme PowerPC ou RiscV.\medbreak
+
+
+\textbf{Automatisation.} Faire cette analyse sur un fichier binaire, comme le code \ref{lst:prise_en_main}, avec trois axes de compléxité (complétude, de la couverture d'architectures et des compilateurs) n'est pas envisageable à la main. Il faut absolument que l'analyse réalisée soit automatisée
+
+
 
 
 
