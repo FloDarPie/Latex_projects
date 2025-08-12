@@ -23,6 +23,6 @@
 *.synctex.gz
 *.ilg
 *.lol
-_minted
+**/_minted
 *.rubbercache
 *.run.xml

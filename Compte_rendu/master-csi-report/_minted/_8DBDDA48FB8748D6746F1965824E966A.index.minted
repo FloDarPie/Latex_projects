@@ -1,8 +1,11 @@
 {
   "jobname": "simple",
   "md5": "8DBDDA48FB8748D6746F1965824E966A",
-  "timestamp": "20250811175019",
+  "timestamp": "20250811201202",
   "cachefiles": [
+    "43D93F9D7264CCF48C9D2F92E3B1E223.highlight.minted",
+    "845EF4604EB8A1491F80EDAD66D6EB90.highlight.minted",
+    "8ED74B58EC06D41D061157013780AC2A.highlight.minted",
     "EC53367934092D2A8A7281BD578403AE.highlight.minted",
     "_8DBDDA48FB8748D6746F1965824E966A.index.minted",
     "default.style.minted"

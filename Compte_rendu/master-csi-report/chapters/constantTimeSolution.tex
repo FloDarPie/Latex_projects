@@ -197,7 +197,7 @@ void cmovznz4(uint64_t cin, uint64_t *x, uint64_t *y, uint64_t *r)
 
 Avec le compilateur \texttt{RISC-V rv64gc clang 15.0.0}, si on entre les options de compilation \texttt{-O0} ou \texttt{-O1} on peut observer différents résultats. Le plus notable ici est l'apparition de l'instruction \texttt{beqz}, qui est un branchement conditionnel, ainsi que la suppression de la fonction de masquage <<\textit{FStar\_UInt64\_eq\_mask}>>. Les optimisations appelées par l'option \texttt{-O1} permettent d'identifier le tour de passe passe qui lui été proposé. Le code \ref{subcode:O0} suient les instructions précisées par le code source, le compilateur avec cette optimisation compile vite. Au contraire du code \ref{subcode:O1} produit par une analyse plus longue du compilateur où les sauts succesifs entre les \texttt{beqz} permettent une exécution plus rapide. Les options de compilations sont rapportées en annexe \ref{tab:compile_option}\footnote{\url{https://gcc.gnu.org/}}.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
     \begin{subfigure}[b]{0.5\textwidth}
         \centering
         \small

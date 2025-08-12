@@ -14,6 +14,7 @@
 \usepackage{xspace,varioref}
 \usepackage{hyperref, caption}
 \usepackage{tikz}
+\usetikzlibrary{arrows.meta, bending, positioning}
 \usepackage{ragged2e}
 
 \usepackage{minted, subcaption}
@@ -43,6 +44,7 @@
 %% custom style %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \definecolor{lightgray}{gray}{0.9}
+\definecolor{inria-2024-gris-bleu}  {HTML}{384257}
 
 % custom commands
 \newcommand{\version}[1]{\def\theversion{#1}}
