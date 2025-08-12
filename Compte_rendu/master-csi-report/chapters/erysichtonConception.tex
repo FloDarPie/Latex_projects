@@ -2,7 +2,7 @@
 \label{chap:erysichtonConception}
 
 
-
+intro
 
 \section{Identification des besoins et spécificités}
 
@@ -304,12 +304,45 @@ Les résultats dans le tableau \ref{tab:resultats_riscv} est indéniable : la ve
     
 
 
-En explorant plus en avant le code binaire, on découvre que ces erreurs sont dus à l'opérande \texttt{beqz} : effectue un branchement si la valeur du registre consulté est zéro. L'ISA de Risc-V n'a pas accès à un opérande comme \texttt{cmov} en X86\_64 ou ARM. Donc l'application d'optimisation de compilation encourage l'usage de cette opérande qui n'est pas en temps constant.\medbreak
+En explorant plus en avant le code binaire, on découvre que ces erreurs sont dus à l'opérande \texttt{beqz}\footnote{Effectue un branchement si la valeur du registre consulté est zéro. Cette opérande est propre à Risc-V.}. L'ISA de Risc-V n'a pas à sa dispostion un opérande comme \texttt{cmov} en X86\_64 ou ARM. Donc l'application d'optimisation de compilation force l'usage de cette opérande qui n'est pas en temps constant. L'optimisation qui réalise ce changement se nomme <<\textit{InstCombinePass}>>.\medbreak
 
-On a pus observer ici une manifestation indéniable des précédents résulats proposés par d'autres travaux de recherche. Une solution serait de modifier l'ISA pour permettre cette opération d'être en temps constant. Celle qui a été retenue c'est d'employer un \texttt{pragma}, ici \texttt{\# pragma clang optimise <off/on>}. Cette instruction donné dans le code source indique au compilateur de désactiver ses optmisation pour le code contenu entre les deux balise \texttt{off,on}. Cette solution entraîne des pertte de performance et des ralentissements quand au temps de compilation et à l'usage des ressources, il vaut mieux l'utiliser avec parcimonie que désactiver toutes les optimisations de compilations.
+On a pus observer ici une manifestation indéniable des précédents résulats proposés par d'autres travaux de recherche. Une solution serait de modifier l'ISA pour permettre cette opération d'être en temps constant. Celle qui a été retenue c'est d'employer un \texttt{pragma}, ici \texttt{\# pragma clang optimise <off/on>}. Cette instruction donné dans le code source indique au compilateur de désactiver ses optmisation pour le code contenu entre les deux balise \texttt{off,on}. Cette solution entraîne des pertte de performance et des ralentissements quand au temps de compilation et à l'usage des ressources, il vaut mieux l'utiliser avec parcimonie que désactiver toutes les optimisations de compilations.\medbreak
 
+Nous avons notre besoin, nous avons nos exigences, nous avons fait des tests pour comprendre le processus que l'on va devoir automatser. Ces idées peuvent être illustrées par la figure \ref{fig:compilation_simple} : depuis Hacl*, on extrait une fonction que l'on veut tester en un fichier de test en C, on identifie les paramètres secrets et on conçois le script pour Binsec, on compile notre fichier C à notre guise, on lance l'analyse Binsec.
 
+\begin{figure}[!ht]
+    \caption{Flot de travail de l'outil d'analyse à concevoir}
+    \label{fig:compilation_simple}
+    \centering
+    \begin{tikzpicture}[node distance=2cm]
 
+    % Styles des noeuds
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{intermediate} = [circle, minimum size=0.5cm, text centered, draw=white, fill=white]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    
+    % Noeuds
+    \node (hacl) [startstop] {Hacl*};
+    \node (inter) [intermediate, below of=hacl,xshift=1cm, yshift=1cm] {};
+    \node (compilateur) [process, below of=hacl] {Compilateur};
+    \node (binsec) [startstop, below of=compilateur] {Binsec};
+    
+    % Flèches
+    \draw [arrow, red] (hacl) -- node[anchor=west] {-test.c} (compilateur);
+    \draw [arrow, red] (inter) -- ++(2,0) |- node[anchor=west, pos=0.25] {.ini} (binsec);
+    \draw [arrow, blue] (compilateur) -- node[anchor=east] {.exe} (binsec);
+    
+    % Annotations
+    \node[align=center, left of=compilateur, xshift=-0.2cm] {\scriptsize x86\_64\\ \scriptsize ARM\\ \scriptsize Risk-V};
+    \node[align=center, below of=binsec, yshift=30pt] {\scriptsize Secure/Insecure/Unkown};
+    
+    \end{tikzpicture}
+
+\end{figure}
+
+\vfill
+\textit{Transition}
 
 
 

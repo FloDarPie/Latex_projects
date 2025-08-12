@@ -1,6 +1,7 @@
 \chapter{Érysichton à jamais affamé}
 \label{chap:erysichtonUsage}
 
+intro
 
 - point histoire
 
@@ -12,4 +13,150 @@
 
 usage de l'outil, comment ça rend
 
+\section{Planification et préparations}
 
+Nous avons nos spécificités technique et nous savons qu'elle forme notre outil doit avoir. Nous pouvons commencer par synthétiser les opérations nécessaires.\smallbreak
+
+Nous allons donc concevoir des protocoles pour identifier les étapes nécessaires pour que Binsec analyse entièrement un fichier et nous renvoie un parmi [\texttt{secure, unknown, insecure}]. Le protocole \texttt{x86\_64} est particulier. Depuis la version \textbf{0.5.0} de Binsec il est possible de fournir un <<cliché mémoire>>\footnote{Plus couramment 'Core dump', terme technique anglais désignant une copie de la mémoire vive et des registres d'un programme. Ce fichier sert à être analyser, généralement par un débogueur.} pour accélérer l'analyse. On va se servir de cet avantage pour l'intégrer notre graphe d'éxécution.La machine sur laquelle le projet sera développé est sur une architecture x86\_64, cela nous permet d'utiliser l'outil GDB pour la génération de cliché mémoire.\medbreak
+
+\begin{figure}[!ht]
+    \caption{Protocole pour analyser des fichiers compiler en x86\_64}
+    \label{fig:protocole_x86}
+    \centering
+  \begin{tikzpicture}[auto]
+
+    % Styles
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    \tikzset{zone1/.style={rectangle, rounded corners, draw=red, dashed, fill=red!10, inner sep=0.3cm}}
+    \tikzset{zone2/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.3cm, opacity = 0.7}}
+    \tikzset{zone22/.style={rectangle, rounded corners, draw=none, fill=blue!10, inner sep=0.3cm}}
+    \tikzset{zone3/.style={rectangle, rounded corners, draw=green, dashed, fill=green!10, inner sep=0.3cm}}
+    
+    % Noeuds
+    \node (hacl) [startstop] {Hacl*};
+    \node (c) [below of=hacl] {Fonction};
+    \node (ini) [below of=c, xshift=2cm] {.ini};
+    \node (test) [below of=c, xshift=-2cm] {-test.c};
+    \node (script) [below of=c] {.script};
+    \node (compilateur) [process, below of=test] {Compilateur};
+    \node (exe) [below of=compilateur] {-test.exe};
+    \node (blanc1) [below of=script] {};
+    \node (blanc2) [below of=blanc1] {};
+    \node (gdb) [process, below of=blanc2] {GDB};
+    \node (snap) [right of=gdb, xshift=2cm] {.snapshot};
+    \node (binsec) [startstop, right of=snap, xshift=1.5cm] {Binsec};
+    
+    % Flèches
+    \draw [arrow] (hacl) -- (c);
+    \draw [arrow] (c) -- (ini);
+    \draw [arrow] (c) -- (test);
+    \draw [arrow] (c) -- (script);
+    \draw [arrow] (test) -- (compilateur);
+    \draw [arrow] (compilateur) -- (exe);
+    \draw [arrow] (exe) -- (gdb);
+    \draw [arrow] (script) -- (gdb);
+    \draw [arrow] (gdb) -- (snap);
+    \draw [arrow] (snap) -- (binsec);
+    \draw [arrow] (ini) -- (binsec);
+
+    % Zones
+    \begin{scope}[on background layer]
+        \node [zone1, fit=(c) (ini) (test) (script)] {};
+        \node [zone2, fit=(script) (gdb)] {};
+              \node [zone2, fit=(gdb) (snap) (binsec)] {};
+              \draw [zone22]
+              ([xshift=-10pt, yshift=10pt]gdb.north west) --
+              ([xshift=10pt, yshift=10pt]gdb.north east) -- 
+              ([xshift=10pt, yshift=-9pt]gdb.south east) -- 
+              ([xshift=1pt, yshift=-1pt]gdb.south west) --
+              cycle;  
+    \node [zone3, fit=(compilateur) (exe)] {};
+    \end{scope}
+    \end{tikzpicture}
+\end{figure}
+
+Ce graphe présente la chaîne d'étape à avoir pour obtenir une analyse Binsec depuis une fonction que l'on cible. Plusieurs zones sont distinguées. La zone verte correspond à l'étape de compilation, la zone bleue à l'étape de préparation de l'analyse et la zone rouge à la synthèse des fichiers de tests et d'instruction pour l'analyse. Ce choix de couleur est adapté à la difficulté attendu de chaque étape. L'opération de compilation consiste en une commande. L'opération de préparation d'analyse consiste aussi en deux commandes : un appel à GDB avec le binaire puis un appel à Binsec avec le cliché mémoire et les instruction d'analyse.\smallbreak
+
+Avec ce graphe réalisé, on peut le modifier pour préparer la voie à d'autres architectures. Dans un format plus générique voici comment se présent notre protocole d'analyse :
+
+\begin{figure}[!ht]
+    \caption{Protocole générique d'analyse}
+    \label{fig:protocole_generique}
+    \centering
+  \begin{tikzpicture}[auto]
+
+    % Styles
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    \tikzset{zone1/.style={rectangle, rounded corners, draw=red, dashed, fill=red!10, inner sep=0.3cm}}
+    \tikzset{zone2/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.3cm, opacity = 0.5}}
+    \tikzset{zone3/.style={rectangle, rounded corners, draw=green, dashed, fill=green!10, inner sep=0.3cm}}
+    
+    % Noeuds
+    \node (hacl) [startstop] {Hacl*};
+    \node (c) [below of=hacl] {Fonction};
+    \node (ini) [below of=c] {.ini};
+    \node (test) [below of=c, xshift=-2cm] {-test.c};
+    \node (compilateur) [process, below of=test] {Compilateur};
+    \node (exe) [below of=compilateur] {-test.exe};
+    \node (blanc) [below of=c] {};
+    \node (blanc1) [below of=blanc] {};
+    \node (blanc2) [below of=blanc1] {};
+    \node (binsec) [startstop, below of=blanc2] {Binsec};
+    
+    % Flèches
+    \draw [arrow] (hacl) -- (c);
+    \draw [arrow] (c) -- (ini);
+    \draw [arrow] (c) -- (test);
+    \draw [arrow] (test) -- (compilateur);
+    \draw [arrow] (compilateur) -- (exe);
+    \draw [arrow] (exe) -- (binsec);
+    \draw [arrow] (ini) -- (binsec);
+
+    % Zones
+    \begin{scope}[on background layer]
+        \node [zone1, fit=(c) (ini) (test) ] {};
+        \node [zone2, fit=(ini) (binsec)] {};
+        \node [zone3, fit=(compilateur) (exe)] {};
+    \end{scope}    
+    \end{tikzpicture}
+\end{figure}
+
+Dans ce contexte, une question se pose : est-ce que la conception des script pour Binsec (\textit{.ini}) est automatisable ou est-ce qu'il faudra utiliser des émulateurs pour générer des clichés mémoire et revenir dans le cas de la figure \ref{fig:protocole_x86} ?\smallbreak
+
+Cette question est importante parce que lorsqu'on analyse un fichier ARM par exemple, si le fichier source contient des appels à des fonctions systèmes, les \texttt{IFUNC}, celles-ci sont exécutées en fonction de l'architecture qui exécute le programme. Or Binsec n'a pas ces informations, il faut les fournir à la main. Voici le scipt nécessaire pour une vérification de la fonction <<Hacl \_AEAD \_Chacha20Poly1305\_Simd128\_encrypt>> compilé vers ARMv8.
+
+\begin{listing}[!ht]
+    \caption{Script d'instruction pour analyser un binaire compilé vers ARM}
+    \label{lst:script_arm_exemple}
+    \begin{minted}{bash}
+load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
+
+secret global input1, aad1
+
+@[0x00000048f008 ,8] := <__memcpy_generic>
+@[0x00000048f018, 8] := <__memset_generic>
+@[0x00000048f030 ,8] := <__memcpy_thunderx2>
+
+lr<64> := 0xdeadbeef as return_address
+
+starting from <main>
+with concrete stack pointer
+
+halt at return_address
+halt at <_IO_puts>
+explore all 
+    \end{minted}
+\end{listing}
+
+Les lignes 5 à 7 sont présente pour indiquer les branchement à effectuer par Binsec lorsque qu'il rencontre ces adresses. Cette opération automatiquement exécutée lors de l'initialisation de l'exécution doit ici être précisée avec les fonction présente dans le binaire. Automatiser ces affectations peut être difficile et nécessiter quelques outils d'analyse supplémentaires pour attraper les adresses qui ont besoin d'être réaffecté et leur attribuer les fonctions les plus adaptées.\medbraek
+
+\section{Conception et usages}
+
+
+
+\vfill
+\textit{Transition}
