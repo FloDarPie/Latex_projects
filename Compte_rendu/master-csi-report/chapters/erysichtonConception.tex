@@ -152,9 +152,9 @@ $ binsec -sse -sse-script $(BINSEC_SCRIPT) -checkct $(BINARY)
     \end{minted}
 \end{listing}
 
-L'option \texttt{-sse} permet d'activer l'analyse par exécution symbolique, \texttt{-sse-script} associer à un fichier (ici \texttt{BINSEC\_SCRIPT}) permet d'instruire notre analyse, préciser des stubs\footnote{Terme anglais du lexique de la rétro-ingénierie; module logiciel simulant la présence d'un autre.} et des initialisations, enfin \texttt{-checkct} active la vérification des propriétés temps constant au sein du fichier binaire indiqué par \texttt{BINARY}.\medbreak
+L'option \texttt{-sse} permet d'activer l'analyse par exécution symbolique, \texttt{-sse-script} associer à un fichier (ici \texttt{BINSEC\_SCRIPT}) permet d'instruire notre analyse, préciser des stubs\footnote{Terme anglais du lexique de la rétro-ingénierie; module logiciel simulant la présence d'un autre.} et des initialisations, enfin \texttt{-checkct} active la vérification des propriétés temps constant au sein du fichier binaire indiqué par \texttt{BINARY}. Binsec renvoie dans le terminal le résultat de son analyse : [\texttt{secure, unknown, insecure}]. Le second est invoqué lorsque l'analyse est incomplète.\medbreak
 
-Cette phase permet de tester plusieurs fonctions de Hacl* et surtout de se familiariser avec le langage d'instruction qu'admet l'option \texttt{-sse-script}. Un tutoriel complet est accessible pour comprendre le fonctionnement l'outil Binsec depuis sa page officielle\footnote{https://binsec.github.io/}.
+Cette phase <<Test et Identification des exigences>> permet de confronter plusieurs fonctions de Hacl* et de se familiariser avec le langage d'instruction qu'admet l'option \texttt{-sse-script}. Un tutoriel complet est accessible pour comprendre le fonctionnement l'outil Binsec depuis sa page officielle\footnote{https://binsec.github.io/}.
 
 \begin{listing}[!ht]
     \caption{Instructions permettant de trouver le mot d'un passe d'un binaire exercice}
@@ -187,7 +187,7 @@ halt at <printf>
 \end{minted}
 \end{listing}
 
-Ce code présenté ici est issu du tutoriel de Binsec et permet de réaliser une attaque sur un binaire issu d'une plateforme d'apprentissage à la sécurité informatique. L'exerice consistant à retrouver le mot de passe caché d'un binaire. Dans le cadre de notre exercice d'analyse de la politique temps constant, le script \ref{lst:analyse_simple_binsec} est plus simple.\medbreak
+Ce code présenté ici est un exempe d'usage de Binsec et permet de réaliser une attaque sur un binaire issu d'une plateforme d'apprentissage à la sécurité logiciel\footnote{https://crackmes.one/}. L'exerice consistant à retrouver le mot de passe caché d'un binaire. Dans le cadre de notre exercice d'analyse de la politique temps constant, le script \ref{lst:analyse_simple_binsec} est plus simple.\medbreak
 
 Ce script a été conçu avec pour objectif de vérifier les résultats apportés par \cite{schneider2024breakingbadcompilersbreak} concernant une fuite présente sur la fonction <<\textit{FStar\_UInt64\_eq\_mask}>> et d'étendre l'analyse vers d'autres architectures. Dans une première démarche d'automatisation, ce code à été généré automatiquement par un script shell. On voit ici que l'analyse ne parcourt pas l'entièreté du binaire, seulement 8 sections sont chargés (sur 24). L'analyse commence à l'appel de la fonction \texttt{main} et se termine à la ligne 8 avec une adresse de fin. Cette addresse de fin est produite par le script shell pour attraper la fin de la fonction \texttt{main}. 
 
@@ -209,48 +209,69 @@ explore all
 \end{listing}
 
 
-Ce modèle, qui nous servira de base pour la suite du développement, a permis une analyse rapide entre différents compilateurs et différentes architectures : 
+Ce modèle, qui nous servira de base pour la suite du développement, a permis une analyse rapide entre différents compilateurs et différentes architectures.
+
+\subsection*{Application et observation entre architectures et compilateurs}
 
 
 \begin{figure}[!ht]
-    \caption{Tableau de résultats d'analyse Binsec pour architecture ARMv7}
-    \label{tab:resultats_amv7}
-    \centering
-    \begin{tabular}{|c|c|c|c|c|c|}
-        \hline
-        \rowcolor{blue!10}
-        \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{fonction analysée} & \multicolumn{5}{c|}{\textbf{cmovznz4}} \\
-        \hline
-        \rowcolor{blue!30}
-        \textbf{Clang+LLVM} & \textbf{14.0.6} & \textbf{15.0.6} & \textbf{16.0.4} & \textbf{17.0.6} & \textbf{18.1.8} \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-Os} & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-Oz} & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark \\
-        \hline
-    \end{tabular}
+    \caption{Tableau de résultats d'analyse Binsec pour architecture ARMv7 et ARMv8}
+    \label{tab:resultats_arm}
+    \begin{center}    
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+            \rowcolor{blue!10}
+            \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{fonction analysée} & \multicolumn{5}{c|}{\textbf{cmovznz4}} \\
+            \hline
+            \rowcolor{blue!30}
+            \textbf{Clang+LLVM} & \textbf{14.0.6} & \textbf{15.0.6} & \textbf{16.0.4} & \textbf{17.0.6} & \textbf{18.1.8} \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-O0} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-O1} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-Os} & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-Oz} & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark \\
+            \hline
+        \end{tabular}   
+    \end{center}
+    \raggedleft
+    \small{
+    \checkmark : \textit{binaire secure}
+    }
 \end{figure}
 
+On comprend, à la lecture du tableau \ref{tab:resultats_arm}, que la politique temps constant est considérée respectée par Binsec sur les versions testé ainsi que pour les différentes options de compilation. Ce résultat est encourageant pour la suite du projet.\medbreak
 
-
-\begin{figure}[!ht]
+\begin{figure}[!htb]
     \caption{Tableau de résultats d'analyse Binsec pour architecture Risc-V}
-    \label{tab:resultats_riscv32}
-      \begin{tabular}{|c|cc|cc|}
+    \label{tab:resultats_riscv}
+    \begin{center}
+
+    \begin{tabular}{|c|cc|cc|}
         \hline
         \rowcolor{blue!10}
         \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{fonction analysée} & \multicolumn{2}{c|}{\textbf{cmovznz4} - 64 bits} & \multicolumn{2}{c|}{\textbf{cmovznz4} - 32 bits} \\
         \hline
         \rowcolor{blue!30}
         \textbf{Compilateur et architecture} & gcc 15.1.0 & clang 19.1.7 & gcc 15.1.0& clang 19.1.7 \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O0} &  \cellcolor{orange!60}\textasciitilde  & \cellcolor{red!60}$\times$ & \cellcolor{orange!60}\textasciitilde & \cellcolor{red!60}$\times$ \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O1} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
         \hline
         \rowcolor{orange!30!red!50}
         \textbf{-O2} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
@@ -264,17 +285,28 @@ Ce modèle, qui nous servira de base pour la suite du développement, a permis u
         \rowcolor{orange!30!red!50}
         \textbf{-Oz} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
         \hline
-      \end{tabular}
+    \end{tabular}
+    \end{center}
+    \raggedleft
+     \small{
+        \checkmark : \textit{binaire secure} ;
+        \textasciitilde : \textit{binaire unknown} ;
+        $\times$ : \textit{binaire insecure}
+    }
 \end{figure}
 
+Les résultats dans le tableau \ref{tab:resultats_riscv} est indéniable : la version 19.1.7 de clang rend le code source perméable à des attaques temporelles.\medbreak
+
+\begin{CitationBox}{Identification de défaut}
+    Pour construire le tableau \ref{tab:resultats_riscv}, plusieurs alertes se sont levées et on permis de mettre en évidence un bug présent dans Binsec. Cette erreur dans l'analyse symbolique provoquait l'arrêt de l'exploration par explosion de l'usage de la mémoire. Les registres \texttt{ld} (\textit{load}) et \texttt{sd} (\textit{store}) étaient mal géré. En particulier l'opérande \texttt{ld}, simulé par un tableau, n'était jamais vidé. Cette découverte a amené un correctif et une amélioration de Binsec. De part l'envergure de ce projet, il est possible que d'autre erreurs dû à Binsec soient découverte. L'exploration de nombreuses et nouvelles ISA\footnote{Ancronyme anglais pour Architecture de Jeu d'Instruction, désigne l'ensemble des instructions assembleur associées à une architecture.}, surtout avec Risc-V qui est encore en développement et perfectionnement, permet de renforcer cet outil plus efficacement et rapidement que par la construction de tests manuels.\medbreak
+\end{CitationBox}
+    
+    
 
 
-% \cellcolor{green!60}\checkmark
+En explorant plus en avant le code binaire, on découvre que ces erreurs sont dus à l'opérande \texttt{beqz} : effectue un branchement si la valeur du registre consulté est zéro. L'ISA de Risc-V n'a pas accès à un opérande comme \texttt{cmov} en X86\_64 ou ARM. Donc l'application d'optimisation de compilation encourage l'usage de cette opérande qui n'est pas en temps constant.\medbreak
 
-
-% \cellcolor{orange!60}\textasciitilde 
-
-% \cellcolor{red!60}$\times$ 
+On a pus observer ici une manifestation indéniable des précédents résulats proposés par d'autres travaux de recherche. Une solution serait de modifier l'ISA pour permettre cette opération d'être en temps constant. Celle qui a été retenue c'est d'employer un \texttt{pragma}, ici \texttt{\# pragma clang optimise <off/on>}. Cette instruction donné dans le code source indique au compilateur de désactiver ses optmisation pour le code contenu entre les deux balise \texttt{off,on}. Cette solution entraîne des pertte de performance et des ralentissements quand au temps de compilation et à l'usage des ressources, il vaut mieux l'utiliser avec parcimonie que désactiver toutes les optimisations de compilations.
 
 
 
