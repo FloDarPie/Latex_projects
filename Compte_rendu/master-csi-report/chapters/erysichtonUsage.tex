@@ -218,6 +218,74 @@ C'est lors de cette étape que l'on peut spécifier ou retirer des fichiers ou p
 \subsection*{Make\_test}
 
 
+\begin{figure}
+    \caption{Schéma de conception d'Andhrímnir}
+    \label{fig:schema_andrhimnir}
+    \centering
+    \begin{tikzpicture}[auto]
+    % Définition des styles pour les boîtes et flèches
+    \tikzset{
+      box1/.style={rectangle, draw=black, fill=cyan!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box2/.style={rectangle, draw=black, fill=orange!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box3/.style={rectangle, draw=black, fill=yellow!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box4/.style={rectangle, draw=black, fill=green!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box5/.style={rectangle, draw=black, fill=blue!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box6/.style={rectangle, draw=black, fill=magenta!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box65/.style={rectangle, draw=black, fill=magenta!60, thick, rounded corners, minimum width=1.5cm, minimum height=0.6cm, align=center},
+      box7/.style={rectangle, draw=black, fill=red!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box8/.style={rectangle, draw=black, fill=blue!45, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      arrow1/.style={->, thick, color=cyan!70!black},
+      arrow2/.style={->, thick, color=orange!80!black},
+      arrow3/.style={->, thick, color=yellow!80!black},
+      arrow4/.style={->, thick, color=green!80!black},
+      arrow5/.style={->, thick, color=blue!80!black},
+      arrow6/.style={->, thick, color=magenta!80!black},
+      arrow7/.style={->, thick, color=red!80!black},
+      arrow8/.style={->, thick, color=gray!80!black}
+    }
+
+    % Noeuds principaux (ligne du haut)
+    \node[box1] (build_test) at (0,0) {build\_test};
+    \node[box2, below of=build_test, yshift=-0.3cm] (parse_h) {Lecture du .h};
+    \node[box3, right=1cm of parse_h] (read_json) {Lecture json générique};
+    \node[box4, right=1cm of read_json] (build_local_json) {Capture des informations};
+
+    % Ligne du bas (génération du .c)
+    \node[box5, below=1cm of build_local_json] (build_intro) {Gen. introduction};
+    \node[box6, left=1cm of build_intro] (build_def) {Gen. definition};
+    \node[box7, left=1cm of build_def] (add_main) {Gen. main};
+    \node[box8, left=1cm of add_main] (fichier_c) {fichier .c};
+
+    % Flèches horizontales principales
+    \draw[arrow1] (build_test) -- (parse_h);
+    \draw[arrow2] (parse_h) -- (read_json);
+    \draw[arrow3] (read_json) -- (build_local_json);
+    \draw[arrow4] (build_local_json) -- (build_intro);
+    \draw[arrow5] (build_intro) -- (build_def);
+    \draw[arrow6] (build_def) -- (add_main);
+    \draw[arrow7] (add_main) -- (fichier_c);
+
+    % Branche auxiliaire depuis build introduction
+    \node[box5, left of = build_intro, yshift=-1cm] (detect_aux) {Détection appel auxiliaire};
+    % Ajout de deux barres obliques sur la flèche build_intro -> build_def
+    \draw[thick] ($(build_intro)!0.5!(build_def) + (0,0.3)$) -- ($(build_intro)!0.5!(build_def) + (0,-0.54)$);
+    \draw[thick] ($(build_intro)!0.55!(build_def) + (0,0.3)$) -- ($(build_intro)!0.55!(build_def) + (0,-0.54)$);
+
+
+    \node[box3, left=1cm of detect_aux, yshift=-1cm] (test_exist) {test si fichier existe};
+    \draw[arrow5] (detect_aux) -- (test_exist);
+
+    % Oui -> Collage -> build definition
+    \node[box65, above of = test_exist] (collage) {\footnotesize{Collage}};
+    \draw[->, thick, color=green!80!black] (test_exist) -- node[font=\scriptsize] {Oui} (collage);
+    \draw[arrow6] (collage) -- (build_def);
+
+    % Non -> Stocker dans liste_temporisée
+    \node[box8, left=0.8cm of test_exist, yshift=-0.8cm] (liste_temp) {Stocker dans liste\_temporisée};
+    \draw[arrow7] (test_exist) -- node[font=\scriptsize] {Non} (liste_temp);
+  \end{tikzpicture}
+\end{figure}
+
 
 \vfill
 \textit{Transition}
