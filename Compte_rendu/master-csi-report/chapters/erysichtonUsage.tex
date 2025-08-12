@@ -1,17 +1,8 @@
-\chapter{Érysichton à jamais affamé}
+\chapter{Érysichthon à jamais affamé}
 \label{chap:erysichtonUsage}
 
 intro
 
-- point histoire
-
-- structure / schemas
-
-- usage
-
-- Andrihminir
-
-usage de l'outil, comment ça rend
 
 \section{Planification et préparations}
 
@@ -152,9 +143,71 @@ explore all
     \end{minted}
 \end{listing}
 
-Les lignes 5 à 7 sont présente pour indiquer les branchement à effectuer par Binsec lorsque qu'il rencontre ces adresses. Cette opération automatiquement exécutée lors de l'initialisation de l'exécution doit ici être précisée avec les fonction présente dans le binaire. Automatiser ces affectations peut être difficile et nécessiter quelques outils d'analyse supplémentaires pour attraper les adresses qui ont besoin d'être réaffecté et leur attribuer les fonctions les plus adaptées.\medbraek
+Les lignes 5 à 7 sont présente pour indiquer les branchement à effectuer par Binsec lorsque qu'il rencontre ces adresses. Cette opération automatiquement exécutée lors de l'initialisation de l'exécution doit ici être précisée avec les fonction présente dans le binaire. Automatiser ces affectations peut être difficile et nécessiter quelques outils d'analyse supplémentaires pour attraper les adresses qui ont besoin d'être réaffecté et leur attribuer les fonctions les plus adaptées.\medbreak
+
+
+\begin{CitationBox}{Nommer un outil}
+    Rapidement il a fallu trouver un nom pour ce projet, l'appeler par "Notre outil\dots" devenait lourd et redondant entre les réunion hebdomadaire. En revanche trouver LE nom adéquat n'est pas une chose aisée, il peut être dû à une blague, une référence ou plus simplement liés au sens du projet. Dans notre cas, on aime la mythologie et le travail réalisé peut se résumer à "faut donner à manger à Binsec".\smallbreak
+    Érysichthon est une personnage de la mythologie grecque condamné à être affamé au point de se dévorer lui-même pour avoir détruit l'idole d'un dieu. Ce nom me plaît et sera retenu pour la suite du projet. 
+\end{CitationBox}
+
+\subsection*{Conception d'Érysichthon}
+
+On a des protocoles. On a des expériences sur des fonctions de Hacl*. On a un nom. Il faut maintenant passer à l'échelle et concevoir un outil complet qui intéragit et exécute nos instructions. L'outil sera en somme une combinaison de script python, shell et de Makefile. Il faut donc les organiser et adapter leurs intéractions pour arriver au bout de nos peines.
+
+\begin{figure}[!ht]
+    \caption{Structure des modules d'Érysichthon}
+    \label{fig:erysichton}
+    \centering
+    \begin{tikzpicture}[auto]
+
+    % Styles
+    \tikzstyle{startstop} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!60]
+    \tikzstyle{process} = [rectangle, rounded corners,minimum width=1cm, minimum height=1cm, text centered, draw=black, fill=magenta!40]
+     \tikzstyle{process2} = [rectangle, minimum width=0.8cm, minimum height=0.3cm, text centered, draw=black, fill=blue!30]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    
+    % Noeuds
+    \node (control) [startstop] {\parbox{3cm}{\centering Érysichthon \\ \tiny{Control panel}}};
+    \node (x86) [process, below of=control, xshift= 2cm, yshift=-0.5cm] {x86\_64};
+    \node (x86-ini) [process2, below of=x86, xshift = 2cm] {Make\_ini};
+    \node (x86-dump) [process2, below of=x86-ini] {Make\_core\_dump};
+    \node (x86-compil) [process2, below of=x86-dump] {Compil};
+    \node (arm) [process, below of=x86-compil, xshift=-2cm] {Other architecture};
+    \node (arm-ini) [process2, below of=arm, xshift=2cm] {Make\_ini};
+    \node (arm-compil) [process2, below of=arm-ini] {Compil};
+    \node (test) [process, below of=arm-compil, xshift=-2cm] {Andhrímnir};
+    \node (enum) [process2, below of=test, xshift=2cm] {Enumerate};
+    \node (exe) [process2, below of=enum] {Make\_tests};
+
+    % Flèches
+    \draw [arrow] (control) -- ++(0,-1.5) -- (x86);
+    \draw [arrow] (control) -- ++(0,-5.5) -- (arm);
+    \draw [arrow] (control) -- ++(0,-8.5) -- (test);
+    \draw [arrow] (x86) -- ++(0,-1) -- (x86-ini);
+    \draw [arrow] (x86) -- ++(0,-2) -- (x86-dump);
+    \draw [arrow] (x86) -- ++(0,-3) -- (x86-compil);
+    \draw [arrow] (arm) -- ++(0,-1) -- (arm-ini);
+    \draw [arrow] (arm) -- ++(0,-2) -- (arm-compil);
+    \draw [arrow] (test) -- ++(0,-1) -- (enum);
+    \draw [arrow] (test) -- ++(0,-2) -- (exe);
+    
+    \end{tikzpicture}
+\end{figure}
+
+\subsection*{Andhrímnir}
+
+Ce module de Érysichthon est particulier. Premièrement c'est le seul qui est aussi son nom. Ce module consiste a produire les fichiers qui seront compilés puis analysés par Binsec. Ce module est nommé d'après le cuisinier de la mythologie nordique, car comme lui, il prépare sempiternellement des mets pour son maître.\smallbreak
+
+Ce module est nommé car il constitue un projet dans le projet, sa seule conception pris plus de la moitié du temps de développement total. C'est un outil qui, à partir d'un projet en C, est capable de générer automatiquement des tests qui compilent et peuvent ensuite être proposé à des outils d'analyse binaire. Ce module est aggrégé à Érysichthon mais peut être porter vers d'autre projets. À la différence des logiciels qui produisent des tests unitaires ( uniquement sur des projet Java, Haskell ou C\# et souvent associé à des offres payantes), on a ici une couverture complète des fonctions portés par le projet C.\smallbreak
+
+Ce module, comme son grand frère, fonctionne et est abouti, par contre il nécessite quelques opérations manuelles et peut être améliorer pour pouvoir supporter d'autre projet C. Actuellement il possède quelques optimisation associées à Hacl* pour accélérer la réalisation de la preuve de concept.
 
 \section{Conception et usages}
+
+On va commencer par le petit frère, Andhrímnir.
+
+
 
 
 

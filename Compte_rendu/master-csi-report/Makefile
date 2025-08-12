@@ -1,6 +1,5 @@
-.PHONY: all $(MAIN).pdf
+.PHONY: all report
 
-MAIN=report
 
 SRCTEX=$(wildcard *.tex)
 
@@ -9,10 +8,10 @@ RUBOPTS = --unsafe --command 'setlist arguments -shell-escape' --pdf
 
 
 
-all: clean $(MAIN).pdf
+all: report
 
-$(MAIN).pdf: $(SRCTEX)
-	$(RUBBER) $(RUBOPTS) $(MAIN);
+report: $(SRCTEX)
+	$(RUBBER) $(RUBOPTS) report
 
 clean:
 	$(RUBBER) --pdf --clean $(MAIN)
