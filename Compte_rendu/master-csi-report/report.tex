@@ -31,30 +31,79 @@
 
 \justifying
 
+
+\afterpage{%
+\vfill
+\begin{figure*}
+    \begin{adjustwidth}{-40mm}{0cm}
+        \includegraphics[width=\paperwidth]{pictures/page_garde.jpeg}%
+    \end{adjustwidth}
+    \caption*{\large Art des Spires et plongée Oniriques, \textit{\small{2025}}}
+\end{figure*}
+\vfill
+}
 \input{chapters/abstract}
 
 \cleardoublepage
 \tableofcontents
 
+\afterpage{%
+    \AddToShipoutPictureBG*{%
+    \put(2cm,18cm){
+        \includegraphics[trim = 0cm 16cm 23cm 0cm, clip, scale = 0.4]{pictures/page_garde.jpeg}}%
+    }
+    \ClearShipoutPicture%
+}
 \part{Introduction}
-\input{chapters/introduction}
 
+\input{chapters/introduction}
+\addcontentsline{toc}{chapter}{Introduction}
 \input{chapters/préambule.tex}
+\addcontentsline{toc}{chapter}{Préambule}
 
 \mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\afterpage{%
+    \AddToShipoutPictureBG*{%
+    \put(0.25\paperwidth,4cm){
+        \includegraphics[trim = 16cm 0cm 0cm 23cm, clip, scale = 0.5]{pictures/page_garde.jpeg}}%
+    }
+    \ClearShipoutPicture%
+}
 \part{\textit{Constant time} ou pourquoi poser un lapin n'est pas une option}
 
 \input{chapters/constantTimePresentation.tex}
 \input{chapters/constantTimeSolution.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\afterpage{%
+    \AddToShipoutPictureBG*{%
+    \put(8.5cm,20cm){
+        \includegraphics[trim = 12cm 26cm 11cm 0cm, clip, scale = 0.8]{pictures/page_garde.jpeg}}%
+    }
+    \ClearShipoutPicture%
+}
 \part{Automatisme et vérification ou comment développer un détecteur de menace}
 
 \input{chapters/automateVerifOutils}
 \input{chapters/automateVerifAutomatisme}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\afterpage{%
+    \AddToShipoutPictureBG*{%
+    \put(8.5cm,20cm){
+        \includegraphics[trim = 12cm 26cm 11cm 0cm, clip, scale = 0.8]{pictures/page_garde.jpeg}}%
+    }
+    \ClearShipoutPicture%
+}
 \part{Érysichton ou avoir tellement faim que tu finis par manger ton corps}
+\AddToShipoutPictureBG*{%
+\put(2cm,18cm){
+    \includegraphics[trim = 0cm 0cm 27cm 27cm, clip, scale = 1.2]{pictures/page_garde.jpeg}}%
+    }
+    \ClearShipoutPicture%
+
 
 \input{chapters/erysichtonConception.tex}
 \input{chapters/erysichtonUsage.tex}
@@ -68,11 +117,27 @@
 
 \backmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\afterpage{%
+    \AddToShipoutPictureBG*{%
+    \put(2cm,18cm){
+        \includegraphics[trim = 18cm 5cm 8cm 10cm, clip, scale = 0.4]{pictures/page_garde.jpeg}}%
+    }
+    \ClearShipoutPicture%
+}
 \part{Conclusion}
 \input{chapters/discussionOuverture.tex}
+\addcontentsline{toc}{chapter}{Discussion}
 \input{chapters/conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
 
 
+\afterpage{%
+    \AddToShipoutPictureBG*{%
+    \put(2cm,18cm){
+        \includegraphics[trim = 7cm 0cm 16cm 24cm, clip, scale = 0.4]{pictures/page_garde.jpeg}}%
+    }
+    \ClearShipoutPicture%
+}
 \part{Ressources}
 \nocite{*}
 

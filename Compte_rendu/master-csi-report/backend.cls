@@ -41,6 +41,7 @@
 \usepackage{array}
 \usepackage{adjustbox}
 \usepackage{nameref}
+\usepackage{eso-pic, afterpage}
 %% custom style %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \definecolor{lightgray}{gray}{0.9}

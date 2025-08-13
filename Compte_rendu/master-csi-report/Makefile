@@ -14,7 +14,7 @@ report: $(SRCTEX)
 	$(RUBBER) $(RUBOPTS) report
 
 clean:
-	$(RUBBER) --pdf --clean $(MAIN)
+	$(RUBBER) --pdf --clean report
 	@rm -f *~ *.aux *.log *.bbl *.blg *.vrb \
 	       *.toc *.nav *.out *.snm *.idx *.ilg *.ind\
 		   *.dvi *fdb_latexmk *.fls *.rubbercache *.lol *.bcf
