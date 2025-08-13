@@ -217,8 +217,52 @@ C'est lors de cette étape que l'on peut spécifier ou retirer des fichiers ou p
 
 \subsection*{Make\_test}
 
+Le modèle de fichier de l'on veut construire est similaire aux tests minimaux que l'on a pus effectuer auparavant. Des paramètres, une déclaration de fonction et un appel à la fonction \texttt{exit}, c'est la recette pour une analyse simple. Binsec réalise une analyse symbolique, il ignore donc la valeur réelle des entrées. L'objectif est donc de concevoir un test qui compile pour avoir ensuite les bonnes instructions assembleurs à analyser. L'exemple \ref{fig:gen_test_simple} illustre comment sont générer nos fichiers de tests.\medbreak
 
-\begin{figure}
+\begin{figure}[!ht]
+  \caption{Test de la fonction Hacl\_EC\_K256\_felem\_sqr}
+  \label{fig:gen_test_simple}
+  \begin{minted}{c}
+//
+// Made by
+// ANDHRÍMNIR - 0.3.0
+// 09-07-2025
+//
+
+#include <stdlib.h>
+#include "Hacl_EC_K256.h"
+
+#define BUFFER_SIZE 5
+uint64_t a[BUFFER_SIZE];
+uint64_t out[BUFFER_SIZE];
+
+
+int main (int argc, char *argv[]){
+Hacl_EC_K256_felem_sqr(a, out);
+  exit(0);
+}   
+  \end{minted}
+
+  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+    
+    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
+
+    \node[intro, fit={(0,8) (12.2,5.2)}, label={[labelshift]center:Phase introductive : 8 lignes}]{};
+    \node[definition, fit={(0,3) (12.2,4.5)}, label={[labelshift]center:Phase déclarative}]{};
+    \node[main, fit={(0,1) (12.2,2.3)}, label={[labelshift]center:Phase principale}]{};
+
+  \end{tikzpicture}
+\end{figure}
+
+Une première partie initie la fichier. Cette partie contient les appels inclusifs de la librairie standard C, l'invocation de la librairie Hacl* au travers du fichier d'en-tête de référence (ici \texttt{Hacl\_EC\_K256}) et la signature de fabrication en commentaires. L'utilisation de la librairie standard permet d'utiliser la fonction \texttt{exit}. Avec cet appel, on pourra construire nos scripts Binsec avec une intéruption sur cette fonction. Cet arrêt précoce permet d'accélérer l'analyse du binaire de la cible (ici \texttt{Hacl\_EC\_K256\_felem\_sqr}) et nous garantir que cette analyse soit complète.\smallbreak
+
+La deuxième partie contient tous les éléments déclaratifs nécessaire à l'invocation de la fonction. Puis on termine avec le corps du fichier C qui contient l'appel de la fonction, notre balise de fin avec la fonction \texttt{exit}. Cette construction est standardisé entre les fichiers et permet de mettre en places quelques optimisations.
+
+
+\begin{figure}[!ht]
     \caption{Schéma de conception d'Andhrímnir}
     \label{fig:schema_andrhimnir}
     \centering
@@ -242,17 +286,18 @@ C'est lors de cette étape que l'on peut spécifier ou retirer des fichiers ou p
       arrow6/.style={->, thick, color=magenta!80!black},
       arrow7/.style={->, thick, color=red!80!black},
       arrow8/.style={->, thick, color=gray!80!black}
-    }
+      }
+      \tikzset{zone1/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.5cm, text width=3cm}}
 
     % Noeuds principaux (ligne du haut)
-    \node[box1] (build_test) at (0,0) {build\_test};
-    \node[box2, below of=build_test, yshift=-0.3cm] (parse_h) {Lecture du .h};
-    \node[box3, right=1cm of parse_h] (read_json) {Lecture json générique};
-    \node[box4, right=1cm of read_json] (build_local_json) {Capture des informations};
+    \node[] (build_test) at (0,0) {};
+    \node[box2, below of=build_test] (parse_h) {Lecture du .h};
+    \node[box3, right=1cm of parse_h] (read_json) {Lecture .json};
+    \node[box4, right=1cm of read_json] (build_local_json) {Accumulation d'informations};
 
     % Ligne du bas (génération du .c)
     \node[box5, below=1cm of build_local_json] (build_intro) {Gen. introduction};
-    \node[box6, left=1cm of build_intro] (build_def) {Gen. definition};
+    \node[box6, left=1cm of build_intro] (build_def) {Gen. déclaration};
     \node[box7, left=1cm of build_def] (add_main) {Gen. main};
     \node[box8, left=1cm of add_main] (fichier_c) {fichier .c};
 
@@ -272,19 +317,40 @@ C'est lors de cette étape que l'on peut spécifier ou retirer des fichiers ou p
     \draw[thick] ($(build_intro)!0.55!(build_def) + (0,0.3)$) -- ($(build_intro)!0.55!(build_def) + (0,-0.54)$);
 
 
-    \node[box3, left=1cm of detect_aux, yshift=-1cm] (test_exist) {test si fichier existe};
+    \node[box3, left=1cm of detect_aux, yshift=-2cm] (test_exist) {test si fichier existe};
     \draw[arrow5] (detect_aux) -- (test_exist);
 
     % Oui -> Collage -> build definition
-    \node[box65, above of = test_exist] (collage) {\footnotesize{Collage}};
+    \node[box4, above of = test_exist, yshift=0.5cm] (collage) {\footnotesize{Collage}};
     \draw[->, thick, color=green!80!black] (test_exist) -- node[font=\scriptsize] {Oui} (collage);
     \draw[arrow6] (collage) -- (build_def);
 
     % Non -> Stocker dans liste_temporisée
-    \node[box8, left=0.8cm of test_exist, yshift=-0.8cm] (liste_temp) {Stocker dans liste\_temporisée};
-    \draw[arrow7] (test_exist) -- node[font=\scriptsize] {Non} (liste_temp);
+    \node[box2, left=0.8cm of test_exist, yshift=-0.8cm] (liste_temp) {Stocker dans liste\_temporisée};
+    \draw[arrow7] (test_exist) -- node[font=\scriptsize] {Non} (liste_temp.east);
+
+    \draw [arrow5, dashed] (liste_temp.east) to[out=-30, in=-30] node[black, below, yshift=-0.5cm] {\textit{Recommence le procédé}} (build_intro.east);
+
+    \begin{scope}[on background layer]
+      \node (zoneNode) [zone1, fit=(parse_h) (read_json) (build_local_json) (build_intro) (build_def) (add_main) (fichier_c) (test_exist) (liste_temp) (collage) (detect_aux) (build_test)] {};
+        \node (title) [anchor=north west] at (zoneNode.north west) {\parbox{3.5cm}{\centering \Huge{\textbf{Andhrímnir}}\\\scriptsize{\textit{Génère les tests}}}};
+    \end{scope}
   \end{tikzpicture}
 \end{figure}
+
+Comme illsutré par la figure \ref{fig:schema_andrhimnir}, la génération des tests est effectuée lors de la lecture des fichiers d'en-tête. Une phase de lecture d'un fichier de données "json" ensuite est réalisé pour avoir toutes les informations nécessaire à la constitution du fichier test. Une foix ces étapes réalisés, Andhrímnir commence sa préparation. or il se trouve que quelques foix, certaines fonctions de Hacl* font appel à des structures propres à la librairie qui ont une instanciation particulière. Le module <<\texttt{Détection appel auxiliaire}>> permet de vérifier ce cas de figure.\smallbreak
+
+Dans le cas où aucun appel n'est détecté, Andhrímnir continue sa préparation avec les étapes successives illustrées par la figure \ref{fig:gen_test_simple} : génération des déclaration puis du main.\smallbreak
+
+À l'inverse où un appel est détecté, il est possible la fonction soit déclaré dans un autre fichier d'en-tête. Si c'est le cas, alors Andhrímnir doit déterminer quel fichier contient les informations requises pour compléter les informations nécessaires pour produire un fichier de test correct. La solution qui nous est venue et de temporiser le problème. Andhrímnir prépare des tests pour toute les fonctions. Donc s'il a besoin d'une fonction qu'il a déjà préparé, on peut accéder aux informations contenues dans le fichier de test associé; s'il a besoin d'une fonction qu'il n'a pas encore préparé, alors il peut la mettre de côté et retravailler dessus une foix qu'il a finis son premier passage sur toute les fonctions d'Hacl*. Ce procédé est récursif pour pallier le problème d'appels en cascade.\smallbreak
+
+En réalité Andhrímnir ne va pas recharger les informations d'une fonction qu'il a besoin, il va faire cette opération de <<\texttt{collage}>>. Elle consiste à une instruction shell qui vient ajouter (coller) au fichier en cours de conception la partie déclaration du fichier. Cette astuce permet d'éviter une nouvelle étape d'accumulation d'informations.\medbreak
+
+La phase de lecture dans les fichiers donées json existe pour accélerer le développement de Andhrímnir. Cela permet de venir ajouter manuellement des instructions haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point. Une fonction a besoin de que les éléments qui lui sont données en paramètres respecte ses attentes. Cet exemple est accompgnée du fichier json associé et du fichier de tests final \ref{lst:exemple_json,lst:exemple_complet}.  
+
+
+\subsection*{Make\_ini}
+
 
 
 \vfill

@@ -26,8 +26,8 @@
 \end{table}
 
 
-\begin{figure}
-  \caption{Structure finale de Érysichthon, depuis l'usager}
+\begin{figure}[!ht]
+  \caption{Structure d'Érysichthon, schéma du point de vue de l'usager}
   \label{fig:erysichthon_structure}
   \centering
   Les flèches grises indiquent tous les éléments actionnables individuellement.
@@ -86,3 +86,103 @@
     \draw [arrow, dashed, opacity=0.2] (zone_tests.north) -- (zone_compilation.west);
     \end{tikzpicture}
 \end{figure}
+
+
+\begin{listing}[!ht]
+  \caption{Déclaration de la fonction \textbf{encrypt} dans le fichier d'en-tête Hacl\_AEAD\_Chacha20Poly1305\_Simd256.h}
+  \label{lst:exemple_header}
+  \begin{minted}{c}
+/**
+Encrypt a message `input` with key `key`.
+
+The arguments `key`, `nonce`, `data`, and `data_len` are same in encryption/decryption.
+Note: Encryption and decryption can be executed in-place, i.e., `input` and `output` can point to the same memory.
+
+@param output Pointer to `input_len` bytes of memory where the ciphertext is written to.
+@param tag Pointer to 16 bytes of memory where the mac is written to.
+@param input Pointer to `input_len` bytes of memory where the message is read from.
+@param input_len Length of the message.
+@param data Pointer to `data_len` bytes of memory where the associated data is read from.
+@param data_len Length of the associated data.
+@param key Pointer to 32 bytes of memory where the AEAD key is read from.
+@param nonce Pointer to 12 bytes of memory where the AEAD nonce is read from.
+*/
+void
+Hacl_AEAD_Chacha20Poly1305_Simd256_encrypt(
+  uint8_t *output,
+  uint8_t *tag,
+  uint8_t *input,
+  uint32_t input_len,
+  uint8_t *data,
+  uint32_t data_len,
+  uint8_t *key,
+  uint8_t *nonce
+);
+  \end{minted}
+\end{listing}
+
+\begin{listing}
+  \caption{Extrait du fichier Hacl\_AEAD\_Chacha20Poly1305\_Simd256.json}
+  \label{lst:exemple_json}
+  \begin{minted}{json}
+{
+"Meta_data":{
+    "build" : "13-06-2025",
+    "version" : "0.2.0"
+}
+
+,"Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt": {
+    "*output":"BUF_SIZE"
+   ,"*input":"BUF_SIZE"
+   ,"input_len":"BUF_SIZE"
+   ,"*data":"AAD_SIZE"
+   ,"data_len":"AAD_SIZE"
+   ,"*key":"KEY_SIZE"
+   ,"*nonce":"NONCE_SIZE"
+   ,"*tag":"TAG_SIZE"
+   ,"BUF_SIZE":16384
+   ,"TAG_SIZE":16
+   ,"AAD_SIZE":12
+   ,"KEY_SIZE":32
+   ,"NONCE_SIZE":12
+ }
+}
+  \end{minted}
+\end{listing}
+
+\begin{listing}
+  \caption{Code du fichier test Hacl\_AEAD\_Chacha20Poly1305\_Simd256\_encrypt.c}
+  \label{lst:exemple_complet}
+  \begin{minted}{c}
+//
+// Made by
+// ANDHRÍMNIR - 0.5.4
+// 12-08-2025
+//
+
+#include <stdlib.h>
+#include "Hacl_AEAD_Chacha20Poly1305_Simd128.h"
+
+#define BUF_SIZE 16384
+#define TAG_SIZE 16
+#define AAD_SIZE 12
+#define NONCE_SIZE 12
+#define KEY_SIZE 32
+uint8_t output[BUF_SIZE];
+uint8_t tag[TAG_SIZE];
+uint8_t input[BUF_SIZE];
+uint32_t input_len_encrypt = BUF_SIZE;
+uint8_t data[AAD_SIZE];
+uint32_t data_len_encrypt = AAD_SIZE;
+uint8_t key[KEY_SIZE];
+uint8_t nonce[NONCE_SIZE];
+
+
+int main (int argc, char *argv[]){
+
+
+Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt(output, tag, input, input_len_encrypt, data, data_len_encrypt, key, nonce);
+   exit(0);
+}
+  \end{minted}
+\end{listing}

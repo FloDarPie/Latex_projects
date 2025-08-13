@@ -14,7 +14,7 @@
 \usepackage{xspace,varioref}
 \usepackage{hyperref, caption}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, bending, positioning, shapes.geometric, arrows, backgrounds, fit}
+\usetikzlibrary{arrows.meta, bending, positioning, shapes.geometric, arrows, backgrounds, fit, calc}
 \usepackage{ragged2e}
 
 \usepackage{minted, subcaption}
