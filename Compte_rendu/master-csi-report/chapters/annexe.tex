@@ -27,15 +27,13 @@
 \end{table}
 
 
-\chapter{Conception de tests}
+\chapter{Érysichthon, structure et exemples}
 
 \begin{figure}[!ht]
-  \caption{Structure d'Érysichthon, schéma du point de vue de l'usager}
-  \label{fig:erysichthon_structure}
   \centering
-  Les flèches grises indiquent tous les éléments actionnables individuellement.
+  
   \begin{tikzpicture}[scale= 1.3, transform shape]
-
+    
     % Styles
     \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
     \tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
@@ -87,7 +85,11 @@
     \draw [thick,>=stealth, dashed, opacity=0.4] (title) -- (blanc.north);
     \draw [arrow, dashed, opacity=0.5] (blanc.north) -- (zone_binsec);
     \draw [arrow, dashed, opacity=0.2] (zone_tests.north) -- (zone_compilation.west);
-    \end{tikzpicture}
+  \end{tikzpicture}
+  \caption{Structure d'Érysichthon, schéma du point de vue de l'usager}
+  \label{fig:erysichthon_structure}
+  \small
+  Les flèches grises indiquent tous les éléments actionnables individuellement.
 \end{figure}
 
 \vfill
@@ -168,7 +170,7 @@ linenos
 \end{listing}
 \vfill
 \begin{listing}
-  \caption{Code du fichier test Hacl\_AEAD\_Chacha20Poly1305\_Simd256\_encrypt.c}
+  \caption{Code généré du fichier test Hacl\_AEAD\_Chacha20Poly1305\_Simd256\_encrypt.c}
   \label{lst:exemple_complet}
   \begin{minted}[
 frame=lines,
@@ -210,3 +212,33 @@ Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt(output, tag, input, input_len_encrypt
 \end{listing}
 
 \vfill
+
+\begin{listing}
+  \caption{Instruction Binsec générée automatiquement, \\ Hacl\_AEAD\_Chacha20Poly1305\_Simd256\_encrypt.ini}
+  \label{list:exemple_ini_final}
+  \begin{minted}[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]{c}
+starting from core
+
+secret global output, input, data, key, nonce, tag
+replace opcode 0f 01 d6 by
+zf := true
+end
+replace opcode 0f 05 by
+  if rax = 231 then
+    print ascii "exit_group"
+    print dec rdi
+    halt
+  end
+  print ascii "syscall"
+  print dec rax
+  assert false
+end
+halt at <exit>    
+  \end{minted}
+\end{listing}

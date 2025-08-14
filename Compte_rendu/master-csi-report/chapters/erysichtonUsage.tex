@@ -349,9 +349,19 @@ En réalité Andhrímnir ne va pas recharger les informations d'une fonction qu'
 La phase de lecture dans les fichiers donées json existe pour accélerer le développement de Andhrímnir. Cela permet de venir ajouter manuellement des instructions haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point. Une fonction a besoin de que les éléments qui lui sont données en paramètres respecte ses attentes. Cet exemple est accompgnée du fichier json associé et du fichier de tests final \ref{lst:exemple_json,lst:exemple_complet}.  
 
 
+\subsection*{Make\_core\_dump et Compilation}
+
+Les opérations de production de clichés mémoire et de compilation sont un assemblage de commandes shell et script pour GDB qui sont concevable sans problèmes. L'élément difficile à cet étape est la compilation de la bibliothèque Hacl*. Cette étape est nécessaire pour correctement compiler nos fichiers tests qui appellent Hacl*. Or cette gestion de la compilation est réalisée par le projet Hacl* lui-même et à besoin d'être améliorer pour permettre une compilation croisée vers d'autres architectures.\smallbreak
+
+Une modification du script de compilation <<\texttt{configure}>> a été proposé et modifié sur le dépôt officiel du projet Hacl*.
+
 \subsection*{Make\_ini}
 
+Ce module consiste à concevoir les fichiers d'instructions pour Binsec. Il doit spécifier les variables secrètes associé à la fonction analysé. À la suite des exemples cités précédemment, le code \ref{list:exemple_ini_final} illustre comment ces instructions s'organise. Il est adapté pour l'architecture x86\_64 et exploite la mécanique des clichés mémoires.\smallbreak
 
+Un premier temps initie chargement des données, ensuite l'étiquette <<\texttt{secret}>> est accrochée aux variables à suivre durant l'analyse. Des commandes de gestion d'instruction particulières : des appels systèmes, des vérifications de registres inconnu de Binsec; permettent que l'analyse ne s'intérrompe pas et nous donne un résultat pertinent (\texttt{secure}, \texttt{insecure}). Enfin on indique notre arrêt d'exploration sur fonction <<\texttt{exit}>> et on donne notre feu vert avec la commande d'exploration totale.\medbreak
+
+\section{Résultats}
 
 \vfill
 \textit{Transition}
