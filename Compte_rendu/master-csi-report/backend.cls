@@ -200,12 +200,16 @@
 
 \renewcommand{\cftchapterdotsep}{4}
 
-% Simplification de l'indexation
-\newcommand{\indexed}[1]{#1\index{#1}}
 
 %% index generation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeindex
 
+% Simplification de l'indexation
+\newcommand{\indexed}[1]{#1\index{#1}}
+
+%% Fbox rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\fboxrule}{2pt} % Épaisseur du cadre
+\setlength{\fboxsep}{0pt} % Ecarte entre image et cadre
 
 %%%%% Useful macros %%%%%
 \newcommand{\latinloc}[1]{\ifx\undefined\lncs\relax\emph{#1}\else\textrm{#1}\fi\xspace}
