@@ -22,7 +22,7 @@ En reprenant ces deux étapes, nous identifions les possibilités pour un dével
 
 La première étape de conception de primitives cryptologiques et de protocole n'est pas du ressort du développeur. Elle appartient aux cryptologues et aux chercheurs en sécurité mathématique. Ce sont eux qui concoivent et maintiennent des librairies cryptographiques, des boîtes à outils qui proposent les briques de sécurité nécessaires aux systèmes sécurisés.\medbreak
 
-Plusieurs librairies existent \cite{OpenSSL, BearSSL, polubelova2020haclxn} et remplissent différents objectifs :  rétro-compatiblité, politique temps constant, \etc. Notre choix est à réaliser en fonction des spécifités du produits que l'on cherche à déployer.\medbreak
+Plusieurs librairies existent \cite{OpenSSL, BearSSL, polubelova2020haclxn} et remplissent différents objectifs :  rétro-compatiblité, politique temps constant, \etc. Notre choix est à réaliser en fonction des spécifités du produits que nous cherchons à déployer.\medbreak
 
 La seconde étape est à distinguer en deux parties. Cette opération de vérification de la sécurité de l'implémentation peut être réaliser sur le produit fini et sur les librairies employés par le produit. Comme introduit, cette étape à pour objectif la vérification formelle du code du programme et la vérification matérielle au niveau assembleur.\medbreak
 
@@ -38,7 +38,7 @@ Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red
 
 \textbf{Fichier binaire.} Il faut donc des fichiers binaires à fournir à Binsec. Or comme chacun le sait, plus un binaire est imposant, plus son analyse est difficile. Et comme Binsec emploi l'analyse symbolique, explorer un binaire imposant a un coût de mémoire quadratique sur le parcours des instructions du binaire. L'idéal est donc d'analyser plein de petits fichiers binaires.\smallbreak
 
-\textbf{Analyse complète.} Chaque fonction de Hacl* doit être analysée. En poursuivant la condition précédente, nous pouvons essayer de concevoir un binaire par fonction analysée. Nous distribuons ainsi l'analyse et on parcourt ainsi toute les fonctions présentent dans la librairie.\medbreak
+\textbf{Analyse complète.} Chaque fonction de Hacl* doit être analysée. En poursuivant la condition précédente, nous pouvons essayer de concevoir un binaire par fonction analysée. Nous distribuons ainsi l'analyse et nous parcourons ainsi toute les fonctions présentent dans la librairie.\medbreak
 
 \textbf{Analyse correcte.} En se rappelant comment fonctionne les optimisations (voir le tableau \ref{tab:compile_option}) il nous faut être attentif avec certaines qui simplifient/modifient le code. Pour éviter des suppressions d'instructions, le fichier nécéssite une légère contextualisation avant l'appel de la fonction analysée.
 
@@ -72,7 +72,7 @@ Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red
     \end{minted}
 \end{listing}
 
-De même, comme nos fichiers analysés appartiennent à la librairie extérieur Hacl*, l'emploi de l'option \texttt{-static} est nécessaire pour prévenir la mise place de lien vers la librairie partagée dans le ficher binaire. Cette option ne nuit pas à la qualité de l'analyse, elle permet en revanche d'avoir tous les éléments sous la main lorsque l'on déassemble un fichier binaire. Retirer cette option lors de la compilation, c'est se rajouter des lourdeurs et rallonger la temps requis pour la vérification manuelle d'un fichier.\medbreak
+De même, comme nos fichiers analysés appartiennent à la librairie extérieur Hacl*, l'emploi de l'option \texttt{-static} est nécessaire pour prévenir la mise place de lien vers la librairie partagée dans le ficher binaire. Cette option ne nuit pas à la qualité de l'analyse, elle permet en revanche d'avoir tous les éléments sous la main lorsque nous déassemblons un fichier binaire. Retirer cette option lors de la compilation, c'est se rajouter des lourdeurs et rallonger la temps requis pour la vérification manuelle d'un fichier.\medbreak
 
 \textbf{Couverture de compilateur.} Les travaux de \citeauthor{schneider2024breakingbadcompilersbreak} \cite{schneider2024breakingbadcompilersbreak} ont clairement mis en évidence que le choix du compilateur est à considérer. Nous allons pouvoir identifer quel compilateur nous permet d'avoir le plus de fichiers binaires sécurisés. Cette analyse nous permet d'identifier les limites de la pratiques de la programmation en temps constant.
 
@@ -193,7 +193,7 @@ halt at <printf>
 
 Ce code présenté ici est un exempe d'usage de Binsec et permet de réaliser une attaque sur un binaire issu d'une plateforme d'apprentissage à la sécurité logiciel\footnote{https://crackmes.one/}. L'exercice consiste à retrouver le mot de passe caché d'un binaire. Dans le cadre de notre exercice d'analyse de la politique temps constant, le script \ref{lst:analyse_simple_binsec} est plus simple.\medbreak
 
-Ce script a pour objectif de vérifier les résultats apportés par \cite{schneider2024breakingbadcompilersbreak} concernant une fuite présente sur la fonction <<\textit{FStar\_UInt64\_eq\_mask}>> et d'étendre cette analyse vers d'autres architectures. Dans une première démarche d'automatisation, ce code a été généré automatiquement par un script shell. On voit ici que l'analyse ne parcourt pas l'entièreté du binaire, seulement 8 sections sont chargées (sur 24). L'analyse commence à l'appel de la fonction \texttt{main} et se termine à la ligne 8 avec une adresse de fin. Cette addresse de fin est produite par le script shell pour attraper la fin de la fonction \texttt{main}. 
+Ce script a pour objectif de vérifier les résultats apportés par \cite{schneider2024breakingbadcompilersbreak} concernant une fuite présente sur la fonction <<\textit{FStar\_UInt64\_eq\_mask}>> et d'étendre cette analyse vers d'autres architectures. Dans une première démarche d'automatisation, ce code a été généré automatiquement par un script shell. Nous pouvons voir que l'analyse ne parcourt pas l'entièreté du binaire, seulement 8 sections sont chargées (sur 24). L'analyse commence à l'appel de la fonction \texttt{main} et se termine à la ligne 8 avec une adresse de fin. Cette addresse de fin est produite par le script shell pour attraper la fin de la fonction \texttt{main}. 
 
 \begin{listing}[!ht]
     \caption{Instructions permettant d'analyser le code \ref{lst:Hacl_masking} compilé vers RiscV-32}
@@ -308,7 +308,7 @@ Les résultats dans le tableau \ref{tab:resultats_riscv} sont indéniables : la 
     
 
 
-En explorant plus en avant le code binaire, on découvre que ces erreurs sont dues à l'opérande \texttt{beqz}\footnote{Effectue un branchement si la valeur du registre consulté est zéro. Cette opérande est propre à Risc-V.}. L'ISA de Risc-V n'a pas à sa dispostion un opérande comme \texttt{cmov} en X86\_64 ou ARM. Donc l'application d'optimisation de compilation force l'usage de cette opérande qui n'est pas en temps constant. L'optimisation qui réalise ce changement se nomme <<\textit{InstCombinePass}>>.\medbreak
+En explorant plus en avant le code binaire, nous découvrons que ces erreurs sont dues à l'opérande \texttt{beqz}\footnote{Effectue un branchement si la valeur du registre consulté est zéro. Cette opérande est propre à Risc-V.}. L'ISA de Risc-V n'a pas à sa dispostion un opérande comme \texttt{cmov} en X86\_64 ou ARM. Donc l'application d'optimisation de compilation force l'usage de cette opérande qui n'est pas en temps constant. L'optimisation qui réalise ce changement se nomme <<\textit{InstCombinePass}>>.\medbreak
 
 Nous observons ici une manifestation indéniable des précédents résulats proposés par d'autres travaux de recherche. Une solution serait de modifier l'ISA pour permettre cette opération d'être en temps constant. Celle qui a été retenue, c'est d'employer un \texttt{pragma}, ici \texttt{\# pragma clang optimise <off/on>}. Cette instruction, donnée dans le code source, indique au compilateur de désactiver ses optmisations pour le code contenu entre les deux balises \texttt{off,on}. Cette solution entraîne des pertes de performance et des ralentissements quand au temps de compilation et à l'usage des ressources. Il est donc préférable de l'utiliser avec parcimonie.\medbreak
 

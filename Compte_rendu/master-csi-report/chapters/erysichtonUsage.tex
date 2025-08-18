@@ -118,7 +118,7 @@ Avec ce graphe réalisé, nous pouvons le modifier pour préparer la voie à d'a
 
 Dans ce contexte, une question se pose : est-ce que la conception des scripts pour Binsec (\textit{.ini}) est automatisable ou est-ce qu'il faudra utiliser des émulateurs pour générer des clichés mémoire et revenir dans le cas de la figure \ref{fig:protocole_x86} ?\smallbreak
 
-En effet, l'importance de cette question se révèle lorsqu'on change d'architecture et que l'on doivent se passer de clichés mémoire. Sur notre machine en x86\_64, si nous analysons un fichier compilé en ARM, alors on peut croiser des appels à des fonctions systèmes, les \texttt{IFUNC}. Or la résolution de ces fonctions est gérée dynamiquement lors de l'exécution du programme. Cette mécanique permet d'utiliser des implémentations optimisées en fonction des configurations du système d'éxécution. Or comme Binsec réalise une analyse symbolique du programme, il faut lui spécifier qu'elles fonctions correspondent aux \texttt{IFUNC} qu'il peut croiser. pour illustrer ce point, observons le scipt nécessaire pour une vérification de la fonction <<Hacl \_AEAD \_Chacha20Poly1305\_Simd128\_encrypt>> compilé vers ARMv8.
+En effet, l'importance de cette question se révèle lorsque nous changeons d'architecture et que nous devons nous passer de clichés mémoire. Sur notre machine en x86\_64, si nous analysons un fichier compilé en ARM, alors nous pouvons rencontrer des appels à des fonctions systèmes : les \texttt{IFUNC}. Or la résolution de ces fonctions est gérée dynamiquement lors de l'exécution du programme. Cette mécanique permet d'utiliser des implémentations optimisées en fonction des configurations du système d'éxécution. Or comme Binsec réalise une analyse symbolique du programme, il faut lui spécifier qu'elles fonctions correspondent aux \texttt{IFUNC} qu'il peut croiser. pour illustrer ce point, observons le scipt nécessaire pour une vérification de la fonction <<Hacl \_AEAD \_Chacha20Poly1305\_Simd128\_encrypt>> compilé vers ARMv8.
 
 \begin{listing}[!ht]
     \caption{Script d'instruction pour analyser un binaire compilé vers ARM}
@@ -145,7 +145,7 @@ Les lignes 5 à 7 sont présentes pour indiquer les branchements à effectuer pa
 
 
 \begin{CitationBox}{Nommer un outil}
-    Rapidement il a fallu trouver un nom pour ce projet, l'appeler par "Notre outil\dots" devenait lourd et redondant entre les réunion hebdomadaire. En revanche trouver LE nom adéquat n'est pas une chose aisée, il peut être dû à une blague, une référence ou plus simplement liés au sens du projet. Dans notre cas, on aime la mythologie et le travail réalisé peut se résumer à "faut donner à manger à Binsec".\smallbreak
+    Rapidement il a fallu trouver un nom pour ce projet, l'appeler par "Notre outil\dots" devenait lourd et redondant entre les réunion hebdomadaire. En revanche trouver LE nom adéquat n'est pas une chose aisée, il peut être dû à une blague, une référence ou plus simplement liés au sens du projet. Dans notre cas, nous aimons la mythologie et le travail réalisé peut se résumer à "faut donner à manger à Binsec".\smallbreak
     Érysichthon est une personnage de la mythologie grecque condamné à être affamé au point de se dévorer lui-même pour avoir détruit l'idole d'un dieu. Ce nom me plaît et sera retenu pour la suite du projet. 
 \end{CitationBox}
 
@@ -360,7 +360,7 @@ Une modification du script de compilation <<\texttt{configure}>> a été propos�
 
 Ce module consiste à concevoir les fichiers d'instructions pour Binsec. Il doit spécifier les variables secrètes associé à la fonction analysé. À la suite des exemples cités précédemment, le code \ref{list:exemple_ini_final} illustre comment ces instructions s'organise. Il est adapté pour l'architecture x86\_64 et exploite la mécanique des clichés mémoires.\smallbreak
 
-Un premier temps initie chargement des données, ensuite l'étiquette <<\texttt{secret}>> est accrochée aux variables à suivre durant l'analyse. Des commandes de gestion d'instruction particulières : des appels systèmes, des vérifications de registres inconnu de Binsec; permettent que l'analyse ne s'intérrompe pas et nous donne un résultat pertinent (\texttt{secure}, \texttt{insecure}). Enfin on indique notre arrêt d'exploration sur fonction <<\texttt{exit}>> et on donne notre feu vert avec la commande d'exploration totale.\medbreak
+Un premier temps initie chargement des données, ensuite l'étiquette <<\texttt{secret}>> est accrochée aux variables à suivre durant l'analyse. Des commandes de gestion d'instruction particulières : des appels systèmes, des vérifications de registres inconnu de Binsec; permettent que l'analyse ne s'intérrompe pas et nous donne un résultat pertinent (\texttt{secure}, \texttt{insecure}). Enfin nous indiquons notre arrêt d'exploration sur fonction <<\texttt{exit}>> et nous donnons notre feu vert avec la commande d'exploration totale.\medbreak
 
 Dans le cadre d'autre architectures, comme ARM, le code \ref{lst:script_arm_exemple} montre que la différence à considérer est cette affectation manuelle des <<\texttt{IFUNC}>>. Pour le moment, la solution en place qui gère une affectation correcte est conçu en fonction du support matériel sur lequel l'outil est activé.
 
