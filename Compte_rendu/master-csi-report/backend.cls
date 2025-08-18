@@ -233,4 +233,4 @@
 
 \tutor{Aymeric Fromherz\texttt{<aymeric.fromherz@inria.fr>}\\
 Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien.bardin@cea.fr>}}
-\version{1.1}
+\version{1.5}
