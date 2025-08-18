@@ -1,31 +1,31 @@
 \chapter{Protection}
 \label{chap:constantTimeSolution}
 
-Ce deuxième chapitre montre les innovations nécessaires pour se protéger des attaques temporelles. Nous y découvrons les bonnes pratiques de programmation, les premiers outils automatique de vérification de code ainsi que les limitations auquelles est confronté le développeur qui souhaite être résistant à ces attaques.
+Ce deuxième chapitre montre les innovations nécessaires pour se protéger des attaques temporelles. Nous y découvrons les bonnes pratiques de programmation, les premiers outils automatiques de vérification de code ainsi que les limitations auxquelles est confronté le développeur qui souhaite être résistant à ces attaques.
 
 
-\section{Bonne pratique et usages}
+\section{Bonnes pratiques et usages}
 
 Face à la menace des attaques temporelles, quelles solutions peuvent être mises en place pour protéger nos systèmes informatiques ? Cette attaque a besoin d'un accès au système et d'un chronomètre. Comme nous sommes dans un contexte de systèmes accessibles par internet, altérer ou retirer l'accès signifie perdre en qualité ou supprimer le service proposé. Il faut donc que notre approche cible plutôt l'utilisation du chronomètre.
 
-Il faut donc programmer de tel sorte que sur toutes les entrées possibles de notre système informatique aucune variation de temps ne peut être observée entre les exécutions.
-Trois méthodes existent pour pallier à ce problème.\medbreak
+Il faut donc programmer de telle sorte que sur toutes les entrées possibles de notre système informatique aucune variation de temps ne peut être observée entre les exécutions.
+Trois méthodes existent pour pallier ce problème.\medbreak
 
 \subsection*{Programmation en temps constant}
-La programmation en temps constant ou <<\textit{Constant-Time Programming}>>, est une pratique de programmation qui vise à résoudre exactement ce problème. Directement lié à la compléxité algorithmique, cette pratique modifie et adapte les algorithmes pour que toutes les opérations effectuées aient un temps d'exécution identique.
+La programmation en temps constant ou <<\textit{Constant-Time Programming}>>, est une pratique de programmation qui vise à résoudre exactement ce problème. Directement lié à la complexité algorithmique, cette pratique modifie et adapte les algorithmes pour que toutes les opérations effectuées aient un temps d'exécution identique.
 
-\citeauthor{BearSSL} \cite{BearSSL} présente tous les éléments à adapter pour configurer un code respectant la politique de programmation en temps constant. Si les opérations élémentaires respectent "naturellement" cette politique; les \textbf{accès mémoires}, les \textbf{sauts conditionnels}, les \textbf{sopérations de décalages/rotations} et les \textbf{divisions/multiplications} sont les opérations à adapter en fonction de la plateforme cible. Les descriptions rapportées ci-dessous sont issues de \cite{BearSSL}.\smallbreak
+\citeauthor{BearSSL} \cite{BearSSL} présente tous les éléments à adapter pour configurer un code respectant la politique de programmation en temps constant. Si les opérations élémentaires respectent "naturellement" cette politique; les \textbf{accès mémoires}, les \textbf{sauts conditionnels}, les \textbf{opérations de décalages/rotations} et les \textbf{divisions/multiplications} sont les opérations à adapter en fonction de la plateforme cible. Les descriptions rapportées ci-dessous sont issues de \cite{BearSSL}.\smallbreak
 
 \begin{CitationBox}{Accès mémoire}
-  Un chargement depuis la mémoire d'une information est une source de variation. Nous avons vus précedemment \cite{LLC_attack,DRAM_Attack} que l'usage d'un cache mémoire est un canal d'accès pour réaliser une attaque. En effet, l'utilisation d'un cache permet de distinguer les appels entre les données déjà mises en mémoire ou pas. De plus, les changements de valeur dans celui-ci peuvent aussi être observé après exécution.
+  Un chargement depuis la mémoire d'une information est une source de variation. Nous avons vu précedemment \cite{LLC_attack,DRAM_Attack} que l'usage d'un cache mémoire est un canal d'accès pour réaliser une attaque. En effet, l'utilisation d'un cache permet de distinguer les appels entre les données déjà mises en mémoire ou pas. De plus, les changements de valeur dans celui-ci peuvent aussi être observés après exécution.
 \end{CitationBox}
 \vspace{0.1cm}
 \begin{CitationBox}{Décalage et rotation}
-  Ces opérations binaires sont ou ne sont pas en temps constant en fonction des CPU sur lequel le code est exécuté. Certains ont un "barrel shifter" qui permet d'effectuer directement les instructions correspondantes. Cela impacte directement les algorithmes dépendant de décalages logiques comme le chiffrement RC5.
+  Ces opérations binaires sont ou ne sont pas en temps constant en fonction des CPU sur lesquels le code est exécuté. Certains ont un "barrel shifter" qui permet d'effectuer directement les instructions correspondantes. Cela impacte directement les algorithmes dépendants de décalages logiques comme le chiffrement RC5.
 \end{CitationBox}
 \vspace{0.1cm}
 \begin{CitationBox}{Saut conditionnel}
-  Les saut conditionnels sont des instructions qui, comme pour les accès mémoires, demandent de charger les adresses des instructions suivantes. Or, comme un compilateur tend à précharger les instructions suivantes, il va charger les deux côtés du saut conditionnel puis defausser la branche inutile; ce qui entraîne un léger alentissement. En revanche, il est important de noter que si le branchement est indépendant d'une variable secrète, il n'est pas nécessaire de le modifier. Par exemple si j'ai un compteur et que mon programme doit terminer après un certain nombre d'itérations, aucune fuite ne sera observée.
+  Les saut conditionnels sont des instructions qui, comme pour les accès mémoire, demandent de charger les adresses des instructions suivantes. Or, comme un compilateur tend à précharger les instructions suivantes, il va charger les deux côtés du saut conditionnel puis défausser la branche inutile; ce qui entraîne un léger ralentissement. En revanche, il est important de noter que si le branchement est indépendant d'une variable secrète, il n'est pas nécessaire de le modifier. Par exemple si j'ai un compteur et que mon programme doit terminer après un certain nombre d'itérations, aucune fuite ne sera observée.
 \end{CitationBox}
 \vspace{0.1cm}
 \begin{CitationBox}{Division}
@@ -33,11 +33,11 @@ La programmation en temps constant ou <<\textit{Constant-Time Programming}>>, es
 \end{CitationBox}
 \vspace{0.1cm}
 \begin{CitationBox}{Multiplication}
-  Enfin, la multiplication, elle aussi dépendante des variable d'entrées, présente une fuite d'information importante. Mais les CPU les plus récents (rédigé en 2016) ont implémenté cette opération en temps constant. Cela suit l'évolution des compilateurs et des processeurs qui tendent à accélérer les opérations et réduire le nombre d'instruction total.
+  Enfin, la multiplication, elle aussi dépendante des variables d'entrées, présente une fuite d'information importante. Mais les CPU les plus récents (rédigé en 2016) ont implémenté cette opération en temps constant. Cela suit l'évolution des compilateurs et des processeurs qui tendent à accélérer les opérations et réduire le nombre d'instructions total.
 \end{CitationBox}
 \vspace{0.1cm}
 
-En reprennant ces règles, nous pouvons modifier notre exemple de code \ref{lst:timing_attack_example} et appliquer des modifications sur lignes que nous avons déjà ciblées comme fuites d'informations. Les modifications sont libre au choix du concepteur. Voici une correction qui peut être réalisée :
+En reprenant ces règles, nous pouvons modifier notre exemple de code \ref{lst:timing_attack_example} et appliquer des modifications sur les lignes que nous avons déjà ciblées comme fuites d'informations. Les modifications sont libres au choix du concepteur. Voici une correction qui peut être réalisée :
 
 \begin{listing}[!htb]
     \caption{Exemple de correction pour rendre un code résistant aux attaques temporelles}
@@ -64,11 +64,11 @@ En reprennant ces règles, nous pouvons modifier notre exemple de code \ref{lst:
 
 Nous voyons que le premier branchement a été remplacé par un hachage des paramètres d'entrées. Cette opération est considérée ici en temps constant mais peut ne pas l'être. Il faut être vigilant sur toutes les briques d'algorithme que nous souhaitons utiliser. Enfin, le second branchement conditionnel est purement supprimé, le parcours des tableaux se fait entièrement.\bigbreak
 
-Avec cette modification, nous avons un code \ref{lst:timing_attack_CT_example} qui ne présente plus de fuite de données. Pourtant, nous pouvons avoir un doute sur l'usage de la fonction "\textit{sha256\_hash\_string}". Si cette fonction n'est pas elle même implémentée selon la politique temps constant, nous avons alors introduis une nouvelle surface de fuite d'informations. Il faut vérifier notre code pour supprimer ce doute.\medbreak
+Avec cette modification, nous avons un code \ref{lst:timing_attack_CT_example} qui ne présente plus de fuite de données. Pourtant, nous pouvons avoir un doute sur l'usage de la fonction "\textit{sha256\_hash\_string}". Si cette fonction n'est pas elle même implémentée selon la politique temps constant, nous avons alors introduit une nouvelle surface de fuite d'informations. Il faut vérifier notre code pour supprimer ce doute.\medbreak
 
 \subsection*{Outils de garanties}
 
-Plusieurs outils existent est peuvent être utilisés tous au long du processus de développement d'un système sécurisé. Cela peut être durant la phase de conception du code source, au moment de la compilation ou encore en vérification de la compilation.\smallbreak
+Plusieurs outils existent et peuvent être utilisés tous au long du processus de développement d'un système sécurisé. Cela peut être durant la phase de conception du code source, au moment de la compilation ou encore en vérification de la compilation.\smallbreak
 
 
 Une solution légère est de ce servir du système libre <<\textbf{Compiler Explorer}\footnote{\url{https://godbolt.org/}}>>. Avec à disposition un éditeur de texte, il est possible de voir comment sera généré le code assembleur. En reprenant une partie du code \ref{fig:timing_attack_example}, nous pouvons voir sur la figure \ref{img:godbolt_example} que le choix du compilateur, ici sa version, introduit une légère modification. Ce changement n'est pas perceptible sans observation directe, il se perçoit directement grâce à la petite taille du code observé.
@@ -84,9 +84,9 @@ Une solution légère est de ce servir du système libre <<\textbf{Compiler Expl
 
 Si nous souhaitons faire une analyse à l'échelle d'un projet, ce parcours à la main des fonctions ou de morceaux de fonctions est réellement fastidieux. Il faut mieux déléguer ce travail à un outil conçus pour vérifier la présence de fuite.\smallbreak
 
-Plusieurs articles références l'ensemble des outils existant \cite{notThatHardCT, GeimerEvaluationsSideChannel} pour réaliser ce travail. Le tableau \ref{tab:tools_ct} de \citeauthor{notThatHardCT} liste 24 outils en libre accès conçus pour détecter des failles par canal auxiliaire.
+Plusieurs articles références l'ensemble des outils existants \cite{notThatHardCT, GeimerEvaluationsSideChannel} pour réaliser ce travail. Le tableau \ref{tab:tools_ct} de \citeauthor{notThatHardCT} liste 24 outils en libre accès conçus pour détecter des failles par canal auxiliaire.
 
-Ils sont listés alphabétiquement et sont précisé le type de fichier analysé (\textit{Cible}), la méthode d'analyse réalisée (\textit{Techn.}) et les garanties attendues de ces analyses (\textit{Garanties}). Nous reviendrons plus en avant avec ces détails de méthodes et de fonctionnement dans le chapitre \ref{chap:automateVerifOutils}.\medbreak
+Ils sont listés alphabétiquement et ont précisés le type de fichier analysé (\textit{Cible}), la méthode d'analyse réalisée (\textit{Techn.}) et les garanties attendues de ces analyses (\textit{Garanties}). Nous reviendrons plus en détail sur ces méthodes et leurs fonctionnements dans le chapitre \ref{chap:automateVerifOutils}.\medbreak
 
 \begin{table}[!ht]
   \caption{Liste d'outils de vérification, source \cite{notThatHardCT} }
@@ -147,16 +147,16 @@ Une dernière solution serait d'utiliser un compilateur spécialisé qui produit
 
 \subsection*{Écriture en code assembleur}
 
-Enfin, la dernière méthode pour obtenir un code sécurisé et sans fuite c'est de programmer directment en assembleur. De cette manière, nous avons un contrôle total sur le flot d'exécution de notre programme, nous pouvons insérer des optimisations qu'un compilateur pourrait ignorer. Écrire en assembleur requiert de connaître la plupart des opérandes disponibles pour l'architecture ciblé et les modèles des composants présents sur le support. Cela nous amène directement aux limitations induites par cette solution.
+Enfin, la dernière méthode pour obtenir un code sécurisé et sans fuite c'est de programmer directement en assembleur. De cette manière, nous avons un contrôle total sur le flot d'exécution de notre programme, nous pouvons insérer des optimisations qu'un compilateur pourrait ignorer. Écrire en assembleur requiert de connaître la plupart des opérandes disponibles pour l'architecture ciblée et les modèles des composants présents sur le support. Cela nous amène directement aux limitations induites par cette solution.
 
 \section{Limitations}
 \label{sect:limitations}
 
-Écrire en assembleur c'est écrire spécifiquement pour une architecture de processeur. Il faut connaître les instructions adéquates, les potentielles optimisations qui existent sans parler de la synthaxe particulère qui rend son développement plus lent. Travailler en assembleur c'est limiter la portabilité du code proposé. Or l'objectif derrière le développement d'une librairie sécurisée est de pouvoir être employée par le plus de configurations possibles pour se protéger d'attaques.\smallbreak
+Écrire en assembleur c'est écrire spécifiquement pour une architecture de processeur. Il faut connaître les instructions adéquates, les potentielles optimisations qui existent sans parler de la syntaxe particulère qui rend son développement plus lent. Travailler en assembleur c'est limiter la portabilité du code proposé. Or l'objectif derrière le développement d'une bibliothèque sécurisée est de pouvoir être employée par le plus de configurations possibles pour se protéger d'attaques.\smallbreak
 
-Face à cette situation, nous pouvons choisir d'utiliser un compilateur spécialisé (\cite{Borrello_2021, Raccoon}). Et comme un serpent quise mord la queue, nous voici a nouveau limité. Ces compilateurs peuvent ne pas supporter l'ensemble du jeu d'instruction d'une architecture, ils peuvent avoir besoin d'instructions supplémentaires (des annotations de code) pour réaliser leur compilation, ils peuvent ne pas implémenter les optimisations présentent sur les processeurs les plus récents.\smallbreak
+Face à cette situation, nous pouvons choisir d'utiliser un compilateur spécialisé (\cite{Borrello_2021, Raccoon}). Et comme un serpent qui se mord la queue, nous voici a nouveau limités. Ces compilateurs peuvent ne pas supporter l'ensemble du jeu d'instruction d'une architecture, ils peuvent avoir besoin d'instructions supplémentaires (des annotations de code) pour réaliser leur compilation, ils peuvent ne pas implémenter les optimisations présentent sur les processeurs les plus récents.\smallbreak
 
-Donc, si les compilateur spécialisé ne sont pas envisageable, nous nous retrouvons à utiliser les compilateurs communs \texttt{GCC} et \texttt{LLVM} pour notre solution sécurisée. Nous devons donc programmer en respectant la politique temps constant. Et si cette pratique semble être notre solution, nous pouvons lire dans l'article de présentation de l'outil d'analyse Binsec \citetitle{binsecRel2019} : 
+Donc, si les compilateurs spécialisés ne sont pas envisageables, nous nous retrouvons à utiliser les compilateurs courants \texttt{GCC} et \texttt{LLVM} pour notre solution sécurisée. Nous devons donc programmer en respectant la politique temps constant. Et si cette pratique semble être notre solution, nous pouvons lire dans l'article de présentation de l'outil d'analyse Binsec \citetitle{binsecRel2019} : 
 \begin{CitationBox}{Conclusion - \cite{binsecRel2019}}
 Nous avons découvert que \texttt{gcc -O0} et des optimisations de \texttt{clang} introduisent des infractions à la politique temps constant indétectées par les outils antérieurs
 \end{CitationBox}\smallbreak
@@ -195,7 +195,7 @@ void cmovznz4(uint64_t cin, uint64_t *x, uint64_t *y, uint64_t *r)
     \end{minted}
 \end{listing}
 
-Avec le compilateur \texttt{RISC-V rv64gc clang 15.0.0}, si nous précisons les options de compilation \texttt{-O0} ou \texttt{-O1}, nous pouvons observé différents résultats. Le plus notable ici est l'apparition de l'instruction \texttt{beqz}, qui est un branchement conditionnel, ainsi que la suppression de la fonction de masquage <<\textit{FStar\_UInt64\_eq\_mask}>>. Les optimisations appelées par l'option \texttt{-O1} identifient le masquage réalisé et modifient le code pour accélérer son exécution. L'optimisation \ref{subcode:O0} suient les instructions précisées par le code source, de cette manière le compilateur réalise une compilation rapide. Au contraire dde l'optimisation \ref{subcode:O1} qui réalise une analyse plus longue du code source, et donc a une compilation plus lente, mais grâce à l'ajout des branchements succesifs (les instructions \texttt{beqz}) permet une exécution plus rapide. Les options de compilations sont rapportées en annexe \ref{tab:compile_option}\footnote{\url{https://gcc.gnu.org/}}.
+Avec le compilateur \texttt{RISC-V rv64gc clang 15.0.0}, si nous précisons les options de compilation \texttt{-O0} ou \texttt{-O1}, nous pouvons observer différents résultats. Le plus notable ici est l'apparition de l'instruction \texttt{beqz}, qui est un branchement conditionnel, ainsi que la suppression de la fonction de masquage <<\textit{FStar\_UInt64\_eq\_mask}>>. Les optimisations appelées par l'option \texttt{-O1} identifient le masquage effectué et modifient le code pour accélérer son exécution. L'optimisation \ref{subcode:O0} suit les instructions précisées par le code source, de cette manière le compilateur réalise une compilation rapide. Au contraire de l'optimisation \ref{subcode:O1} qui réalise une analyse plus longue du code source, et donc a une compilation plus lente, mais grâce à l'ajout des branchements successifs (les instructions \texttt{beqz}) permet une exécution plus rapide. Les options de compilation sont indiquées en annexe \ref{tab:compile_option}\footnote{\url{https://gcc.gnu.org/}}.
 
 \begin{figure}[!ht]
     \begin{subfigure}[b]{0.5\textwidth}
@@ -298,4 +298,4 @@ cmovznz4:
 \end{figure}
 
 \raggedbottom
-\textit{Avec ces solutions employables, il nous faut maintenant étudier leurs impacts. Nous allons voir quels moyens sont disponible pour vérifier la sécurité d'un programme.}
+\textit{Avec ces solutions applicables, il nous faut maintenant étudier leurs impacts. Nous allons voir quels moyens permettent de vérifier la sécurité d'un programme.}
