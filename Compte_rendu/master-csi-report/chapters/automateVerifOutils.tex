@@ -19,12 +19,12 @@ En sécurité informatique, la première étape, essentielle avant de développe
     \multicolumn{1}{|C|}{\textbf{Type d'attaque}} & \multicolumn{1}{C|}{\textbf{Description}} \\ \hline
     Par chronométrage & Observation du temps de calcul. \\ \hline
     Par accès mémoire & Manipulation et observation des états d'un ou des caches mémoires. \\ \hline
-    Par récupération de trace & Suivi des appels de fonctions, des accès réussis ou manqués à la mémoire. \\ \hline
+    Par récupération de traces & Suivi des appels de fonctions, des accès réussis ou manqués à la mémoire. \\ \hline
   \end{tabularx}
   \end{adjustbox}
 \end{table}
 
-Ces trois modèles sont notre source de méfiance et si on peut argumenter quand à l'inclusion de notre dernier modèle; des travaux comme \cite{twartingCT} portent directement sur des améliorations matériel pour contrecarrer ce type d'attaque. Considérer un attaquant plus puissant, avec des accès à des ressources supplémentaires, potentiellement hyptotétique, permet de concevoir un système plus sûr. Certains outils comme \cite{ctfuzz,DATA2} ou cette étude \cite{notThatHardCT} exploitent cette mécanique pour attester de la sécurité d'un programme.\medbreak
+Ces types d'attaques forment une base pour la conception de nos mdodèles d'attaquant. Considérer le mode opératoire <<récupération de traces>> induit un modèle plus fort. Des travaux comme ceux de \citeauthor{twartingCT} \cite{twartingCT} portent directement sur des améliorations matériel permettant une défense contre ce modèle. Considérer un attaquant plus puissant, avec des accès à des ressources supplémentaires, potentiellement hyptotétique, permet de concevoir un système plus sûr. Certains outils comme \cite{ctfuzz,DATA2} ou cette étude \cite{notThatHardCT} exploitent notamment cette mécanique pour attester de la sécurité d'un programme.\medbreak
 
 
 Puis, avec ces modèles et les contre-mesures connus, on peut constituer un ensemble de règles qui valident ces risques. \cite{CTsaferCrypto} résume celles-ci en une liste de trois règles :
@@ -34,25 +34,49 @@ Puis, avec ces modèles et les contre-mesures connus, on peut constituer un ense
   \item Toute instruction conditionnelle révèle quelle branche a été prise.
 \end{enumerate}
 
-D'autres comme \cite{binsecRel2019} emploient des modèles de fuites en représentation formelle. En s'appuyant sur les travaux de \citeauthor{formalConstantTime} \cite{formalConstantTime}
+Avec ces règles, il est alors possible de créer un outil qui analyse les programmes à sécuriser. C'est de cette façon que le premier outil existant a été produit : \texttt{ctgrind} (2010).\medbreak
+
+D'autres chercheurs comme \citeauthor{binsecRel2019} \cite{binsecRel2019} s'attellent à la création de modèles formels. Cette méthode demande un travail de formalisation du comportement de programmes binaire et une implémentation plus rigoureuse de leurs outils. Cela permet en retour une évaluation complète et correct de programmes complexes (\ie primitives cryptographiques asymétriques).
+
+\subsection*{Formalisation de modèle}
+
+Si on regarde plus en détails les travaux nécessaires à la conception d'un tel modèle, on peut s'appuyer sur l'article \citetitle{formalConstantTime} \cite{formalConstantTime}.\medbreak
+
+
+On commence par définir un programme. Il s'agit d'une suite d'instruction binaire. Et une instruction est une action sur la mémoire. Cela nous permet de définir notre programme comme une suite de configuration $(l,r,m)$; $l$ la ligne d'instruction, $r$ le dictionnaire de registre et $m$ la mémoire. La configuration initiale est défini par $c_0 \triangleq (l_0,r_0,m_0)$ où $l_0$ est l'adresse de l'instruction d'entrée du programme, $r_0$ un dictionnaire de registre vide et $m_0$ une mémoire vide.\smallbreak
+
+Ainsi, avec cette modélisation, une instruction est un changement appliqué à notre configuration. Ce changement peut être représenté par $ c_0 \underset{f}{\to} c_1 $, $c_0$ et $c_1$ deuc configurations successives, $\to$ la transition entre les deux et $f$ une fuite émise par cette transition. Notons que certaines instructions ne produisent pas de fuites.\smallbreak
+
+Une fois ce préambule installé on peut alors définir formellement le comportement d'une instruction. Si on regarde par exemple 
+
+\includegraphics{pictures/branchement.png}
+\includegraphics{pictures/load.png}
+\newpage
+
 
 
 - formalisation des regles de securite
 
 
+The behavior of the program is modeled
+with an instrumented operational semantics taken from [69]
+in which each transition is labeled with an explicit notion of
+leakage. A transition from a configuration c to a configuration
+c0 produces a leakage t, denoted c → c0 . Analogously, the
+t
+evaluation of an expression e in a configuration (l, r, m),
+denoted (l, r, m) e `t bv, produces a leakage t. The leakage
+of a multistep execution is the concatenation of leakages
+produced by individual steps. We use → k with k a natural
+t
+number to denote k steps in the concrete semantics.
+An excerpt of the concrete semantics is given in Fig. 3
+where leakage by memory accesses occur during execution of
+load and store instructions and control flow leakages during
+execution of dynamic jumps and conditionals. The full set of
+rules is given in Appendix A1.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Nous adoptons une position pessimiste, en supposant que chaque violation individuelle de ces règles fuit parfaitement vers l'adversaire.
-
-La règle 1 se justifie par une observation triviale : une boucle plus longue utilise plus d'opérations. En pratique, il est difficile d'observer la durée de chaque boucle dans un programme plus vaste, ce qui rend cette règle pessimiste.
-
-La règle 2 est justifiée par divers canaux auxiliaires et attaques basées sur le cache~\cite{Ber05, YGH17, CAPGATB19}. Puisque les caches ne chargent l'information qu'une ligne entière à la fois, cette règle peut sembler trop pessimiste. Peut-être que seule la ligne de cache accédée devrait rester secrète~\cite{Bri11}. Malheureusement, il est possible de mener des attaques basées sur des accès à l'intérieur d'une ligne de cache~\cite{BS13, OST06, YGH17}. C'est pourquoi nous adoptons une position pessimiste, et supposons que les accès révèlent leur adresse exacte.
-
-La justification de la règle 3 est double. Premièrement, si différentes branches d'une instruction conditionnelle exécutent un nombre différent d'opérations, on peut observer quelle branche a été prise. Deuxièmement, même si les deux branches exécutent des opérations identiques, le prédicteur de branche du processeur peut être exploité pour révéler des informations sur la branche sélectionnée~\cite{AKS06, AKS07, EPAG16}.
-
-En plus de ces règles, nous avons besoin d'un ensemble de base d'opérations de confiance pour construire nos programmes. Nous supposons que l'addition, la multiplication, les opérations logiques et les décalages, tels qu'implémentés matériellement, sont en temps constant par rapport à leurs entrées. C'est le cas sur la plupart des processeurs, une exception notable étant certains microprocesseurs~\cite{Por}. Cette hypothèse est raisonnable pour les plateformes ciblées par notre bibliothèque.
 
 \cite{binsecRel2019}
 
@@ -60,10 +84,205 @@ En plus de ces règles, nous avons besoin d'un ensemble de base d'opérations de
 \section{Analyse d'un programme}
 
 
- - analyse statique
- - analyse dynamique
- - analyse symbolique
- - analyse de trace
+4.1
+Static analysis
+Static analysis approaches attempt to derive security properties
+from the program without actually executing it, extracting formally
+defined guarantees on all possible executions through binary or
+source code analysis. As a formal exploration of every reachable
+state is unfeasible, program behavior is often approximated, making
+them prone to false positives. Static approaches were the first to be
+considered, as side-channel security is closely related to information
+flow policies [53].
+4.1.1 Logical reduction Non-interference is a 2-safety property stat-
+ing that two executions with equivalent public inputs and poten-
+tially different secret inputs must result in equivalent public outputs.
+This definition covers side channels by considering resource usage
+(e.g., address trace) as a public output. Approaches based on logical
+reduction to 1-safety transform the program so that verifying its
+side-channel security amounts to proving the safety of the trans-
+formed program.
+Self-composition [23] interleaves two executions of a program P
+with different sets of secret variables in a single self-composed pro-
+gram P;P' . Solvers can then be used to verify the non-interference
+property. This approach was used by Bacelar Almeida et al. [15]
+to manually verify limited examples, relying on a large amount of
+code annotations. ct-verif instead runs the two copies in lockstep,
+while checking their assertion-safety [13]. It is able to verify LLVM
+programs, leveraging the boogie verifier. Sidetrail [19] reuses this
+to verify that secret dependent branches are balanced (assuming
+a fixed instruction cost and excluding memory access patterns),
+providing a counter-example when this verification fails.
+However, such approaches suffer from an explosion in the size of
+the program state space. Blazer [17] verifies timing-channel security
+on Java programs by instead decomposing the execution space into
+a partition on secret-independent branches. Proving 2-safety is
+thus reduced to verifying 1-safety on each trace in the partition
+improving scalability at the cost of precision. Themis [48] uses static
+taint analysis to automatically annotate secret-dependent Java code
+with Hoare logic formulas as pre- and post-conditions. An SMT
+solver then verifies that the post-condition implies execution time
+differences remain bounded by given constant. Both tools provide
+a witness triggering the vulnerability otherwise.
+4.1.2 Type systems Approaches based on verifying type safety of
+a program differ from language-level countermeasures [12, 30], as
+CCS ’23, November 26–30, 2023, Copenhagen, Denmark
+the developer only needs to type the secret values with annotations
+instead of rewriting the program. The type system then propagates
+this throughout the program, similarly to static taint analysis. Type
+systems were considered relatively early to verify non-interference
+properties [7] and offer good scalability but their imprecision makes
+them difficult to use in practice.
+VirtualCert [22] analyzes a modified CompCert IR where each
+instruction makes its successors explicit. The authors define seman-
+tics for that representation, building the type system on top of it.
+An alias analysis giving a sound over-approximated prediction of
+targeted memory address is needed to handle pointer arithmetic.
+While this approach is more suited to a strict verification task, it
+can also provide a leakage estimate.
+FlowTracker [107] introduces a novel algorithm to efficiently
+compute implicit information flows in a program, and uses it to
+apply a type system verifying constant-time.
+4.1.3 Abstract interpretation As a program semantics is generally
+too complex to formally verify non-trivial properties, abstract in-
+terpretation [50] over-approximates its set of reachable states, so
+that if the approximation is safe, then the program is safe.
+CacheAudit [55] performs a binary-level analysis, quantifying
+the amount of leakage depending on the cache policy by finding
+the size of the range of a side-channel function. This side-channel
+function is computed through abstract interpretation, and the size
+of its range determined using counting techniques. It was later
+extended to support dynamic memory and threat models allowing
+byte-level observations [56] and more x86 instructions [91].
+Blazy et al. [28] focus on the source code instead of the binary.
+Their tool is integrated into the formally-verified Verasco static an-
+alyzer, and uses the CompCert compiler. The analysis is structured
+around a tainting semantics that propagates secret information
+throughout the program.
+STAnalyzer [110] uses data-flow analysis to report secret-dependent
+branches and memory accesses.
+CacheS [126] uses an hybrid approach between abstract interpre-
+tation and symbolic execution. The abstract domain keeps track of
+program secrets—with a precise symbolic representation for values
+in order to confirm leakage—but keeps only a coarse-grain rep-
+resentation of non-secret values. To improve scalability, CacheS
+implements a lightweight but unsound memory model.
+4.1.4 Symbolic execution Symbolic execution [81] (SE) denotes
+approaches that verify properties of a program by executing it with
+symbolic inputs instead of concrete ones. Explored execution paths
+are associated with a logical formula: the conjunction of condi-
+tionals leading to that path. A memory model maps encountered
+variables onto symbolic expressions derived from the symbolic in-
+puts and the concrete constants. A solver is then used to check
+whether a set of concrete values satisfies the generated formulas.
+Recent advances in SMT solvers have made symbolic execution a
+practical tool for program analysis [42].
+CoCo-Channel [34] identifies secret-dependent conditions us-
+ing taint-analysis, constructs symbolic cost expressions for each
+path of the program uses SE and reports paths that exhibit secret-
+dependent timing behavior. Their cost model assigns a fixed cost
+per instruction, excluding secret-dependent memory accesses.CCS ’23, November 26–30, 2023, Copenhagen, Denmark
+Several works use symbolic execution to derive a symbolic cache
+model and check that cache behavior does not depend on secrets.
+CANAL [117] models cache behaviors of programs directly in the
+LLVM intermediate representation by inserting auxiliary variable
+and instructions. It then uses KLEE [41] to analyze the program
+and check that the number of hits does not depend on secrets.
+Similarly, CacheFix [47] uses SE to derive a symbolic cache model
+supporting multiple cache policies. In case of a violation, CacheFix
+can synthesize a fix by injecting cache hits/misses in the program.
+CaSym [35] follows the same methodology and, to improve scala-
+bility, includes simplifications of the symbolic state and loop trans-
+formations, which are sound but might introduce false positives.
+SE suffers from scalability issues when applied to 2-safety prop-
+erties like constant-time verification. Daniel et al. [51] adapt its
+formalism to binary analysis, introducing optimizations to maxi-
+mize information shared between two executions following a same
+path. Their framework Binsec/Rel offers a binary-level CT analysis,
+performing a bounded exploration of reachable states and giving
+counterexamples for the identified vulnerabilities.
+Pitchfork [54] combines SE and dynamic taint tracking. It soundly
+propagates secret taints along all executions paths, reporting tainted
+branch conditions or memory addresses. Interestingly, Pitchfork
+can analyze protocol-level code by abstracting away primitives’ im-
+plementations using function hooks, and analyzing them separately.
+ENCIDER [140] combines symbolic execution with taint analysis
+to reduce the number of solver calls. It also enables to specify
+information-flow function summaries to reduce path explosion.
+4.2
+Dynamic analysis
+Dynamic analysis groups approaches that derive security guar-
+antees from execution traces of a target program. Some form of
+dynamic binary instrumentation (DBI) is often used to execute the
+program and gather events of interest, such as memory accesses or
+jumps. Dynamic approaches differ in the events collected, and how
+traces are processed. They can be grouped depending on whether
+they reason on a single trace, or compare multiples traces together.
+4.2.1
+Trace comparison approaches
+Statistical tests. Statistical tests can be used to check if different
+secrets induce statistically significant differences in recorded traces.
+Cache Template [70] monitors cache activity to detect lines associ-
+ated with a target event, then finds lines correlated with the event
+using a similarity measure. A first pass using page-level observa-
+tions instead of lines can be used to improve scalability [112]. Shin
+et al. [114] use K-means clustering to produce two groups of traces
+for each line. The confidence in the partition indicates which line
+is likely to be secret-dependent. DATA [132] employs a Kuiper test
+then a Randomized Dependence Coefficient test to infer linear and
+non-linear relationships between traces and secrets. This was later
+extended to support cryptographic nonces as secrets [130].
+Mutual information (MI) can be used to quantify the information
+shared between secret values and recorded traces, with a non-zero
+MI score giving a leakage estimation. MicroWalk [133] computes
+MI scores between input sets and hashed traces, with leakage lo-
+cation pinpointed using finer-grained instruction-level MI scores.
+MicroWalk-CI [134] optimizes this process by transforming the
+Geimer et al.
+traces in call trees, and adds support for JavaScript and easy inte-
+gration in CI, following recommendations from [73]. CacheQL [141]
+reformulates MI into conditional probabilities, estimated with neu-
+ral networks. Leakage location is estimated by recasting the problem
+into a cooperative game solved using Shapley values. Contrary to
+other tools [20, 133], CacheQL does not assume uniform distribu-
+tion of the secret, nor deterministic executions traces.
+STACCO [136] targets control-flow vulnerabilities specifically in
+TLS libraries running on SGX, focusing on oracles attacks [11, 29].
+Traces recorded under different TLS packets are represented as
+sequences of basic blocks and compared using a diff tool.
+Instead of recording traces, dudect [106] records overall clock
+cycles and compares their distribution with secret inputs divided
+in two classes (fix-vs-random). While this approach is simple and
+lightweight, it gives certainty that an implementation is secure up
+to a number of measurements. Contrary to other tools relying on
+an explicit leakage model, dudect directly monitors timings. Hence,
+vulnerabilities to other microarchitectural attacks like Hertzbleed
+might (in theory) be detected by dudect.
+Fuzzing. Fuzzing techniques can be used to find inputs maximiz-
+ing coverage and side-channel leakage. DifFuzz [95] combines
+fuzzing with self-composition to find side-channels based on in-
+struction count, memory usage and response size in Java programs.
+ct-fuzz [72] extends this method to binary executables and cache
+leakage.
+4.2.2 Single trace Other approaches use only one trace to perform
+the analysis, sacrificing coverage for scalability. ctgrind [85] re-
+purposes the dynamic taint analysis of Valgrind to check CT by
+declaring secrets as undefined memory. This solution is easy to
+deploy and reuses familiar tools, but remains imprecise.
+ABSynthe [66] identifies secret-dependent branches using dy-
+namic taint analysis. It employs a genetic algorithm to build a
+sequence of instructions based on interference maps evaluating
+contention created by each x86 instructions.
+More precise approaches use SE to replay the trace with the
+secret as a symbolic value and check for CT violation. CacheD [127]
+applies this approach to memory accesses. Abacus [20] extends it
+to control-flow vulnerabilities, picking random values to check
+satisfiability instead of using a SMT solver. It also includes leakage
+estimation through Monte Carlo simulation.
+Finally, CaType [74] uses refinement types (i.e., types carrying
+a predicate restricting their possible values) on a trace to track
+constant bit values and improve precision. CaType also supports
+implementations that use blinding.
 
 
 

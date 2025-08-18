@@ -6,9 +6,9 @@ intro
 
 \section{Planification et préparations}
 
-Nous avons nos spécificités technique et nous savons qu'elle forme notre outil doit avoir. Nous pouvons commencer par synthétiser les opérations nécessaires.\smallbreak
+Nous avons nos spécificités techniques et nous savons qu'elle forme notre outil doit avoir (fig \ref{fig:compilation_structure}). Nous pouvons commencer par synthétiser les opérations nécessaires.\smallbreak
 
-Nous allons donc concevoir des protocoles pour identifier les étapes nécessaires pour que Binsec analyse entièrement un fichier et nous renvoie un parmi [\texttt{secure, unknown, insecure}]. Le protocole \texttt{x86\_64} est particulier. Depuis la version \textbf{0.5.0} de Binsec il est possible de fournir un <<cliché mémoire>>\footnote{Plus couramment 'Core dump', terme technique anglais désignant une copie de la mémoire vive et des registres d'un programme. Ce fichier sert à être analyser, généralement par un débogueur.} pour accélérer l'analyse. On va se servir de cet avantage pour l'intégrer notre graphe d'éxécution.La machine sur laquelle le projet sera développé est sur une architecture x86\_64, cela nous permet d'utiliser l'outil GDB pour la génération de cliché mémoire.\medbreak
+Nous allons donc concevoir des protocoles pour identifier les étapes nécessaires pour que Binsec analyse entièrement un fichier et nous renvoie un parmi [\texttt{secure, unknown, insecure}]. Le protocole \texttt{x86\_64} est particulier. Depuis la version \textbf{0.5.0} de Binsec il est possible de fournir un <<cliché mémoire>>\footnote{Plus couramment 'Core dump', terme technique anglais désignant une copie de la mémoire vive et des registres d'un programme. Ce fichier sert à être analyser, généralement par un débogueur.} pour accélérer l'analyse. Nous utilisons cet avantage pour l'intégrer à notre graphe d'éxécution.La machine sur laquelle le projet sera développé est sur une architecture x86\_64, cela nous permet d'utiliser l'outil GDB pour la génération de cliché mémoire.\medbreak
 
 \begin{figure}[!ht]
     \caption{Protocole pour analyser des fichiers compiler en x86\_64}
@@ -68,9 +68,9 @@ Nous allons donc concevoir des protocoles pour identifier les étapes nécessair
     \end{tikzpicture}
 \end{figure}
 
-Ce graphe présente la chaîne d'étape à avoir pour obtenir une analyse Binsec depuis une fonction que l'on cible. Plusieurs zones sont distinguées. La zone verte correspond à l'étape de compilation, la zone bleue à l'étape de préparation de l'analyse et la zone rouge à la synthèse des fichiers de tests et d'instruction pour l'analyse. Ce choix de couleur est adapté à la difficulté attendu de chaque étape. L'opération de compilation consiste en une commande. L'opération de préparation d'analyse consiste aussi en deux commandes : un appel à GDB avec le binaire puis un appel à Binsec avec le cliché mémoire et les instruction d'analyse.\smallbreak
+Ce graphe modélise la chaîne d'étapes nécessaire à l'obtention d'une analyse Binsec pour une fonction que nous ciblons. Plusieurs zones sont distinguées. La zone verte correspond à l'étape de compilation, la zone bleue à l'étape de préparation de l'analyse et la zone rouge à la synthèse de fichiers (de tests et d'instruction pour l'analyse de Binsec). Ce choix de couleur est adapté à la difficulté attendu de chaque étape. L'opération de compilation consiste en une commande. L'opération de préparation d'analyse consiste aussi en deux commandes : un appel à GDB avec le binaire puis un appel à Binsec avec le cliché mémoire et les instruction d'analyse.\smallbreak
 
-Avec ce graphe réalisé, on peut le modifier pour préparer la voie à d'autres architectures. Dans un format plus générique voici comment se présent notre protocole d'analyse :
+Avec ce graphe réalisé, nous pouvons le modifier pour préparer la voie à d'autres architectures. Dans un format plus générique voici comment se présente le protocole d'analyse :
 
 \begin{figure}[!ht]
     \caption{Protocole générique d'analyse}
@@ -116,9 +116,9 @@ Avec ce graphe réalisé, on peut le modifier pour préparer la voie à d'autres
     \end{tikzpicture}
 \end{figure}
 
-Dans ce contexte, une question se pose : est-ce que la conception des script pour Binsec (\textit{.ini}) est automatisable ou est-ce qu'il faudra utiliser des émulateurs pour générer des clichés mémoire et revenir dans le cas de la figure \ref{fig:protocole_x86} ?\smallbreak
+Dans ce contexte, une question se pose : est-ce que la conception des scripts pour Binsec (\textit{.ini}) est automatisable ou est-ce qu'il faudra utiliser des émulateurs pour générer des clichés mémoire et revenir dans le cas de la figure \ref{fig:protocole_x86} ?\smallbreak
 
-Cette question est importante parce que lorsqu'on analyse un fichier ARM par exemple, si le fichier source contient des appels à des fonctions systèmes, les \texttt{IFUNC}, celles-ci sont exécutées en fonction de l'architecture qui exécute le programme. Or Binsec n'a pas ces informations, il faut les fournir à la main. Voici le scipt nécessaire pour une vérification de la fonction <<Hacl \_AEAD \_Chacha20Poly1305\_Simd128\_encrypt>> compilé vers ARMv8.
+En effet, l'importance de cette question se révèle lorsqu'on change d'architecture et que l'on doivent se passer de clichés mémoire. Sur notre machine en x86\_64, si nous analysons un fichier compilé en ARM, alors on peut croiser des appels à des fonctions systèmes, les \texttt{IFUNC}. Or la résolution de ces fonctions est gérée dynamiquement lors de l'exécution du programme. Cette mécanique permet d'utiliser des implémentations optimisées en fonction des configurations du système d'éxécution. Or comme Binsec réalise une analyse symbolique du programme, il faut lui spécifier qu'elles fonctions correspondent aux \texttt{IFUNC} qu'il peut croiser. pour illustrer ce point, observons le scipt nécessaire pour une vérification de la fonction <<Hacl \_AEAD \_Chacha20Poly1305\_Simd128\_encrypt>> compilé vers ARMv8.
 
 \begin{listing}[!ht]
     \caption{Script d'instruction pour analyser un binaire compilé vers ARM}
@@ -132,18 +132,16 @@ secret global input1, aad1
 @[0x00000048f018, 8] := <__memset_generic>
 @[0x00000048f030 ,8] := <__memcpy_thunderx2>
 
-lr<64> := 0xdeadbeef as return_address
-
 starting from <main>
 with concrete stack pointer
 
-halt at return_address
-halt at <_IO_puts>
+
+halt at <exit>
 explore all 
     \end{minted}
 \end{listing}
 
-Les lignes 5 à 7 sont présente pour indiquer les branchement à effectuer par Binsec lorsque qu'il rencontre ces adresses. Cette opération automatiquement exécutée lors de l'initialisation de l'exécution doit ici être précisée avec les fonction présente dans le binaire. Automatiser ces affectations peut être difficile et nécessiter quelques outils d'analyse supplémentaires pour attraper les adresses qui ont besoin d'être réaffecté et leur attribuer les fonctions les plus adaptées.\medbreak
+Les lignes 5 à 7 sont présentes pour indiquer les branchements à effectuer par Binsec lorsque qu'il rencontre ces adresses. Cette opération automatiquement exécutée lors de l'initialisation de l'exécution doit ici être précisée avec les fonctions présentes dans le binaire. Automatiser ces affectations peut être difficile et nécessiter quelques outils d'analyse supplémentaires pour attraper les adresses qui ont besoin d'être réaffecté et leur attribuer les fonctions les plus adaptées.\medbreak
 
 
 \begin{CitationBox}{Nommer un outil}
@@ -153,7 +151,8 @@ Les lignes 5 à 7 sont présente pour indiquer les branchement à effectuer par 
 
 \subsection*{Conception d'Érysichthon}
 
-On a des protocoles. On a des expériences sur des fonctions de Hacl*. On a un nom. Il faut maintenant passer à l'échelle et concevoir un outil complet qui intéragit et exécute nos instructions. L'outil sera en somme une combinaison de script python, shell et de Makefile. Il faut donc les organiser et adapter leurs intéractions pour arriver au bout de nos peines.
+
+Nous avons vus les protocoles nécessaires pour construire une analyse complète. Nous avons fait des tests pour comprendre le fonctionnement de Binsec et comment doivent être déclarer les fonctions de Hacl*. Nous passons donc en phase de conception et construisons notre outil \textit{Érysichthon}. Il sera une combinaison de script python, script shell et de Makefile. Nous appelons module un ensemble de script qui réalise une tâche au sein d'\textit{Érysichthon}. Nous vous présentons en figure \ref{fig:erysichthon} comment s'organise les modules et les tâches qu'ils effectuent.
 
 \begin{figure}[!ht]
     \caption{Structure des modules d'Érysichthon}
@@ -168,12 +167,12 @@ On a des protocoles. On a des expériences sur des fonctions de Hacl*. On a un n
     \tikzstyle{arrow} = [thick,->,>=stealth]
     
     % Noeuds
-    \node (control) [startstop] {\parbox{3cm}{\centering Érysichthon \\ \tiny{Control panel}}};
+    \node (control) [startstop] {\parbox{3cm}{\centering Érysichthon \\ \tiny{Panneau de contrôle}}};
     \node (x86) [process, below of=control, xshift= 2cm, yshift=-0.5cm] {x86\_64};
     \node (x86-ini) [process2, below of=x86, xshift = 2cm] {Make\_ini};
     \node (x86-dump) [process2, below of=x86-ini] {Make\_core\_dump};
     \node (x86-compil) [process2, below of=x86-dump] {Compil};
-    \node (arm) [process, below of=x86-compil, xshift=-2cm] {Other architecture};
+    \node (arm) [process, below of=x86-compil, xshift=-2cm] {Autres architectures};
     \node (arm-ini) [process2, below of=arm, xshift=2cm] {Make\_ini};
     \node (arm-compil) [process2, below of=arm-ini] {Compil};
     \node (test) [process, below of=arm-compil, xshift=-2cm] {Andhrímnir};
@@ -195,29 +194,29 @@ On a des protocoles. On a des expériences sur des fonctions de Hacl*. On a un n
     \end{tikzpicture}
 \end{figure}
 
-On retrouve les différentes étapes de nos protocoles représentées par des modules au sein de leur noeuds respectifs : <<\texttt{Make\_ini}>> pour les scripts pour Binsec, <<\texttt{Make\_core\_dump}>> pour la génération des clichés mémoires et <<\texttt{Compil}>> pour les appels aux compilateurs. Le dernier noeud <<\texttt{Andhrímnir}>> est particulier et détaillé dans la section suivante. 
+Nous retrouvons les différentes étapes de nos protocoles représentées par des rectangles symbolisant les modules associés depuis leurs noeuds respectifs : <<\texttt{Make\_ini}>> pour la génération des scripts pour Binsec, <<\texttt{Make\_core\_dump}>> pour la génération des clichés mémoires et <<\texttt{Compil}>> pour les appels aux compilateurs. Le dernier noeud <<\texttt{Andhrímnir}>> est particulier et détaillé dans la section suivante. 
 
 \subsection*{Andhrímnir}
 
-Ce module de Érysichthon est particulier. Premièrement c'est le seul qui est aussi son nom. Ce module consiste a produire les fichiers qui seront compilés puis analysés par Binsec. Ce module est nommé d'après le cuisinier de la mythologie nordique, car comme lui, il prépare sempiternellement des mets pour son maître.\smallbreak
+Ce module de Érysichthon est particulier car il est lui aussi nommé. Ce module consiste à produire les fichiers qui seront compilés puis analysés par Binsec. Son nom est celui du cuisinier des dieux de la mythologie nordique, un travail répétitif et quotidien qu'il réalise ici pour notre outil.\smallbreak
 
-Ce module est nommé car il constitue un projet dans le projet, sa seule conception pris plus de la moitié du temps de développement total. C'est un outil qui, à partir d'un projet en C, est capable de générer automatiquement des tests qui compilent et peuvent ensuite être proposé à des outils d'analyse binaire. Ce module est aggrégé à Érysichthon mais peut être porter vers d'autre projets. À la différence des logiciels qui produisent des tests unitaires ( uniquement sur des projet Java, Haskell ou C\# et souvent associé à des offres payantes), on a ici une couverture complète des fonctions portés par le projet C.\smallbreak
+Ce module est nommé car il constitue un projet dans le projet, sa conception seule pris plus de la moitié du temps de développement total. C'est un outil qui, à partir d'un projet en C, est capable de générer automatiquement des tests qui compilent et peuvent ensuite être proposé à des outils d'analyse binaire. Ce module est aggrégé à Érysichthon mais peut être porter vers d'autre projets. À la différence des logiciels qui produisent des tests unitaires ( uniquement sur des projet Java, Haskell ou C\# et souvent associé à des offres payantes), il y a ici une garantie quand à la complétude des tests produit. Toutes les fonctions présente dans le projet C analysé auront un test associé.\smallbreak
 
-Ce module, comme son grand frère, fonctionne et est abouti, par contre il nécessite quelques opérations manuelles et peut être améliorer pour pouvoir supporter d'autre projet C. Actuellement il possède quelques optimisation associées à Hacl* pour accélérer la réalisation de la preuve de concept.
+Ce module, comme son grand frère, est fonctionnel et abouti. En revanche, il nécessite quelques opérations manuelles supplémentaires et quelques amélioration pour pouvoir supporter n'importe quel projet C. Additionnellement il possède quelques optimisations propre à Hacl* permettant d'accélérer la mise en service d'Érysichthon.
 
 \section{Conception et usages}
 
-On va commencer par le petit frère, Andhrímnir. Il fonctionne avec une phase d'initialisation <<\texttt{Enumerate}>> et une phase de production de tests <<\texttt{Make\_tests}>>, elle même découpé en plusieurs étapes. La génération de \textbf{548} fichiers de tests est réalisé moins de 2 secondes.\smallbreak
+Nous commençons par le petit frère, Andhrímnir. Il fonctionne avec une phase d'initialisation <<\texttt{Enumerate}>> et une phase de production de tests <<\texttt{Make\_tests}>>, elle-même découpé en plusieurs étapes. La génération de \textbf{548} fichiers de tests est réalisé moins de 2 secondes.\smallbreak
 
 \subsection*{Enumerate}
 
-Cette étape, de réalisation très simple, consiste à identifier toutes les fonctions qui auront un fichier test généré. Comme Hacl* génère automatiquement son code C, on peut exploiter cette particularité pour lister rapidement nos fonctions. L'opération actuellement réalisé est de lister l'ensemble des fichiers "\textbf{.h}" contenu dans le répertoire cible. Ensuite un parcours et une lecture de ceux-ci nous donne toutes les fonctions de l'API d'Hacl* et d'avoir une couverture complète du projet.\smallbreak
+Cette étape, de réalisation très simple, consiste à identifier toutes les fonctions qui auront un fichier test généré. Comme Hacl* génère automatiquement son code C, nous exploitons cette particularité pour lister efficacement nos fonctions. L'opération actuellement réalisé est de lister l'ensemble des fichiers "\textbf{.h}" contenu dans le répertoire cible. Ensuite un parcours et une lecture de ceux-ci nous donne toutes les fonctions de l'API d'Hacl* et d'avoir une couverture complète du projet.\smallbreak
 
-C'est lors de cette étape que l'on peut spécifier ou retirer des fichiers ou plus précisément des fonctions de la chaîne de production. Ce garde fou permet d'accélérer l'obtention des résultats finaux et d'aider grandement lorsque l'on souhaite débuguer.
+C'est lors de cette étape que nous spécifions ou retirons des fichiers ou plus précisément des fonctions de la chaîne de production. Ce garde fou permet d'accélérer l'obtention des résultats finaux et d'aider grandement lorsque nous souhaitons débuguer.
 
 \subsection*{Make\_test}
 
-Le modèle de fichier de l'on veut construire est similaire aux tests minimaux que l'on a pus effectuer auparavant. Des paramètres, une déclaration de fonction et un appel à la fonction \texttt{exit}, c'est la recette pour une analyse simple. Binsec réalise une analyse symbolique, il ignore donc la valeur réelle des entrées. L'objectif est donc de concevoir un test qui compile pour avoir ensuite les bonnes instructions assembleurs à analyser. L'exemple \ref{fig:gen_test_simple} illustre comment sont générer nos fichiers de tests.\medbreak
+Le modèle de fichier que nous construisons est similaire aux tests minimaux préalablement réalisés. Des paramètres, une déclaration de fonction et un appel à la fonction \texttt{exit}, c'est notre recette pour une analyse simple. Binsec réalise une analyse symbolique, il ignore donc la valeur réelle des entrées. Notre objectif avec notre recette est de concevoir un test qui compile et qui contient toutes les instructions assembleurs qui pourront être analyser. L'exemple \ref{fig:gen_test_simple} illustre comment sont générer nos fichiers de tests.\medbreak
 
 \begin{figure}[!ht]
   \caption{Test de la fonction Hacl\_EC\_K256\_felem\_sqr}
@@ -250,22 +249,23 @@ Hacl_EC_K256_felem_sqr(a, out);
     \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
     \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
 
-    \node[intro, fit={(0,8) (12.2,5.2)}, label={[labelshift]center:Phase introductive : 8 lignes}]{};
+    \node[intro, fit={(0,8) (12.2,5.1)}, label={[labelshift]center:Phase introductive : 8 lignes}]{};
     \node[definition, fit={(0,3) (12.2,4.5)}, label={[labelshift]center:Phase déclarative}]{};
     \node[main, fit={(0,1) (12.2,2.3)}, label={[labelshift]center:Phase principale}]{};
 
   \end{tikzpicture}
 \end{figure}
 
-Une première partie initie la fichier. Cette partie contient les appels inclusifs de la librairie standard C, l'invocation de la librairie Hacl* au travers du fichier d'en-tête de référence (ici \texttt{Hacl\_EC\_K256}) et la signature de fabrication en commentaires. L'utilisation de la librairie standard permet d'utiliser la fonction \texttt{exit}. Avec cet appel, on pourra construire nos scripts Binsec avec une intéruption sur cette fonction. Cet arrêt précoce permet d'accélérer l'analyse du binaire de la cible (ici \texttt{Hacl\_EC\_K256\_felem\_sqr}) et nous garantir que cette analyse soit complète.\smallbreak
+Une première partie initie le fichier. Cette partie contient les appels inclusifs de la librairie standard C, l'invocation de la librairie Hacl* au travers du fichier d'en-tête de référence (ici \texttt{Hacl\_EC\_K256}) et la signature de fabrication en commentaires. L'utilisation de la librairie standard permet d'utiliser la fonction \texttt{exit}. Avec cet appel, nous construisons nos scripts Binsec avec une intérruption sur cette fonction. Cet arrêt précoce permet d'accélérer l'analyse du binaire de la cible (ici \texttt{Hacl\_EC\_K256\_felem\_sqr}) et nous garantit que cette analyse soit complète.\smallbreak
 
-La deuxième partie contient tous les éléments déclaratifs nécessaire à l'invocation de la fonction. Puis on termine avec le corps du fichier C qui contient l'appel de la fonction, notre balise de fin avec la fonction \texttt{exit}. Cette construction est standardisé entre les fichiers et permet de mettre en places quelques optimisations.
+La deuxième partie contient tous les éléments déclaratifs nécessaires à l'invocation de la fonction. Puis se termine avec le corps du fichier C qui contient l'appel de la fonction, notre balise de fin avec la fonction \texttt{exit}. Cette construction est standardisée entre les fichiers et permet de mettre en places quelques optimisations.
 
 
 \begin{figure}[!ht]
     \caption{Schéma de conception d'Andhrímnir}
     \label{fig:schema_andrhimnir}
     \centering
+    \begin{adjustwidth}{-10mm}{0mm}
     \begin{tikzpicture}[auto]
     % Définition des styles pour les boîtes et flèches
     \tikzset{
@@ -336,17 +336,18 @@ La deuxième partie contient tous les éléments déclaratifs nécessaire à l'i
         \node (title) [anchor=north west] at (zoneNode.north west) {\parbox{3.5cm}{\centering \Huge{\textbf{Andhrímnir}}\\\scriptsize{\textit{Génère les tests}}}};
     \end{scope}
   \end{tikzpicture}
+  \end{adjustwidth}
 \end{figure}
 
-Comme illsutré par la figure \ref{fig:schema_andrhimnir}, la génération des tests est effectuée lors de la lecture des fichiers d'en-tête. Une phase de lecture d'un fichier de données "json" ensuite est réalisé pour avoir toutes les informations nécessaire à la constitution du fichier test. Une foix ces étapes réalisés, Andhrímnir commence sa préparation. or il se trouve que quelques foix, certaines fonctions de Hacl* font appel à des structures propres à la librairie qui ont une instanciation particulière. Le module <<\texttt{Détection appel auxiliaire}>> permet de vérifier ce cas de figure.\smallbreak
+Comme illsutré par la figure \ref{fig:schema_andrhimnir}, la génération des tests est effectuée lors de la lecture des fichiers d'en-tête. Une phase de lecture d'un fichier de données "json" est ensuite réalisée pour avoir toutes les informations nécessaire à la constitution du fichier test. Une fois ces étapes réalisées, Andhrímnir commence sa préparation. Or il se trouve que quelques fois, certaines fonctions de Hacl* font appel à des structures propres à la librairie qui ont une instanciation particulière. Le module <<\texttt{Détection appel auxiliaire}>> permet de vérifier ce cas de figure.\smallbreak
 
-Dans le cas où aucun appel n'est détecté, Andhrímnir continue sa préparation avec les étapes successives illustrées par la figure \ref{fig:gen_test_simple} : génération des déclaration puis du main.\smallbreak
+Dans le cas où aucun appel n'est détecté, Andhrímnir continue sa préparation avec les étapes successives illustrées par la figure \ref{fig:gen_test_simple} : génération des déclarations puis génération du \texttt{main}.\smallbreak
 
-À l'inverse où un appel est détecté, il est possible la fonction soit déclaré dans un autre fichier d'en-tête. Si c'est le cas, alors Andhrímnir doit déterminer quel fichier contient les informations requises pour compléter les informations nécessaires pour produire un fichier de test correct. La solution qui nous est venue et de temporiser le problème. Andhrímnir prépare des tests pour toute les fonctions. Donc s'il a besoin d'une fonction qu'il a déjà préparé, on peut accéder aux informations contenues dans le fichier de test associé; s'il a besoin d'une fonction qu'il n'a pas encore préparé, alors il peut la mettre de côté et retravailler dessus une foix qu'il a finis son premier passage sur toute les fonctions d'Hacl*. Ce procédé est récursif pour pallier le problème d'appels en cascade.\smallbreak
+À l'inverse où un appel est détecté, il est possible que la fonction soit déclarée dans un autre fichier d'en-tête. Si c'est le cas, alors Andhrímnir doit déterminer quel fichier contient les informations requises pour compléter les informations nécessaires pour produire un fichier de test correct. La solution qui nous est venue est de temporiser le problème. Andhrímnir prépare des tests pour toutes les fonctions. Donc s'il a besoin d'une fonction qu'il a déjà préparé, nous pouvons accéder aux informations contenues dans le fichier de test associé. Au contraire, s'il a besoin d'une fonction qu'il n'a pas encore préparé, alors il peut la mettre de côté et retravailler dessus une fois qu'il a finis son premier passage sur toute les fonctions d'Hacl*. Ce procédé est récursif pour pallier le problème d'appels en cascade.\smallbreak
 
-En réalité Andhrímnir ne va pas recharger les informations d'une fonction qu'il a besoin, il va faire cette opération de <<\texttt{collage}>>. Elle consiste à une instruction shell qui vient ajouter (coller) au fichier en cours de conception la partie déclaration du fichier. Cette astuce permet d'éviter une nouvelle étape d'accumulation d'informations.\medbreak
+En réalité Andhrímnir ne recharge les informations d'une fonction qu'il a besoin, il effectue cette opération de <<\texttt{collage}>>. Elle consiste à une instruction shell qui vient ajouter (coller) au fichier en cours de conception la partie déclaration du fichier. Cette astuce permet d'éviter une nouvelle étape d'accumulation d'informations.\medbreak
 
-La phase de lecture dans les fichiers donées json existe pour accélerer le développement de Andhrímnir. Cela permet de venir ajouter manuellement des instructions haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point. Une fonction a besoin de que les éléments qui lui sont données en paramètres respecte ses attentes. Cet exemple est accompgnée du fichier json associé et du fichier de tests final \ref{lst:exemple_json,lst:exemple_complet}.  
+La phase de lecture dans les fichiers donées json existe pour accélerer le développement de Andhrímnir. Cela permet de venir ajouter manuellement des instructions haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point : certaines fonctions ont besoins que les paramètres déclarés respecte certaines conditions. Cet exemple est accompgnée du fichier json associé et du fichier de tests final \ref{lst:exemple_json,lst:exemple_complet}.  
 
 
 \subsection*{Make\_core\_dump et Compilation}
@@ -361,7 +362,7 @@ Ce module consiste à concevoir les fichiers d'instructions pour Binsec. Il doit
 
 Un premier temps initie chargement des données, ensuite l'étiquette <<\texttt{secret}>> est accrochée aux variables à suivre durant l'analyse. Des commandes de gestion d'instruction particulières : des appels systèmes, des vérifications de registres inconnu de Binsec; permettent que l'analyse ne s'intérrompe pas et nous donne un résultat pertinent (\texttt{secure}, \texttt{insecure}). Enfin on indique notre arrêt d'exploration sur fonction <<\texttt{exit}>> et on donne notre feu vert avec la commande d'exploration totale.\medbreak
 
+Dans le cadre d'autre architectures, comme ARM, le code \ref{lst:script_arm_exemple} montre que la différence à considérer est cette affectation manuelle des <<\texttt{IFUNC}>>. Pour le moment, la solution en place qui gère une affectation correcte est conçu en fonction du support matériel sur lequel l'outil est activé.
+
 \section{Résultats}
 
-\vfill
-\textit{Transition}
