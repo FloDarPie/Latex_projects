@@ -366,3 +366,89 @@ Dans le cadre d'autres architectures, comme ARM, le code \ref{lst:script_arm_exe
 
 \section{Résultats}
 
+L'éxécution c'est réalisé sur une machine équipée d'un processeur \textit{Intel Xeon E5-2620v4} avec 32 Gio de mémoire. Le temps nécéssaire pour une analyse complète en x86\_64 avec \texttt{GCC} est de 4h07. Une analyse complète comprend la compilation de Hacl*, la génération des fichiers de tests, la compilation des-dits fichiers et l'analyse individuelle de chacun par Binsec. Nous avons ajouter un module pour synthétiser et générer des rapports d'analyse.\medbreak
+
+
+\begin{figure}[!ht]
+  \centering
+  \scalebox{0.65}{%
+    \begin{tikzpicture}
+      \begin{axis}[
+        xlabel={Options de compilation},
+        ylabel={Nombre de fonctions},
+        legend style={at={(0.5,-0.15)},anchor=north,legend columns=-1},
+        grid=both,
+        xtick={0,1,2,3,4,5},
+        xticklabels={-O0, -O1, -O2, -O3, -Os, -Oz},
+        width=12cm, height=7cm,
+        legend style={at={(1.05,0.5)}, anchor=west},
+        legend columns=1
+      ]
+
+        \addplot coordinates {(0,359) (1,372) (2,378) (3,382) (4,372) (5,372)};
+        \addlegendentry{secure}
+
+        \addplot coordinates {(0,21) (1,22) (2,22) (3,27) (4,22) (5,22)};
+        \addlegendentry{insecure}
+
+        \addplot coordinates {(0,169) (1,155) (2,149) (3,140) (4,154) (5,155)};
+        \addlegendentry{unknown}
+
+      \end{axis}
+    \end{tikzpicture}%
+  }
+  \caption{Graphes des résultats d'Érysichthon en x86\_64}
+  \label{fig:graphe_total}
+\end{figure}
+
+
+Les données détaillées peuvent être consulté en annexe \ref{tab:resultats_finaux}. En l'état, l'analyse rapporte entre 139 et 168 fichiers dont l'analyse n'a pus se terminer. Il faudrait observer plus en détails ces fichiers pour cibler   \medbreak
+
+\begin{figure}[!ht]
+\begin{tikzpicture}
+  \begin{axis}[
+    title={Répartition des erreurs (unknown)},
+    xlabel={Options de compilation},
+    ylabel={Nombre de cas},
+    grid=both,
+    xtick={0,1,2,3,4,5},
+    xticklabels={-O0, -O1, -O2, -O3, -Os, -Oz},
+    width=13cm, height=8cm,
+    legend style={at={(1.05,0.5)}, anchor=west}
+  ]
+
+    % KO
+    \addplot[color=red, mark=*] coordinates {(0,0) (1,0) (2,2) (3,2) (4,0) (5,0)};
+    \addlegendentry{KO}
+
+    % syscall
+    \addplot[color=blue, mark=square*] coordinates {(0,0) (1,0) (2,0) (3,0) (4,0) (5,0)};
+    \addlegendentry{syscall}
+
+    % max depth
+    \addplot[color=green!70!black, mark=triangle*] coordinates {(0,92) (1,59) (2,45) (3,23) (4,58) (5,59)};
+    \addlegendentry{max depth}
+
+    % killed
+    \addplot[color=orange, mark=diamond*] coordinates {(0,6) (1,12) (2,12) (3,7) (4,12) (5,12)};
+    \addlegendentry{killed}
+
+    % error
+    \addplot[color=purple, mark=otimes*] coordinates {(0,19) (1,46) (2,46) (3,46) (4,46) (5,46)};
+    \addlegendentry{error}
+
+    % timeout
+    \addplot[color=cyan, mark=pentagon*] coordinates {(0,14) (1,0) (2,6) (3,24) (4,0) (5,0)};
+    \addlegendentry{timeout}
+
+    % symbol
+    \addplot[color=brown, mark=star] coordinates {(0,37) (1,37) (2,37) (3,37) (4,37) (5,37)};
+    \addlegendentry{symbol}
+
+  \end{axis}
+\end{tikzpicture}
+  \caption{Graphes détaillant les erreurs interrompant l'analyse Binsec}
+  \label{fig:graphe_unknown}
+\end{figure}
+
+Le détails des valeurs est rapporté en annexe \ref{table:detail_unknown}.

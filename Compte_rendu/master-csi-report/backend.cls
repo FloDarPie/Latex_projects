@@ -42,10 +42,16 @@
 \usepackage{adjustbox}
 \usepackage{nameref}
 \usepackage{eso-pic, afterpage}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 %% custom style %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \definecolor{lightgray}{gray}{0.9}
-\definecolor{inria-2024-gris-bleu}  {HTML}{384257}
+\definecolor{inria-2024-gris-bleu}{HTML}{384257}
+\definecolor{secure-green}{RGB}{144, 238, 144}   % Vert pâle
+\definecolor{unknown-orange}{RGB}{255, 204, 153} % Orange pâle
+\definecolor{insecure-red}{RGB}{255, 153, 153}   % Rouge pâle
 
 % custom commands
 \newcommand{\version}[1]{\def\theversion{#1}}

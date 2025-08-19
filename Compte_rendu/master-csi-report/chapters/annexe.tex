@@ -101,7 +101,7 @@
   Les flèches grises indiquent tous les éléments actionnables individuellement.
 \end{figure}
 
-\vfill
+\newpage
 \begin{listing}[!ht]
   \caption{Déclaration de la fonction \textbf{encrypt} dans le fichier d'en-tête Hacl\_AEAD\_\-Chacha20Poly1305\_Simd256.h}
   \label{lst:exemple_header}
@@ -143,7 +143,7 @@ Hacl_AEAD_Chacha20Poly1305_Simd256_encrypt(
 \end{listing}
 
 \vfill
-\begin{listing}
+\begin{listing}[!htb]
   \caption{Extrait du fichier Hacl\_AEAD\_Chacha20Poly1305\_Simd256.json}
   \label{lst:exemple_json}
   \begin{minted}[
@@ -177,8 +177,9 @@ linenos
 }
   \end{minted}
 \end{listing}
-\vfill
-\begin{listing}
+
+\newpage
+\begin{listing}[!htb]
   \caption{Code généré du fichier test Hacl\_AEAD\_\-Chacha20Poly1305\_Simd256\_encrypt.c}
   \label{lst:exemple_complet}
   \begin{minted}[
@@ -220,9 +221,7 @@ Hacl_AEAD_Chacha20Poly1305_Simd128_encrypt(output, tag, input, input_len_encrypt
   \end{minted}
 \end{listing}
 
-\vfill
-
-\begin{listing}
+\begin{listing}[!htb]
   \caption{Instruction Binsec générée automatiquement, \\ Hacl\_\-AEAD\_\-Chacha20Poly1305\_\-Simd256\_encrypt.ini}
   \label{list:exemple_ini_final}
   \begin{minted}[
@@ -251,3 +250,51 @@ end
 halt at <exit>    
   \end{minted}
 \end{listing}
+
+
+\newpage
+\begin{table}[!th]
+\centering
+\begin{adjustwidth}{-20mm}{0mm}
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tabular}{c|ccc}
+        \textbf{Optimisation} & \textbf{Secure} & \textbf{Unknown} & \textbf{Insecure} \\
+        \hline
+        \rowcolor{blue!5}
+        -O0 & 359 & 168 & 21 \\
+        -O1 & 372 & 154 & 22 \\
+        \rowcolor{blue!5}
+        -O2 & 378 & 148 & 22 \\
+        -O3 & 382 & 139 & 27 \\
+        \rowcolor{blue!5}
+        -Os & 372 & 154 & 22 \\
+        -Oz & 373 & 153 & 22 \\
+    \end{tabular}
+    \caption{Résultats d'Érysichthon en x86\_64}
+    \label{tab:resultats_finaux}
+\end{minipage}%
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tabular}{c|cccccc}
+        \textbf{Erreur / Option} & \textbf{-O0} & \textbf{-O1} & \textbf{-O2} & \textbf{-O3} & \textbf{-Os} & \textbf{-Oz} \\
+        \hline
+        \rowcolor{blue!5}
+        KO        & 0  & 0  & 2  & 2  & 0  & 0  \\
+        syscall   & 0  & 0  & 0  & 0  & 0  & 0  \\
+        \rowcolor{blue!5}
+        max depth & 92 & 59 & 45 & 23 & 58 & 59 \\
+        killed    & 6  & 12 & 12 & 7  & 12 & 12 \\
+        \rowcolor{blue!5}
+        error     & 19 & 46 & 46 & 46 & 46 & 46 \\
+        timeout   & 14 & 0  & 6  & 24 & 0  & 0  \\
+        \rowcolor{blue!5}
+        symbole    & 37 & 37 & 37 & 37 & 37 & 37 \\
+    \end{tabular}
+    \caption{Tableau détaillant les erreurs interrompant l'analyse Binsec}
+    \label{table:detail_unknown}
+\end{minipage}
+\end{adjustwidth}
+\end{table}
+
