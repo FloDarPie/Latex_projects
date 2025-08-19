@@ -74,7 +74,7 @@ Plusieurs outils existent et peuvent être utilisés tous au long du processus d
 Une solution légère est de ce servir du système libre <<\textbf{Compiler Explorer}\footnote{\url{https://godbolt.org/}}>>. Avec à disposition un éditeur de texte, il est possible de voir comment sera généré le code assembleur. En reprenant une partie du code \ref{fig:timing_attack_example}, nous pouvons voir sur la figure \ref{img:godbolt_example} que le choix du compilateur, ici sa version, introduit une légère modification. Ce changement n'est pas perceptible sans observation directe, il se perçoit directement grâce à la petite taille du code observé.
 
 \begin{figure}[!h]
-  \begin{adjustwidth}{-2.5cm}{-2cm}
+  \begin{adjustwidth}{-18mm}{0mm}
     \centering
     \includegraphics[trim = 1mm 0mm 0mm 0mm, clip,width=0.9\paperwidth]{pictures/godbolt_example.png}
     \caption{Capture d'écran de comparaison de code assembleur x86\_64 entre \texttt{GCC 15.1} et \texttt{GCC 5.1}}
@@ -94,7 +94,7 @@ Ils sont listés alphabétiquement et ont précisés le type de fichier analysé
   \scriptsize{
   Cible : [C, Java] = Code source, Binaire = Binaire, DSL = Surcouche de langage, Trace = Trace d'exécution, WASM = Assembleur web.\\
   Techn. : Formel = Programmation formelle, [Symbolique, Dynamique, Statistique] = type d'analyse. \\
-  Garanties (\textit{Sécurité face aux attaques temporelles}) : $\bullet$ = Analyse correct, $\blacktriangle$ = Correct mais avec des limitations, $\circ$ = Aucune garantie, $\bigstar$ = Vérification d'autres propriétés.
+  Garanties (\textit{Sécurité face aux attaques temporelles}) : $\bullet$ = Analyse correcte, $\blacktriangle$ = Correct mais avec des limitations, $\circ$ = Aucune garantie, $\bigstar$ = Vérification d'autres propriétés.
   }
   \normalsize
   \begin{center}

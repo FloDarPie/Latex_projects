@@ -53,6 +53,9 @@
 \addcontentsline{toc}{chapter}{Table des codes}
 \listoftables
 
+\printindex
+
+
 \cleardoublepage
 \afterpage{%
     \AddToShipoutPictureBG*{%
@@ -82,13 +85,15 @@
 \input{chapters/constantTimeSolution.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\null\thispagestyle{empty}\newpage
+\cleardoublepage
 \afterpage{%
-    \AddToShipoutPictureBG*{%
-    \put(8.5cm,20cm){
-        \fbox{\includegraphics[trim = 12cm 26cm 11cm 0cm, clip, scale = 0.8]{pictures/page_garde.jpeg}}}
+\AddToShipoutPictureBG*{%
+\put(8.5cm,20cm){
+    \fbox{\includegraphics[trim = 12cm 26cm 11cm 0cm, clip, scale = 0.8]{pictures/page_garde.jpeg}}}
     }
     \ClearShipoutPicture%
-}
+    }
 \part{Automatisme et vérification ou comment développer un détecteur de menace}
 
 \input{chapters/automateVerifOutils}
@@ -96,6 +101,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\null\thispagestyle{empty}\newpage
 \cleardoublepage
 \AddToShipoutPictureBG*{%
 \put(2cm,18cm){
@@ -108,15 +114,10 @@
 \input{chapters/erysichtonConception.tex}
 \input{chapters/erysichtonUsage.tex}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \part{Microarchitecture sécurisé ou comment concevoir un support sûr même s'il nous quitte des mains}
-
-% \input{chapters/microArchActu.tex}
-% \input{chapters/microArchProjection.tex}
-
 
 \backmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\cleardoublepage
 \afterpage{%
     \AddToShipoutPictureBG*{%
     \put(2cm,9cm){
@@ -126,9 +127,12 @@
 }
 \part{Conclusion}
 \input{chapters/discussionOuverture.tex}
-\addcontentsline{toc}{chapter}{Discussion}
+\addcontentsline{toc}{chapter}{Discussion et Ouverture}
 \input{chapters/conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
+
+\nocite{*}
+\printbibliography
 
 \mainmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage
@@ -143,10 +147,5 @@
 \addcontentsline{toc}{part}{Annexes}
 \appendix
 \input{chapters/annexe.tex}
-
-\nocite{*}
-\printbibliography
-\printindex
-
 
 \end{document}
