@@ -20,30 +20,30 @@ Avec l'objectif de concevoir un système sûr, il nous faut donc identifier tout
 
 En reprenant ces deux étapes, nous identifions les possibilités pour un développeur pour concevoir un système résistant à ces attaques temporelles.\smallbreak
 
-La première étape de conception de primitives cryptologiques et de protocole n'est pas du ressort du développeur. Elle appartient aux cryptologues et aux chercheurs en sécurité mathématique. Ce sont eux qui conçoivent et maintiennent des librairies cryptographiques, des boîtes à outils qui proposent les briques de sécurité nécessaires aux systèmes sécurisés.\medbreak
+La première étape de conception de primitives cryptologiques et de protocole n'est pas du ressort du développeur. Elle appartient aux cryptologues et aux chercheurs en sécurité mathématique. Ce sont eux qui conçoivent et maintiennent des bibliothèques cryptographiques, des boîtes à outils qui proposent les briques de sécurité nécessaires aux systèmes sécurisés.\medbreak
 
-Plusieurs librairies existent \cite{OpenSSL, BearSSL, polubelova2020haclxn} et remplissent différents objectifs :  rétrocompatiblité, politique temps constant, \etc. Notre choix est à réaliser en fonction des spécificités du produits que nous cherchons à déployer.\medbreak
+Plusieurs bibliothèques existent \cite{OpenSSL, BearSSL, polubelova2020haclxn} et remplissent différents objectifs :  rétrocompatiblité, politique temps constant, \etc. Notre choix est à réaliser en fonction des spécificités du produits que nous cherchons à déployer.\medbreak
 
-La seconde étape est à distinguer en deux parties. Cette opération de vérification de la sécurité de l'implémentation peut être réalisée sur le produit fini et sur les librairies employés par le produit. Comme introduit, cette étape a pour objectif la vérification formelle du code du programme et la vérification matérielle au niveau assembleur.\medbreak
+La seconde étape est à distinguer en deux parties. Cette opération de vérification de la sécurité de l'implémentation peut être réalisée sur le produit fini et sur les bibliothèques employés par le produit. Comme introduit, cette étape a pour objectif la vérification formelle du code du programme et la vérification matérielle au niveau assembleur.\medbreak
 
-Utiliser la bibliothèque \textbf{Hacl*} \cite{polubelova2020haclxn, Hacl*} permet d'avancer la première étape et la première partie de la seconde étape. Cette bibliothèque a été conçue formellement et vient avec les preuves mathématiques de la sécurité de son implémentation. Comme présenté en \nameref{chap:prelude}, elle est programmée en F*. Le projet permet une exploitation en C et en assembleur \cite{Hacl*}.\medbreak
+Utiliser la bibliothèque \textbf{HACL*} \cite{polubelova2020haclxn, HACL*} permet d'avancer la première étape et la première partie de la seconde étape. Cette bibliothèque a été conçue formellement et vient avec les preuves mathématiques de la sécurité de son implémentation. Comme présenté en \nameref{chap:prelude}, elle est programmée en F*. Le projet permet une exploitation en C et en assembleur \cite{HACL*}.\medbreak
 
-En revanche, la seconde étape de la seconde partie nous demande une vérification au niveau de l'assembleur. Si certaine partie de cette librairie sont codées en assembleur, la majorité du projet reste du F* traduit vers C. Il faut réaliser une analyse. Dans le cadre de cette étude, l'outil d'analyse binaire retenu pour réaliser cette tâche est \textbf{Binsec}. Cet outil est implémenté en Ocaml et il est maintenu par une équipe de chercheurs et d'ingénieurs géographiquement proche de l'équipe PROSECCO Inria. Cet avantage permet des échanges plus directs et donc une facilité quant à la mise en place du projet.\medbreak
+En revanche, la seconde étape de la seconde partie nous demande une vérification au niveau de l'assembleur. Si certaine partie de cette bibliothèque sont codées en assembleur, la majorité du projet reste du F* traduit vers C. Il faut réaliser une analyse. Dans le cadre de cette étude, l'outil d'analyse binaire retenu pour réaliser cette tâche est \textbf{Binsec}. Cet outil est implémenté en Ocaml et il est maintenu par une équipe de chercheurs et d'ingénieurs du CEA-List de Saclay.\medbreak
 
-L'objectif est donc d'analyser Hacl* dans son entièreté. Avec cette analyse complète, si elle est correcte, alors les deux étapes de réalisation d'un système sûr seront réalisées. Cela signifie qu'elle sera la première librairie cryptographique formellement sûre et vérifiée résistante aux attaques temporelles.
+L'objectif est donc d'analyser HACL* dans son entièreté. Avec cette analyse complète, si elle est correcte, alors les deux étapes de réalisation d'un système sûr seront réalisées. Cela signifie qu'elle sera la première bibliothèque cryptographique formellement sûre et vérifiée résistante aux attaques temporelles.
 
 \subsection*{Objectifs à réaliser}
 
 Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red}{"ref vers fonctionement de Binsec"}, l'analyse se réalise sur un fichier binaire à l'aide d'instructions à adjoindre. Avec ce point de départ, nous commençons à construire notre carnet de spécifications.
 
-\textbf{Fichier binaire.} Il faut donc des fichiers binaires à fournir à Binsec. Or comme chacun le sait, plus un binaire est imposant, plus son analyse est difficile. Et comme Binsec emploi l'analyse symbolique, explorer un binaire imposant a un coût de mémoire quadratique sur le parcours des instructions du binaire. L'idéal est donc d'analyser plein de petits fichiers binaires.\smallbreak
+\textbf{Fichier binaire.} Il faut donc des fichiers binaires à fournir à Binsec. Or comme chacun le sait, plus un binaire est imposant, plus son analyse est difficile. Et comme Binsec emploie l'analyse symbolique, explorer un binaire imposant a un coût de mémoire quadratique sur le parcours des instructions du binaire. L'idéal est donc d'analyser plein de petits fichiers binaires.\smallbreak
 
-\textbf{Analyse complète.} Chaque fonction de Hacl* doit être analysée. En poursuivant la condition précédente, nous pouvons essayer de concevoir un binaire par fonction analysée. Nous distribuons ainsi l'analyse et nous parcourons ainsi toute les fonctions présentes dans la librairie.\medbreak
+\textbf{Analyse complète.} Chaque fonction de HACL* doit être analysée. En poursuivant la condition précédente, nous pouvons essayer de concevoir un binaire par fonction analysée. Nous distribuons ainsi l'analyse et nous parcourons ainsi toute les fonctions présentes dans la bibliothèque.\medbreak
 
 \textbf{Analyse correcte.} En se rappelant comment fonctionne les optimisations (voir le tableau \ref{tab:compile_option}) il nous faut être attentif avec certaines qui simplifient/modifient le code. Pour éviter des suppressions d'instructions, le fichier nécessite une légère contextualisation avant l'appel de la fonction analysée.
 
 \begin{listing}[!ht]
-    \caption{Code d'analyse de la fonction Hacl\_AEAD\_Chacha20Poly1305\_Simd128\_encrypt, testé lors de la prise en main de Binsec et Hacl*}
+    \caption{Code d'analyse de la fonction Hacl\_AEAD\_Chacha20Poly1305\_Simd128\_encrypt, testé lors de la prise en main de Binsec et HACL*}
     \label{lst:prise_en_main}
     \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,linenos, gobble=8]{C}
         #include <stdlib.h>
@@ -72,11 +72,11 @@ Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red
     \end{minted}
 \end{listing}
 
-De même, comme nos fichiers analysés appartiennent à la librairie extérieur Hacl*, l'emploi de l'option \texttt{-static} est nécessaire pour prévenir la mise place de liens vers la librairie partagée dans le fichier binaire. Cette option ne nuit pas à la qualité de l'analyse, elle permet en revanche d'avoir tous les éléments sous la main lorsque nous désassemblons un fichier binaire. Retirer cette option lors de la compilation, c'est s'ajouter des lourdeurs et rallonger le temps requis pour la vérification manuelle d'un fichier.\medbreak
+De même, comme nos fichiers analysés appartiennent à la bibliothèque extérieur HACL*, l'emploi de l'option \texttt{-static} est nécessaire pour prévenir la mise place de liens vers la bibliothèque partagée dans le fichier binaire. Cette option ne nuit pas à la qualité de l'analyse, elle permet en revanche d'avoir tous les éléments sous la main lorsque nous désassemblons un fichier binaire. Retirer cette option lors de la compilation, c'est s'ajouter des lourdeurs et rallonger le temps requis pour la vérification manuelle d'un fichier.\medbreak
 
 \textbf{Couverture de compilateur.} Les travaux de \citeauthor{schneider2024breakingbadcompilersbreak} \cite{schneider2024breakingbadcompilersbreak} ont clairement mis en évidence que le choix du compilateur est à considérer. Nous allons pouvoir identifier quel compilateur nous permet d'avoir le plus de fichiers binaires sécurisés. Cette analyse nous permet d'identifier les limites de la pratique de la programmation en temps constant.
 
-\textbf{Couverture d'architectures.} x86\_64 et ARM sont les architectures matérielles les plus répandues dans le monde. Étendre l'analyse vers différentes plateformes et observer les différences qui émergent nous permettra d'avancer dans la direction de la conception d'une librairie cryptographique universelle. Nous pouvons aussi étendre cette analyse vers d'autres architectures comme PowerPC ou RiscV.\medbreak
+\textbf{Couverture d'architectures.} x86\_64 et ARM sont les architectures matérielles les plus répandues dans le monde. Étendre l'analyse vers différentes plateformes et observer les différences qui émergent nous permettra d'avancer dans la direction de la conception d'une bibliothèque cryptographique universelle. Nous pouvons aussi étendre cette analyse vers d'autres architectures comme PowerPC ou RiscV.\medbreak
 
 
 \textbf{Automatisation.} Faire cette analyse sur un fichier binaire, comme le code \ref{lst:prise_en_main}, avec trois axes de complexité (complétude, de la couverture d'architectures et des compilateurs) n'est pas envisageable à la main. Il faut absolument que cette analyse soit automatisée.
@@ -156,9 +156,9 @@ $ binsec -sse -sse-script $(BINSEC_SCRIPT) -checkct $(BINARY)
     \end{minted}
 \end{listing}
 
-L'option \texttt{-sse} permet d'activer l'analyse par exécution symbolique, \texttt{-sse-script} associer à un fichier (ici \texttt{BINSEC\_SCRIPT}) permet d'instruire notre analyse, préciser des stubs\footnote{Terme anglais du lexique de la rétro-ingénierie; module logiciel simulant la présence d'un autre.} et des initialisations. Enfin \texttt{-checkct} active la vérification de la politique temps constant au sein du fichier binaire indiqué par \texttt{BINARY}. Binsec renvoie dans le terminal le résultat de son analyse : [\texttt{secure, unknown, insecure}]. Le second est invoqué lorsque l'analyse est incomplète.\medbreak
+L'option \texttt{-sse} permet d'activer l'analyse par exécution symbolique, \texttt{-sse-script} associé à un fichier (ici \texttt{BINSEC\_SCRIPT}) permet d'instruire notre analyse, préciser des stubs\footnote{Terme anglais du lexique de la rétro-ingénierie; module logiciel simulant la présence d'un autre.} et des initialisations. Enfin \texttt{-checkct} active la vérification de la politique temps constant au sein du fichier binaire indiqué par \texttt{BINARY}. Binsec renvoie dans le terminal le résultat de son analyse : [\texttt{secure, unknown, insecure}]. Le second est invoqué lorsque l'analyse est incomplète.\medbreak
 
-Cette phase <<Test et Identification des exigences>> permet de confronter plusieurs fonctions de Hacl* et de se familiariser avec le langage d'instructions qu'admet l'option \texttt{-sse-script}. Un tutoriel complet est accessible pour comprendre le fonctionnement l'outil Binsec depuis sa page officielle\footnote{https://binsec.github.io/}.
+Cette phase <<Test et Identification des exigences>> permet de confronter plusieurs fonctions de HACL* et de se familiariser avec le langage d'instructions qu'admet l'option \texttt{-sse-script}. Un tutoriel complet est accessible pour comprendre le fonctionnement l'outil Binsec depuis sa page officielle\footnote{https://binsec.github.io/}.
 
 \begin{listing}[!ht]
     \caption{Instructions permettant de trouver le mot d'un passe d'un binaire exercice}
@@ -312,7 +312,7 @@ En explorant plus en avant le code binaire, nous découvrons que ces erreurs son
 
 Nous observons ici une manifestation indéniable des précédents résultats proposés par d'autres travaux de recherche. Une solution serait de modifier l'ISA pour permettre cette opération d'être en temps constant. Celle qui a été retenue, c'est d'employer un \texttt{pragma}, ici \texttt{\# pragma clang optimise <off/on>}. Cette instruction, donnée dans le code source, indique au compilateur de désactiver ses optimisations pour le code contenu entre les deux balises \texttt{off,on}. Cette solution entraîne des pertes de performance et des ralentissements quant au temps de compilation et à l'usage des ressources. Il est donc préférable de l'utiliser avec parcimonie.\medbreak
 
-Après avoir ciblé notre besoin, les exigences associées et effectué des tests pour comprendre le processus à automatiser, nous pouvons synthétiser la démarche avec la figure \ref{fig:compilation_simple} : depuis Hacl*, nous extrayons une fonction qui sera testé, nous fabriquons le fichier de test en C; nous identifions les paramètres secrets et nous concevons le script adéquat pour Binsec; nous compilons le fichier C à notre guise et nous terminons par l'analyse Binsec.
+Après avoir ciblé notre besoin, les exigences associées et effectué des tests pour comprendre le processus à automatiser, nous pouvons synthétiser la démarche avec la figure \ref{fig:compilation_simple} : depuis HACL*, nous extrayons une fonction qui sera testé, nous fabriquons le fichier de test en C; nous identifions les paramètres secrets et nous concevons le script adéquat pour Binsec; nous compilons le fichier C à notre guise et nous terminons par l'analyse Binsec.
 
 \begin{figure}[!ht]
     \caption{Flot de travail de l'outil d'analyse à concevoir}
@@ -327,7 +327,7 @@ Après avoir ciblé notre besoin, les exigences associées et effectué des test
     \tikzstyle{arrow} = [thick,->,>=stealth]
     
     % Noeuds
-    \node (hacl) [startstop] {Hacl*};
+    \node (hacl) [startstop] {HACL*};
     \node (inter) [intermediate, below of=hacl,xshift=1cm, yshift=1cm] {};
     \node (compilateur) [process, below of=hacl] {Compilateur};
     \node (binsec) [startstop, below of=compilateur] {Binsec};

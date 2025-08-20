@@ -53,6 +53,7 @@
 \addcontentsline{toc}{chapter}{Table des codes}
 \listoftables
 
+\newpage\null\thispagestyle{empty}
 \printindex
 
 
@@ -79,26 +80,22 @@
     }
     \ClearShipoutPicture%
 }
-\part{\textit{Constant time} ou pourquoi poser un lapin n'est pas une option}
+\part{\textit{Constant time} : implémentation et vérification}
 
 \input{chapters/constantTimePresentation.tex}
 \input{chapters/constantTimeSolution.tex}
+\input{chapters/automateVerifOutils.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage\null\thispagestyle{empty}\newpage
-\cleardoublepage
-\afterpage{%
-\AddToShipoutPictureBG*{%
-\put(8.5cm,20cm){
-    \fbox{\includegraphics[trim = 12cm 26cm 11cm 0cm, clip, scale = 0.8]{pictures/page_garde.jpeg}}}
-    }
-    \ClearShipoutPicture%
-    }
-\part{Automatisme et vérification ou comment développer un détecteur de menace}
-
-\input{chapters/automateVerifOutils}
-\input{chapters/automateVerifAutomatisme}
-
+% \newpage\null\thispagestyle{empty}\newpage
+% \cleardoublepage
+% \afterpage{%
+% \AddToShipoutPictureBG*{%
+% \put(8.5cm,20cm){
+%     \fbox{\includegraphics[trim = 12cm 26cm 11cm 0cm, clip, scale = 0.8]{pictures/page_garde.jpeg}}}
+%     }
+%     \ClearShipoutPicture%
+%     }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage\null\thispagestyle{empty}\newpage
@@ -108,7 +105,7 @@
     \fbox{\includegraphics[trim = 0cm 0cm 27cm 27cm, clip, scale = 0.9]{pictures/page_garde.jpeg}}}
     }
     \ClearShipoutPicture%
-\part{Érysichton ou avoir tellement faim que tu finis par manger ton corps}
+\part{Érysichton : détecteur de failles par canal auxiliaire}
 
 
 \input{chapters/erysichtonConception.tex}

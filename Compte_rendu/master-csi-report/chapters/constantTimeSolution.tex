@@ -82,11 +82,11 @@ Une solution légère est de ce servir du système libre <<\textbf{Compiler Expl
   \end{adjustwidth}
 \end{figure}
 
-Si nous souhaitons faire une analyse à l'échelle d'un projet, ce parcours à la main des fonctions ou de morceaux de fonctions est réellement fastidieux. Il faut mieux déléguer ce travail à un outil conçus pour vérifier la présence de fuite.\smallbreak
+Si nous souhaitons faire une analyse à l'échelle d'un projet, ce parcours à la main des fonctions ou de morceaux de fonctions est réellement fastidieux. Il faut mieux déléguer ce travail à un outil conçu pour vérifier la présence de fuite.\smallbreak
 
-Plusieurs articles références l'ensemble des outils existants \cite{notThatHardCT, GeimerEvaluationsSideChannel} pour réaliser ce travail. Le tableau \ref{tab:tools_ct} de \citeauthor{notThatHardCT} liste 24 outils en libre accès conçus pour détecter des failles par canal auxiliaire.
+Plusieurs articles référencent l'ensemble des outils existants \cite{notThatHardCT, GeimerEvaluationsSideChannel} pour réaliser ce travail. Le tableau \ref{tab:tools_ct} de \citeauthor{notThatHardCT} liste 24 outils en libre accès conçus pour détecter des failles par canal auxiliaire.
 
-Ils sont listés alphabétiquement et ont précisés le type de fichier analysé (\textit{Cible}), la méthode d'analyse réalisée (\textit{Techn.}) et les garanties attendues de ces analyses (\textit{Garanties}). Nous reviendrons plus en détail sur ces méthodes et leurs fonctionnements dans le chapitre \ref{chap:automateVerifOutils}.\medbreak
+Ils sont listés alphabétiquement et ont précisé le type de fichier analysé (\textit{Cible}), la méthode d'analyse réalisée (\textit{Techn.}) et les garanties attendues de ces analyses (\textit{Garanties}). Nous reviendrons plus en détail sur ces méthodes et leurs fonctionnements dans le chapitre \ref{chap:automateVerifOutils}.\medbreak
 
 \begin{table}[!ht]
   \caption{Liste d'outils de vérification, source \cite{notThatHardCT} }
@@ -94,7 +94,7 @@ Ils sont listés alphabétiquement et ont précisés le type de fichier analysé
   \scriptsize{
   Cible : [C, Java] = Code source, Binaire = Binaire, DSL = Surcouche de langage, Trace = Trace d'exécution, WASM = Assembleur web.\\
   Techn. : Formel = Programmation formelle, [Symbolique, Dynamique, Statistique] = type d'analyse. \\
-  Garanties (\textit{Sécurité face aux attaques temporelles}) : $\bullet$ = Analyse correcte, $\blacktriangle$ = Correct mais avec des limitations, $\circ$ = Aucune garantie, $\bigstar$ = Vérification d'autres propriétés.
+  Garanties (\textit{Sécurité face aux attaques temporelles}) : $\bullet$ = Analyse correcte, $\blacktriangle$ = Correcte mais avec des limitations, $\circ$ = Aucune garantie, $\bigstar$ = Vérification d'autres propriétés.
   }
   \normalsize
   \begin{center}
@@ -143,7 +143,7 @@ Ils sont listés alphabétiquement et ont précisés le type de fichier analysé
 \end{table}
 
 \newpage
-Une dernière solution serait d'utiliser un compilateur spécialisé qui produit un code assembleur sans fuite \cite{Borrello_2021, Raccoon} ou d'utiliser un compilateur formel comme \textit{CompCert} \cite{CompCert}. Cette solution rencontre en pratique de nombreux problèmes que nous conservons pour la section \ref{sect:limitations} \nameref{sect:limitations}.
+Une dernière solution serait d'utiliser un compilateur spécialisé qui produit un code assembleur sans fuite \cite{Borrello_2021, Raccoon} ou d'utiliser un compilateur formel comme \textit{CompCert} \cite{compcert-CT}. Cette solution rencontre en pratique de nombreux problèmes que nous conservons pour la section \ref{sect:limitations} \nameref{sect:limitations}.
 
 \subsection*{Écriture en code assembleur}
 
@@ -154,7 +154,7 @@ Enfin, la dernière méthode pour obtenir un code sécurisé et sans fuite c'est
 
 Écrire en assembleur c'est écrire spécifiquement pour une architecture de processeur. Il faut connaître les instructions adéquates, les potentielles optimisations qui existent sans parler de la syntaxe particulère qui rend son développement plus lent. Travailler en assembleur c'est limiter la portabilité du code proposé. Or l'objectif derrière le développement d'une bibliothèque sécurisée est de pouvoir être employée par le plus de configurations possibles pour se protéger d'attaques.\smallbreak
 
-Face à cette situation, nous pouvons choisir d'utiliser un compilateur spécialisé (\cite{Borrello_2021, Raccoon}). Et comme un serpent qui se mord la queue, nous voici a nouveau limités. Ces compilateurs peuvent ne pas supporter l'ensemble du jeu d'instruction d'une architecture, ils peuvent avoir besoin d'instructions supplémentaires (des annotations de code) pour réaliser leur compilation, ils peuvent ne pas implémenter les optimisations présentent sur les processeurs les plus récents.\smallbreak
+Face à cette situation, nous pouvons choisir d'utiliser un compilateur spécialisé (\cite{Borrello_2021, Raccoon}). Et comme un serpent qui se mord la queue, nous voici à nouveau limités. Ces compilateurs peuvent ne pas supporter l'ensemble du jeu d'instruction d'une architecture, ils peuvent avoir besoin d'instructions supplémentaires (des annotations de code) pour réaliser leur compilation, ils peuvent ne pas implémenter les optimisations présentent sur les processeurs les plus récents.\smallbreak
 
 Donc, si les compilateurs spécialisés ne sont pas envisageables, nous nous retrouvons à utiliser les compilateurs courants \texttt{GCC} et \texttt{LLVM} pour notre solution sécurisée. Nous devons donc programmer en respectant la politique temps constant. Et si cette pratique semble être notre solution, nous pouvons lire dans l'article de présentation de l'outil d'analyse Binsec \citetitle{binsecRel2019} : 
 \begin{CitationBox}{Conclusion - \cite{binsecRel2019}}
@@ -163,10 +163,10 @@ Nous avons découvert que \texttt{gcc -O0} et des optimisations de \texttt{clang
 
 Cette, annonce discrète au sein du document, a ensuite été prise en compte par \citeauthor{schneider2024breakingbadcompilersbreak} qui a mené une enquête sur les bibliothèques cryptographiques sécurisées et résistantes aux attaques temporelles : \cite{schneider2024breakingbadcompilersbreak}. La conclusion principale est que les compilateurs modernes sont devenus assez performants pour voir à travers les astuces employées et qu'une mauvaise utilisation d'optimisation implique l'introduction de faille de sécurité. \smallbreak
 
-Voici un exemple communiqué par \citeauthor{schneider2024breakingbadcompilersbreak} auprès des chercheurs de Hacl*. Nous pouvons voir deux fonctions dans le code \ref{lst:Hacl_masking}, <<\textit{cmovznz4}>> et <<\textit{FStar\_UInt64\_eq\_mask}>>. La première appelle la seconde pour générer un masque qui sera ensuite appliqué au entrée de <<\textit{cmovznz4}>>. Nous avons ici une fonction qui agit comme un branchement conditionnel. Si \texttt{cin} vaut 1, alors $r = x$ sinon $r = y$.
+Voici un exemple communiqué par \citeauthor{schneider2024breakingbadcompilersbreak} auprès des chercheurs de HACL*. Nous pouvons voir deux fonctions dans le code \ref{lst:Hacl_masking}, <<\textit{cmovznz4}>> et <<\textit{FStar\_UInt64\_eq\_mask}>>. La première appelle la seconde pour générer un masque qui sera ensuite appliqué aux paramètres de <<\textit{cmovznz4}>>. Nous avons ici une fonction qui agit comme un branchement conditionnel. Si \texttt{cin} vaut 1, alors $r = x$ sinon $r = y$.
 
 \begin{listing}[!ht]
-    \caption{Fonction de masquage issu de \textit{Hacl*}}
+    \caption{Fonction de masquage issu de \textit{HACL*}}
     \label{lst:Hacl_masking}
     \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,linenos]{C}
 #include <stdint.h>
