@@ -45,6 +45,10 @@
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
+
+\usepackage{listings}
+
+\numberwithin{listing}{chapter}
 %% custom style %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \definecolor{lightgray}{gray}{0.9}
@@ -240,3 +244,26 @@
 \tutor{Aymeric Fromherz\texttt{<aymeric.fromherz@inria.fr>}\\
 Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien.bardin@cea.fr>}}
 \version{1.5}
+
+\newcommand{\l@listing}[2]{%
+\begingroup
+  \def\numberline##1{##1\hspace{1em}}
+  \hangindent=4em
+  \hangafter=1
+  #1 \dotfill~#2\par
+  \endgroup
+}
+\renewcommand{\listoflistings}{%
+  \section*{Liste des codes}%
+  \@starttoc{lol}%
+}
+
+\renewcommand{\listoffigures}{%
+  \section*{Liste des figures}%
+  \@starttoc{lof}%
+}
+
+\renewcommand{\listoftables}{%
+  \section*{Liste des tables}%
+  \@starttoc{lot}%
+}
