@@ -40,7 +40,7 @@ Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red
 
 \textbf{Analyse complète.} Chaque fonction de HACL* doit être analysée. En poursuivant la condition précédente, nous pouvons essayer de concevoir un binaire par fonction analysée. Nous distribuons ainsi l'analyse et nous parcourons ainsi toute les fonctions présentes dans la bibliothèque.\medbreak
 
-\textbf{Analyse correcte.} En se rappelant comment fonctionne les optimisations (voir le tableau \ref{tab:compile_option}) il nous faut être attentif avec certaines qui simplifient/modifient le code. Pour éviter des suppressions d'instructions, le fichier nécessite une légère contextualisation avant l'appel de la fonction analysée.
+\textbf{Analyse correcte.} En se rappelant comment fonctionnent les optimisations (voir le tableau \ref{tab:compile_option}) il nous faut être attentif avec certaines qui simplifient/modifient le code. Pour éviter des suppressions d'instructions, le fichier nécessite une légère contextualisation avant l'appel de la fonction analysée.
 
 \begin{listing}[!ht]
     \caption{Code d'analyse de la fonction Hacl\_AEAD\_Chacha20Poly1305\_Simd128\_encrypt, testé lors de la prise en main de Binsec et HACL*}
