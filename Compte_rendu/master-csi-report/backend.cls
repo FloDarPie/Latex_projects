@@ -248,14 +248,15 @@ Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien
 \newcommand{\l@listing}[2]{%
 \begingroup
   \def\numberline##1{##1\hspace{1em}}
-  \hangindent=4em
-  \hangafter=1
-  #1 \dotfill~#2\par
+  \hangindent=10mm
+  \hangafter=5
+  #1 \leavevmode\cleaders\hbox{ . }\hfill~#2\par
   \endgroup
 }
 \renewcommand{\listoflistings}{%
   \section*{Liste des codes}%
   \@starttoc{lol}%
+
 }
 
 \renewcommand{\listoffigures}{%
