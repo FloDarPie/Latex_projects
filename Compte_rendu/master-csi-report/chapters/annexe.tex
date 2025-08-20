@@ -298,3 +298,57 @@ halt at <exit>
 \end{adjustwidth}
 \end{table}
 
+
+\raggedleft
+\begin{table}[!ht]
+  \begin{tabular}{l|cccccc}
+    \textbf{Fonctions} & \multicolumn{6}{c}{\textbf{Options concernées}} \\
+    \hline
+    \rowcolor{blue!5}
+    Hacl\_EC\_Ed25519\_point\_eq & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_K256\_ECDSA\_ecdh & O0 & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_K256\_ECDSA\_ecdsa\_verify\_hashed\_msg & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_K256\_ECDSA\_ecdsa\_verify\_sha256 & O0 & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_K256\_ECDSA\_is\_public\_key\_valid & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_K256\_ECDSA\_public\_key\_compressed\_from\_raw & O0 & & & & & \\
+    \rowcolor{blue!5}
+    Hacl\_K256\_ECDSA\_public\_key\_uncompressed\_to\_raw & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_K256\_ECDSA\_secp256k1\_ecdsa\_is\_signature\_normalized & O0 & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_K256\_ECDSA\_secp256k1\_ecdsa\_signature\_normalize & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_K256\_ECDSA\_secp256k1\_ecdsa\_verify\_hashed\_msg & O0 & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_K256\_ECDSA\_secp256k1\_ecdsa\_verify\_sha256 & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_NaCl\_crypto\_box\_open\_detached\_afternm & O0 & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_NaCl\_crypto\_secretbox\_open\_detached & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_P256\_compressed\_to\_raw & O0 & & & & &  \\
+    \rowcolor{blue!5}
+    Hacl\_P256\_dh\_responder & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_P256\_ecdsa\_verif\_p256\_sha2 & O0 & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_P256\_ecdsa\_verif\_p256\_sha384 & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_P256\_ecdsa\_verif\_p256\_sha512 & O0 & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_P256\_ecdsa\_verif\_without\_hash & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_P256\_uncompressed\_to\_raw & O0 & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_P256\_validate\_public\_key & O0 & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_FFDHE\_ffdhe\_shared\_secret\_precomp & & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_K256\_ECDSA\_secp256k1\_ecdsa\_sign\_hashed\_msg & & O1 & O2 & O3 & Os & Oz \\
+    Hacl\_K256\_ECDSA\_secp256k1\_ecdsa\_sign\_sha256 & & O1 & O2 & O3 & Os & Oz \\
+    \rowcolor{blue!5}
+    Hacl\_NaCl\_crypto\_box\_beforenm & & & & O3 & &  \\
+    Hacl\_NaCl\_crypto\_box\_detached & & & & O3 & &  \\
+    \rowcolor{blue!5}
+    Hacl\_NaCl\_crypto\_box\_easy& & & & O3 & &  \\
+    Hacl\_NaCl\_crypto\_box\_open\_detached & & & & O3 & & \\
+    \rowcolor{blue!5}
+    Hacl\_NaCl\_crypto\_box\_open\_easy& & & & O3 & &  \\
+  \end{tabular}
+  \caption{Détails des fonctions non sécurisées en fonction des optimisations entrées, éxecution d'Érysichthon en x86\_64}
+  \label{tab:resultats_insecure}
+\end{table}

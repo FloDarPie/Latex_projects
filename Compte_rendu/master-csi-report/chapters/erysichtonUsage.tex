@@ -402,7 +402,7 @@ L'éxécution c'est réalisé sur une machine équipée d'un processeur \textit{
 \end{figure}
 
 
-Les données détaillées peuvent être consulté en annexe \ref{tab:resultats_finaux}. En l'état, l'analyse rapporte entre 139 et 168 fichiers dont l'analyse n'a pus se terminer. Il faudrait observer plus en détails ces fichiers pour cibler   \medbreak
+Les données détaillées peuvent être consulté en annexe \ref{tab:resultats_finaux}. En l'état, l'analyse rapporte entre 139 et 168 fichiers dont l'analyse n'a pus se terminer. Il faudrait observer plus en détails ces fichiers pour connaître les causes de ces arrêts. \medbreak
 
 \begin{figure}[!ht]
 \begin{tikzpicture}
@@ -451,4 +451,22 @@ Les données détaillées peuvent être consulté en annexe \ref{tab:resultats_f
   \label{fig:graphe_unknown}
 \end{figure}
 
-Le détails des valeurs est rapporté en annexe \ref{table:detail_unknown}.
+Le détails des valeurs est rapporté en annexe \ref{table:detail_unknown}.\smallbreak
+
+On peut voir avec cette figure \ref{fig:graphe_unknown} que les erreurs sont dues à :
+\begin{enumerate}
+  \item[\texttt{max depth}] Arrêt par limitations du nombre d'instruction à analyser, cela permet de réduire la profondeur des branchement conditionnels à explorer et limiter le risque de parcour infini.
+  \item[\texttt{timeout}] Comme le précédent, limitation par le temps. 
+  \item[\texttt{error}] Instruction inconnue de Binsec, il a besoin que le script d'instruction soit corrigé.
+  \item[\texttt{symbol}] Comme le précédent, mais peut-être que le fichier de test a besoin d'être modifié.
+  \item[\texttt{KO}] Instruction inconnue de Binsec, il a besoin d'être amélioré. 
+  \item[\texttt{killed}] Consommation excessive des ressources, processus terminé. 
+\end{enumerate}
+
+Ces résultats indiquent les corrections à apporter à Érysichthon.
+
+\subsection*{Sécurité de Hacl*}
+
+Revenons sur les resultats présentés sur la figure \ref{fig:graphe_total} et ignorons les fonctions marquées \texttt{unknown}. Les fichiers non sécurisés sont les plus nombreux avec l'option \texttt{-O3} (27) et le moins avec l'option \texttt{-O0} (21). Cette expérimentation remet en évidence les travaux de \citeauthor{schneider2024breakingbadcompilersbreak} mais nous pouvons nous intéroger quant à la réalité des fuites présentés ici. Comme nous analysons toute la bibliothèque Hacl* certaines fonctions peuvent être non sécurisées mais cela n'impacte pas la sécurité globale car elles ne sont besoin d'être sécurisé
+
+
