@@ -43,7 +43,7 @@ Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red
 \textbf{Analyse correcte.} En se rappelant comment fonctionnent les optimisations (voir le tableau \ref{tab:compile_option}) il nous faut être attentif avec certaines qui simplifient/modifient le code. Pour éviter des suppressions d'instructions, le fichier nécessite une légère contextualisation avant l'appel de la fonction analysée.
 
 \begin{listing}[!ht]
-    \caption{Code d'analyse de la fonction Hacl\_AEAD\_Chacha20Poly1305\_Simd128\_encrypt, testé lors de la prise en main de Binsec et HACL*}
+    \caption{Code d'analyse de la fonction Hacl\_AEAD\_Chacha20Poly1305\_Simd128\-\_encrypt, testé lors de la prise en main de Binsec et HACL*}
     \label{lst:prise_en_main}
     \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,linenos, gobble=8]{C}
         #include <stdlib.h>

@@ -47,6 +47,7 @@
 \pgfplotsset{compat=1.18}
 
 \usepackage{listings}
+\usepackage{tocloft}
 
 \numberwithin{listing}{chapter}
 %% custom style %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -245,14 +246,22 @@
 Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien.bardin@cea.fr>}}
 \version{1.5}
 
-\newcommand{\l@listing}[2]{%
-\begingroup
-  \def\numberline##1{##1\hspace{1em}}
-  \hangindent=10mm
-  \hangafter=5
-  #1 \leavevmode\cleaders\hbox{ . }\hfill~#2\par
-  \endgroup
+% \newcommand{\l@listing}[2]{%
+% \begingroup
+%   \def\numberline##1{##1\hspace{1em}}
+%   \hangindent=10mm
+%   \hangafter=5
+%   #1 \leavevmode\cleaders\hbox{ . }\hfill~#2\par
+%   \endgroup
+% }
+
+\renewcommand{\memchapinfo}[4]{%
+  \addtocontents{lol}{\protect\addvspace{10pt}}}
+ 
+\newcommand{\l@listing}{%
+  \@dottedtocline{1}{1.5em}{4em}
 }
+
 \renewcommand{\listoflistings}{%
   \section*{Liste des codes}%
   \@starttoc{lol}%
