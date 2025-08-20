@@ -2,10 +2,17 @@
 
 \section*{Discussion}
 
-point à revoir / améliorer / poursuivre
+Les résulats obtenues grâce à l'analyse d'Érysichthon ne permettent pas encore de conclure sur la sécurité globale de la bibliothèque Hacl*, il reste encore trop de fonctions non analysées ($\sim 39\%$). En revanche les premiers résultats sont encourageants et montre que l'utilisation des contre-mesures développé au chapitre \ref{chap:constantTimeSolution} est effectivement une bonne pratique. Compléter Érysichthon pour avoir une analyse complète est en tête de liste de la liste des tâche du projet.\medbreak
 
+Actuellement, un seul compilateur a permis de produire ces résultats, il faut absolument étendre l'utilisation à d'autres compilateurs pour pouvoir croiser les résultats et avoir une étude plus complète quant à la sécurité de cette bibliothèque.\smallbreak
+
+Nous savons que les optimisations modifient le binaire et peuvent insérer des fuites. Avec cette outil, au lieu d'appeler frontalement \texttt{-O2}, nous pouvons plutôt appeler nominativement les options qui se cachent derrière : \texttt{-falign-functions}, \texttt{-falign-jumps}, \etc.\smallbreak
+
+Il est aussi possible que nous identifions précisément les fonctions qui ont besoins d'être sécurisée et d'adapter leur compilation. Par exemple, si \textit{A.c} est compilé avec \texttt{-O0} et \textit{B.c} avec \texttt{-O3}, le fichier objet \textit{A.o} contiendra une fonction générée sans optimisation, tandis que \textit{B.o} contiendra une fonction optimisée. Ainsi, dans le binaire final \textit{B.o}, un appel vers une fonction de \textit{A.o} est une instruction de saut vers le code compilé avec -O0. Nous obtenons un mélange de fonctions optimisées et non optimisées dans le même exécutable. Cette solution réduit les performances globales et ralenti le fonctionnement d'un programmme au coût d'une sécurité plus élevée.\smallbreak
 
 \section*{Ouverture}
+
+
 
 
 travaux directement sur le compilateur / support matériel

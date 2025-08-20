@@ -6,9 +6,9 @@ intro
 
 \section{Planification et préparations}
 
-Nous avons nos spécificités techniques et nous savons qu'elle forme notre outil doit avoir (fig \ref{fig:compilation_structure}). Nous pouvons commencer par synthétiser les opérations nécessaires.\smallbreak
+Nous avons nos spécificités techniques et nous savons quelle forme notre outil doit avoir (fig \ref{fig:compilation_structure}). Nous pouvons commencer par synthétiser les opérations nécessaires.\smallbreak
 
-Nous allons donc concevoir des protocoles pour identifier les étapes nécessaires pour que Binsec analyse entièrement un fichier et nous renvoie un parmi [\texttt{secure, unknown, insecure}]. Le protocole \texttt{x86\_64} est particulier. Depuis la version \textbf{0.5.0} de Binsec il est possible de fournir un <<cliché mémoire>>\footnote{Plus couramment 'Core dump', terme technique anglais désignant une copie de la mémoire vive et des registres d'un programme. Ce fichier sert à être analysé, généralement par un débogueur.} pour accélérer l'analyse. Nous utilisons cet avantage pour l'intégrer à notre graphe d'éxécution. La machine sur laquelle le projet sera développé est sur une architecture x86\_64, cela nous permet d'utiliser l'outil GDB pour la génération de cliché mémoire.\medbreak
+Nous allons donc concevoir des protocoles pour identifier les étapes nécessaires pour que Binsec analyse entièrement un fichier et nous renvoie un parmi [\texttt{secure, unknown, insecure}]. Le protocole \texttt{x86\_64} est particulier. Depuis la version \textbf{0.5.0} de Binsec il est possible de fournir un <<cliché mémoire>>\footnote{Plus couramment 'Core dump', terme technique anglais désignant une copie de la mémoire vive et des registres d'un programme. Ce fichier sert à être analysé, généralement par un débogueur.} pour accélérer l'analyse. Nous utilisons cet avantage pour l'intégrer à notre graphe d'éxécution. La machine sur laquelle le projet sera développé est sur une architecture x86\_64, cela nous permet d'utiliser l'outil GDB pour la génération de clichés mémoire.\medbreak
 
 \begin{figure}[!ht]
     \caption{Protocole pour analyser des fichiers compilés en x86\_64}
@@ -68,7 +68,7 @@ Nous allons donc concevoir des protocoles pour identifier les étapes nécessair
     \end{tikzpicture}
 \end{figure}
 
-Ce graphe modélise la chaîne d'étapes nécessaire à l'obtention d'une analyse Binsec pour une fonction que nous ciblons. Plusieurs zones sont distinguées. La zone verte correspond à l'étape de compilation, la zone bleue à l'étape de préparation de l'analyse et la zone rouge à la synthèse de fichiers (de tests et d'instruction pour l'analyse de Binsec). Ce choix de couleur est adapté à la difficulté attendue de chaque étape. L'opération de compilation consiste en une commande. L'opération de préparation d'analyse consiste simplement en deux commandes : un appel à GDB avec le binaire puis un appel à Binsec avec le cliché mémoire et les instructions d'analyse.\smallbreak
+Ce graphe modélise la chaîne d'étapes nécessaires à l'obtention d'une analyse Binsec pour une fonction que nous ciblons. Plusieurs zones sont distinguées. La zone verte correspond à l'étape de compilation, la zone bleue à l'étape de préparation de l'analyse et la zone rouge à la synthèse de fichiers (de tests et d'instruction pour l'analyse de Binsec). Ce choix de couleur est adapté à la difficulté attendue de chaque étape. L'opération de compilation consiste en une commande. L'opération de préparation à l'analyse consiste simplement en deux commandes : un appel à GDB avec le binaire puis un appel à Binsec avec le cliché mémoire et les instructions d'analyse.\smallbreak
 
 Avec ce graphe réalisé, nous pouvons le modifier pour préparer la voie à d'autres architectures. Dans un format plus générique voici comment se présente le protocole d'analyse :
 
@@ -118,7 +118,7 @@ Avec ce graphe réalisé, nous pouvons le modifier pour préparer la voie à d'a
 
 Dans ce contexte, une question se pose : est-ce que la conception des scripts pour Binsec (\textit{.ini}) est automatisable ou est-ce qu'il faudra utiliser des émulateurs pour générer des clichés mémoire et revenir dans le cas de la figure \ref{fig:protocole_x86} ?\smallbreak
 
-En effet, l'importance de cette question se révèle lorsque nous changeons d'architecture et que nous devons nous passer de clichés mémoire. Sur notre machine en x86\_64, si nous analysons un fichier compilé en ARM, alors nous pouvons rencontrer des appels à des fonctions systèmes : les \texttt{IFUNC}. Or la résolution de ces fonctions est gérée dynamiquement lors de l'exécution du programme. Cette mécanique permet d'utiliser des implémentations optimisées en fonction des configurations du système d'éxécution. Or comme Binsec réalise une analyse symbolique du programme, il faut lui spécifier quelles fonctions correspondent aux \texttt{IFUNC} qu'il peut croiser. pour illustrer ce point, observons le script nécessaire pour une vérification de la fonction <<Hacl \_AEAD \_Chacha20Poly1305\_Simd128\_encrypt>> compilé vers ARMv8.
+En effet, l'importance de cette question se révèle lorsque nous changeons d'architecture et que nous devons nous passer de clichés mémoire. Sur notre machine en x86\_64, si nous analysons un fichier compilé en ARM, alors nous pouvons rencontrer des appels à des fonctions systèmes : les \texttt{IFUNC}. Or la résolution de ces fonctions est gérée dynamiquement lors de l'exécution du programme. Cette mécanique permet d'utiliser des implémentations optimisées en fonction des configurations du système d'éxécution. Or comme Binsec réalise une analyse symbolique du programme, il faut lui spécifier quelles fonctions correspondent aux \texttt{IFUNC} qu'il peut croiser. Pour illustrer ce point, observons le script nécessaire pour une vérification de la fonction <<Hacl \_AEAD \_Chacha20Poly1305\_Simd128\_encrypt>> compilé vers ARMv8.
 
 \begin{listing}[!ht]
     \caption{Script d'instruction pour analyser un binaire compilé vers ARM}
@@ -141,18 +141,18 @@ explore all
     \end{minted}
 \end{listing}
 
-Les lignes 5 à 7 sont présentes pour indiquer les branchements à effectuer par Binsec lorsqu'il rencontre ces adresses. Cette opération automatiquement exécutée lors de l'initialisation de l'exécution doit ici être précisée avec les fonctions présentes dans le binaire. Automatiser ces affectations peut être difficile et nécessiter quelques outils d'analyse supplémentaires pour attraper les adresses qui ont besoin d'être réaffectées et leur attribuer les fonctions les plus adaptées.\medbreak
+Les lignes 5 à 7 sont présentes pour indiquer les branchements à effectuer par Binsec lorsqu'il rencontre ces adresses. Cette opération automatiquement exécutée lors de l'initialisation de l'exécution, doit ici être précisée avec les fonctions présentes dans le binaire. Automatiser ces affectations peut être difficile et nécessiter quelques outils d'analyse supplémentaires pour repérer les adresses qui ont besoin d'être réaffectées et leur attribuer les fonctions les plus adaptées.\medbreak
 
 
 \begin{CitationBox}{Nommer un outil}
-    Rapidement il a fallu trouver un nom pour ce projet, l'appeler par "Notre outil\dots" devenait lourd et redondant entre les réunion hebdomadaire. En revanche trouver LE nom adéquat n'est pas une chose aisée, il peut être dû à une blague, une référence ou plus simplement lié au sens du projet. Dans notre cas, nous aimons la mythologie et le travail réalisé peut se résumer à "faut donner à manger à Binsec".\smallbreak
-    Érysichthon est un personnage de la mythologie grecque condamné à être affamé au point de se dévorer lui-même pour avoir détruit l'idole d'un dieu. Ce nom me plaît et sera retenu pour la suite du projet. 
+    Rapidement il a fallu trouver un nom pour ce projet, l'appeler par "Notre outil\dots" devenait lourd et redondant entre les réunions hebdomadaires. En revanche trouver LE nom adéquat n'est pas une chose aisée, il peut être dû à une blague, une référence ou plus simplement être lié au sens du projet. Dans notre cas, nous aimons la mythologie et le travail réalisé peut se résumer à "il faut donner à manger à Binsec".\smallbreak
+    Érysichthon est un personnage de la mythologie grecque condamné à être affamé au point de se dévorer lui-même pour avoir détruit l'idole d'un dieu. Ce nom me plaît et il sera retenu pour la suite du projet. 
 \end{CitationBox}
 
 \subsection*{Conception d'Érysichthon}
 
 
-Nous avons vu les protocoles nécessaires pour construire une analyse complète. Nous avons fait des tests pour comprendre le fonctionnement de Binsec et comment doivent être déclarées les fonctions de Hacl*. Nous passons donc en phase de conception et construisons notre outil \textit{Érysichthon}. Il sera une combinaison de script Python, script shell et de Makefile. Nous appelons module un ensemble de script qui réalise une tâche au sein d'\textit{Érysichthon}. Nous vous présentons en figure \ref{fig:erysichthon} comment s'organisent les modules et les tâches qu'ils effectuent.
+Nous avons vu les protocoles nécessaires pour construire une analyse complète. Nous avons fait des tests pour comprendre le fonctionnement de Binsec et comment doivent être déclarées les fonctions de Hacl*. Nous passons donc en phase de conception et construisons notre outil \textit{Érysichthon}. Il sera une combinaison de script Python, script shell et de Makefile. Nous appelons module un ensemble de scripts qui réalise une tâche au sein d'\textit{Érysichthon}. Nous présentons sur la figure \ref{fig:erysichthon} comment s'organisent les modules et les tâches qu'ils effectuent.
 
 \begin{figure}[!ht]
     \caption{Structure des modules d'Érysichthon}
@@ -198,19 +198,19 @@ Nous retrouvons les différentes étapes de nos protocoles représentées par de
 
 \subsection*{Andhrímnir}
 
-Ce module de Érysichthon est particulier car il est lui aussi baptisé. Ce module consiste à produire les fichiers qui seront compilés puis analysés par Binsec. Son nom est celui du cuisinier des dieux de la mythologie nordique, un travail répétitif et quotidien qu'il réalise ici pour notre outil.\smallbreak
+Ce module d'Érysichthon est particulier car il est lui aussi baptisé. Ce module consiste à produire les fichiers qui seront compilés puis analysés par Binsec. Son nom est celui du cuisinier des dieux de la mythologie nordique, un travail répétitif et quotidien qu'il réalise ici pour notre outil.\smallbreak
 
-Ce module est nommé car il constitue un projet dans le projet, sa conception seule a pris plus de la moitié du temps de développement total. C'est un outil qui, à partir d'un projet en C, est capable de générer automatiquement des tests qui compilent et peuvent ensuite être proposé à des outils d'analyse binaire. Ce module est aggrégé à Érysichthon mais peut être porté vers d'autre projets. À la différence des logiciels qui produisent des tests unitaires ( uniquement sur des projet Java, Haskell ou C\# et souvent associé à des offres payantes), il y a ici une garantie quant à la complétude des tests produit. Toutes les fonctions présentes dans le projet C analysé auront un test associé.\smallbreak
+Ce module est nommé car il constitue un projet dans le projet, sa conception seule a pris plus de la moitié du temps de développement total. C'est un outil qui, à partir d'un projet en C, est capable de générer automatiquement des tests qui compilent et peuvent ensuite être proposé à des outils d'analyse binaire. Ce module est aggrégé à Érysichthon mais peut être porté vers d'autres projets. À la différence des logiciels qui produisent des tests unitaires ( uniquement sur des projet Java, Haskell ou C\# et souvent associé à des offres payantes), il y a ici une garantie quant à la complétude des tests produits. Toutes les fonctions présentes dans le projet C analysé auront un test associé.\smallbreak
 
 Ce module, comme son grand frère, est fonctionnel et abouti. En revanche, il nécessite quelques opérations manuelles supplémentaires et quelques améliorations pour pouvoir supporter n'importe quel projet C. Additionnellement il possède quelques optimisations propres à Hacl* permettant d'accélérer la mise en service d'Érysichthon.
 
 \section{Conception et usages}
 
-Nous commençons par le petit frère, Andhrímnir. Il fonctionne avec une phase d'initialisation <<\texttt{Enumerate}>> et une phase de production de tests <<\texttt{Make\_tests}>>, elle-même découpée en plusieurs étapes. La génération de \textbf{548} fichiers de tests est réalisé en moins de deux secondes.\smallbreak
+Nous commençons par le petit frère, Andhrímnir. Il fonctionne avec une phase d'initialisation <<\texttt{Enumerate}>> et une phase de production de tests <<\texttt{Make\_tests}>>, elle-même découpée en plusieurs étapes. La génération de \textbf{548} fichiers de tests est réalisée en moins de deux secondes.\smallbreak
 
 \subsection*{Enumerate}
 
-Cette étape, de réalisation très simple, consiste à identifier toutes les fonctions qui auront un fichier test généré. Comme Hacl* génère automatiquement son code C, nous exploitons cette particularité pour lister efficacement nos fonctions. L'opération actuellement réalisée est de lister l'ensemble des fichiers "\textbf{.h}" contenu dans le répertoire cible. Ensuite un parcours et une lecture de ceux-ci nous donne toutes les fonctions de l'API d'Hacl* et d'avoir une couverture complète du projet.\smallbreak
+Cette étape, de réalisation très simple, consiste à identifier toutes les fonctions pour lesquelles un fichier test sera généré. Comme Hacl* génère automatiquement son code C, nous exploitons cette particularité pour lister efficacement les fonctions. L'opération actuellement réalisée est de lister l'ensemble des fichiers "\textbf{.h}" contenu dans le répertoire cible. Ensuite un parcours et une lecture de ceux-ci nous donne toutes les fonctions de l'API\footnote{Interface de Programmation d'Application : détermine les définitions et comportement entre les différentes fonctions présentent dans une bibliothèque.} d'Hacl* et d'avoir une couverture complète du projet.\smallbreak
 
 C'est lors de cette étape que nous spécifions les fonctions à tester (ou nous pouvons aussi retirer des fonctions de la chaîne de production). Ce garde-fou permet d'accélérer l'obtention des résultats finaux et d'aider grandement lorsque nous souhaitons déboguer.
 
@@ -347,12 +347,12 @@ Dans le cas où aucun appel n'est détecté, Andhrímnir continue sa préparatio
 
 En réalité Andhrímnir ne recharge pas les informations d'une fonction dont il a besoin, il effectue cette opération de <<\texttt{collage}>>. Elle consiste à une instruction shell qui vient ajouter (coller) au fichier en cours de conception la partie déclaration du fichier. Cette astuce permet d'éviter une nouvelle étape d'accumulation d'informations.\medbreak
 
-La phase de lecture dans les fichiers de données json existe afin d'accélérer le développement et la mise en service d'Andhrímnir. Cela permet de venir ajouter manuellement des instructions de haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point : certaines fonctions ont besoin que les paramètres déclarés respectent certaines conditions. Cet exemple est accompagné du fichier json associé et du fichier de test final \ref{lst:exemple_json,lst:exemple_complet}.  
+La phase de lecture dans les fichiers de données json existe afin d'accélérer le développement et la mise en service d'Andhrímnir. Cela permet d'ajouter manuellement des instructions de haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point : certaines fonctions ont besoin que les paramètres déclarés respectent certaines conditions. Cet exemple est accompagné du fichier json associé et du fichier de test final \ref{lst:exemple_json,lst:exemple_complet}.  
 
 
 \subsection*{Make\_core\_dump et Compilation}
 
-Les opérations de production de clichés mémoire et de compilation sont un assemblage de commandes shell et script pour GDB qui sont concevables sans problèmes. L'élément difficile à cette étape est la compilation de la bibliothèque Hacl*. Cette étape est nécessaire pour correctement compiler nos fichiers tests qui appellent Hacl*. Or cette gestion de la compilation est réalisée par le projet Hacl* lui-même et a besoin d'être améliorée pour permettre une compilation croisée vers d'autres architectures.\smallbreak
+Les opérations de production de clichés mémoire et de compilation sont un assemblage de commandes shell et de script pour GDB qui sont concevables sans problèmes. L'élément difficile à cette étape est la compilation de la bibliothèque Hacl*. Cette étape est nécessaire pour correctement compiler nos fichiers tests qui appellent Hacl*. Or cette gestion de la compilation est réalisée par le projet Hacl* lui-même et a besoin d'être améliorée pour permettre une compilation croisée vers d'autres architectures.\smallbreak
 
 Une modification du script de compilation <<\texttt{configure}>> a été proposé et modifié sur le dépôt officiel du projet Hacl*.
 
@@ -366,7 +366,7 @@ Dans le cadre d'autres architectures, comme ARM, le code \ref{lst:script_arm_exe
 
 \section{Résultats}
 
-L'éxécution c'est réalisé sur une machine équipée d'un processeur \textit{Intel Xeon E5-2620v4} avec 32 Gio de mémoire. Le temps nécéssaire pour une analyse complète en x86\_64 avec \texttt{GCC} est de 4h07. Une analyse complète comprend la compilation de Hacl*, la génération des fichiers de tests, la compilation des-dits fichiers et l'analyse individuelle de chacun par Binsec. Nous avons ajouter un module pour synthétiser et générer des rapports d'analyse.\medbreak
+L'éxécution s'est réalisé sur une machine équipée d'un processeur \textit{Intel Xeon E5-2620v4} avec 32 Gio de mémoire. Le temps nécessaire pour une analyse complète en x86\_64 avec \texttt{GCC 12.02} est de 4h07. Une analyse complète comprend la compilation de Hacl*, la génération des fichiers de tests, la compilation desdits fichiers et l'analyse individuelle de chacun par Binsec. Nous avons ajouté un module pour synthétiser et générer des rapports d'analyse.\medbreak
 
 
 \begin{figure}[!ht]
@@ -402,7 +402,7 @@ L'éxécution c'est réalisé sur une machine équipée d'un processeur \textit{
 \end{figure}
 
 
-Les données détaillées peuvent être consulté en annexe \ref{tab:resultats_finaux}. En l'état, l'analyse rapporte entre 139 et 168 fichiers dont l'analyse n'a pus se terminer. Il faudrait observer plus en détails ces fichiers pour connaître les causes de ces arrêts. \medbreak
+Les données détaillées peuvent être consultées en annexe \ref{tab:resultats_finaux}. En l'état, l'analyse rapporte entre 139 et 168 fichiers dont l'analyse n'a pu se terminer. Il faudrait observer plus en détails ces fichiers pour connaître les causes de ces arrêts. \medbreak
 
 \begin{figure}[!ht]
 \begin{tikzpicture}
@@ -451,11 +451,11 @@ Les données détaillées peuvent être consulté en annexe \ref{tab:resultats_f
   \label{fig:graphe_unknown}
 \end{figure}
 
-Le détails des valeurs est rapporté en annexe \ref{table:detail_unknown}.\smallbreak
+Le détail des valeurs est rapporté en annexe \ref{table:detail_unknown}.\smallbreak
 
 On peut voir avec cette figure \ref{fig:graphe_unknown} que les erreurs sont dues à :
 \begin{enumerate}
-  \item[\texttt{max depth}] Arrêt par limitations du nombre d'instruction à analyser, cela permet de réduire la profondeur des branchement conditionnels à explorer et limiter le risque de parcour infini.
+  \item[\texttt{max depth}] Arrêt par limitations du nombre d'instruction à analyser, cela permet de réduire la profondeur des branchement conditionnels à explorer et limiter le risque de parcours infini.
   \item[\texttt{timeout}] Comme le précédent, limitation par le temps. 
   \item[\texttt{error}] Instruction inconnue de Binsec, il a besoin que le script d'instruction soit corrigé.
   \item[\texttt{symbol}] Comme le précédent, mais peut-être que le fichier de test a besoin d'être modifié.
@@ -467,6 +467,10 @@ Ces résultats indiquent les corrections à apporter à Érysichthon.
 
 \subsection*{Sécurité de Hacl*}
 
-Revenons sur les resultats présentés sur la figure \ref{fig:graphe_total} et ignorons les fonctions marquées \texttt{unknown}. Les fichiers non sécurisés sont les plus nombreux avec l'option \texttt{-O3} (27) et le moins avec l'option \texttt{-O0} (21). Cette expérimentation remet en évidence les travaux de \citeauthor{schneider2024breakingbadcompilersbreak} mais nous pouvons nous intéroger quant à la réalité des fuites présentés ici. Comme nous analysons toute la bibliothèque Hacl* certaines fonctions peuvent être non sécurisées mais cela n'impacte pas la sécurité globale car elles ne sont besoin d'être sécurisé
+Revenons sur les resultats présentés sur la figure \ref{fig:graphe_total} et ignorons les fonctions marquées \texttt{unknown}. Les fichiers non sécurisés sont les plus nombreux avec l'option \texttt{-O3} (27) et le moins avec l'option \texttt{-O0} (21). Nous retrouvons le détail des résultats en annexe \ref{tab:resultats_insecure}. Cette expérimentation confirme les travaux de \citeauthor{schneider2024breakingbadcompilersbreak} mais nous avons toutes les pièces à notre disposition. Nous pouvons nous interroger quant à la réalité des fuites détectées par Érysichthon. Nous analysons toute la bibliothèque Hacl*, il est donc normal que certaines fonctions ne soient pas sécurisées car elle n'ont pas pour objectif de l'être. Ce sont des fonctions comme \texttt{Hacl\_P256\_validate\_public\_key} ou \texttt{Hacl\_P256\_ecdsa\_verif\_p256\_sha384} qui effectuent des vérifications sur des données publiques. 
+
+\begin{CitationBox}
+  Actuellement dans la liste, aucune fonction indiquée non sécurisé ne demande une réimplémentation et peut être conservé dans la bibliothèque.
+\end{CitationBox}
 
 
