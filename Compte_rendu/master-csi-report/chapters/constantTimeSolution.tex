@@ -156,7 +156,7 @@ Enfin, la dernière méthode pour obtenir un code sécurisé et sans fuite c'est
 
 Face à cette situation, nous pouvons choisir d'utiliser un compilateur spécialisé (\cite{Borrello_2021, Raccoon}). Et comme un serpent qui se mord la queue, nous voici à nouveau limités. Ces compilateurs peuvent ne pas supporter l'ensemble du jeu d'instruction d'une architecture, ils peuvent avoir besoin d'instructions supplémentaires (des annotations de code) pour réaliser leur compilation, ils peuvent ne pas implémenter les optimisations présentent sur les processeurs les plus récents.\smallbreak
 
-Donc, si les compilateurs spécialisés ne sont pas envisageables, nous nous retrouvons à utiliser les compilateurs courants \texttt{GCC} et \texttt{LLVM} pour notre solution sécurisée. Nous devons donc programmer en respectant la politique temps constant. Et si cette pratique semble être notre solution, nous pouvons lire dans l'article de présentation de l'outil d'analyse Binsec \citetitle{binsecRel2019} : 
+Donc, si les compilateurs spécialisés ne sont pas envisageables, nous nous retrouvons à utiliser les compilateurs courants \texttt{GCC} et \texttt{LLVM+Clang} pour notre solution sécurisée. Nous devons donc programmer en respectant la politique temps constant. Et si cette pratique semble être notre solution, nous pouvons lire dans l'article de présentation de l'outil d'analyse Binsec \citetitle{binsecRel2019} : 
 \begin{CitationBox}{Conclusion - \cite{binsecRel2019}}
 Nous avons découvert que \texttt{gcc -O0} et des optimisations de \texttt{clang} introduisent des infractions à la politique temps constant indétectées par les outils antérieurs
 \end{CitationBox}\smallbreak
