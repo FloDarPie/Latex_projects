@@ -119,7 +119,7 @@
 \posttitle{\\[-.65em]\rule{\linewidth}{1.5mm}\\[-.65em]
 \ifx\thesubtitle\undefined%
 \else%
-  \hfill{\small\itshape \thesubtitle}%
+  \hfill{\large\itshape \thesubtitle}%
 \fi
 \centering
 \vfill
