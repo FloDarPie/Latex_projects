@@ -156,7 +156,7 @@ Nous avons vu les protocoles nécessaires pour construire une analyse complète.
 
 \begin{figure}[!ht]
     \caption{Structure des modules d'Érysichthon}
-    \label{fig:erysichton}
+    \label{fig:erysichthon}
     \centering
     \begin{tikzpicture}[auto]
 
@@ -347,7 +347,7 @@ Dans le cas où aucun appel n'est détecté, Andhrímnir continue sa préparatio
 
 En réalité Andhrímnir ne recharge pas les informations d'une fonction dont il a besoin, il effectue cette opération de <<\texttt{collage}>>. Elle consiste à une instruction shell qui vient ajouter (coller) au fichier en cours de conception la partie déclaration du fichier. Cette astuce permet d'éviter une nouvelle étape d'accumulation d'informations.\medbreak
 
-La phase de lecture dans les fichiers de données json existe afin d'accélérer le développement et la mise en service d'Andhrímnir. Cela permet d'ajouter manuellement des instructions de haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point : certaines fonctions ont besoin que les paramètres déclarés respectent certaines conditions. Cet exemple est accompagné du fichier json associé et du fichier de test final \ref{lst:exemple_json,lst:exemple_complet}.  
+La phase de lecture dans les fichiers de données json existe afin d'accélérer le développement et la mise en service d'Andhrímnir. Cela permet d'ajouter manuellement des instructions de haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point : certaines fonctions ont besoin que les paramètres déclarés respectent certaines conditions. Cet exemple est accompagné de son fichier json associé \ref{lst:exemple_json} et de son fichier de test \ref{lst:exemple_complet}.  
 
 
 \subsection*{Make\_core\_dump et Compilation}
