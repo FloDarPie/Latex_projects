@@ -22,7 +22,7 @@ En sécurité informatique, la première étape, essentielle avant de développe
   \end{adjustbox}
 \end{table}
 
-Ces types d'attaques forment une base pour la conception de nos modèles d'attaquant. Considérer le mode opératoire <<récupération de traces>> induit un modèle plus fort. Des travaux comme ceux de \citeauthor{twartingCT} \cite{twartingCT} portent directement sur des améliorations matérielles permettant une défense contre ce modèle. Considérer un attaquant plus puissant, avec des accès à des ressources supplémentaires, potentiellement hypotétique, permet de concevoir un système plus sûr. Certains outils comme \cite{ctfuzz,DATA2} ou cette étude \cite{notThatHardCT} exploitent notamment cette mécanique pour attester de la sécurité d'un programme.\medbreak
+Ces types d'attaques forment une base pour la conception de nos modèles d'attaquant. Considérer le mode opératoire <<récupération de traces>> induit un modèle plus fort. Des travaux comme ceux de \citeauthor{twartingCT} \cite{twartingCT} portent directement sur des améliorations matérielles permettant une défense contre ce modèle. Considérer un hypothétique attaquant plus puissant, avec des accès à des ressources supplémentaires, permet de concevoir un système plus sûr. Certains outils comme \cite{ctfuzz,DATA2} ou cette étude \cite{notThatHardCT} exploitent notamment cette mécanique pour attester de la sécurité d'un programme.\medbreak
 
 
 Puis, avec ces modèles et les contre-mesures connues, nous pouvons constituer un ensemble de règles qui vérifient ces risques. \cite{CTsaferCrypto} résume celles-ci en une liste de trois règles :
@@ -78,14 +78,14 @@ Nous pouvons retrouver l'ensemble des règles formelles en Annexe \ref{fig:ensem
 
 \section{Analyse d'un programme}
 
-Nous avons conçu un modèle pour contrôler ou détecter les erreurs. Nous pouvons maintenant concevoir notre analyse pour vérifier ce modèle sur un programme. Plusieurs techniques de vérification existent et nous allons les passer en revue : \cite{GeimerEvaluationsSideChannel}.\medbreak
+Nous savons concevoir un modèle pour contrôler ou détecter les erreurs. Nous pouvons maintenant concevoir notre analyse pour vérifier ce modèle sur un programme. Plusieurs techniques de vérification existent et nous allons les passer en revue : \cite{GeimerEvaluationsSideChannel}.\medbreak
 
 
 \subsection*{Analyse statique}
 
 Cette méthode consiste à déduire le fonctionnement d'un programme. Nous souhaitons vérifier que son fonctionnement respecte les propriétés de sécurité définies préalablement. Cette analyse sans exécution réalise une simulation du programme en explorant les chemins d'exécution possibles. De fait, les résultats obtenus sont souvent approximés car une exploration totale peut se révéler irréalisable. Historiquement il s'agit de la première méthode étudiée/employée et depuis elle a été dérivée en plusieurs approches.\medbreak
 
-\paragraph{Non interférence.} Pour renforcer les résultats obtenus et réduire le nombre de faux positifs nous pouvons vérifier la propriété de non-interférence. Cette propriété est inhérente aux programmes. Un programme a des entrées et des sorties. Celles-ci peuvent être classées \textit{faibles} (peu importantes) ou \textit{hautes} (données secrètes, sensibles). Un programme est noninterférent si et seulement si pour n'importe quelle entrée faible le programme ressort la même sortie faible peu importe les entrées hautes qui peuvent être précisées.
+\paragraph{Non-interférence.} Pour renforcer les résultats obtenus et réduire le nombre de faux positifs nous pouvons vérifier la propriété de non-interférence. Cette propriété est inhérente aux programmes. Un programme a des entrées et des sorties. Celles-ci peuvent être classées \textit{faibles} (peu importantes) ou \textit{hautes} (données secrètes, sensibles). Un programme est noninterférent si et seulement si pour n'importe quelle entrée faible le programme ressort la même sortie faible peu importe les valeurs des entrées hautes qui peuvent être précisées.
 
 Appliqué à une analyse statique pour la vérification de programme, la mesure des ressources employées par l'ordinateur permet d'avoir une sortie faible pour comparer le comportement d'un programme en fonction de ses entrées (ici considérées secrètes).
 

@@ -10,7 +10,7 @@ Ce premier chapitre a pour but de présenter les enjeux de la sécurité informa
 
 L'Informatique repose sur deux fondations que nous tendons à distinguer dans l'enseignement : le matériel et le logiciel. Pourtant, si nous gardions séparé ces deux domaines, nous aurions des tas de piles de métal et de plastiques d'un côté et des bibliothèques pleines d'idées intéressantes de l'autre. Au contraire, combiner les deux parties permet de réaliser des prouesses technologiques et scientifiques. Ainsi, lorsque nous concevons un système sécurisé, il nous faut prendre en compte ces deux composantes. Pour implémenter un système sécurisé, il ne faut pas seulement avoir un logiciel sécurisé, il est tout aussi important d'avoir un support physique sécurisé. Oublier ce détail, c'est oublier que programmer peut se résumer à manipuler de l'électricité.\medbreak
 
-Les attaques par canal auxiliaires consistent à exploiter les caractéristiques matériels du support pour gagner en connaissances sur un programme ciblé. Puis exploiter ces connaissances pour acquérir d'avantages d'informations privées : identifiants, clés secrètes, messages personnels. Nous leurs attribuons le terme "canal auxiliaire" car il ne s'agit pas de trouver une faille perdue dans les limites d'un logiciel ou d'exploiter une mécanique du logiciel pour sortir de l'espace prévu par le concepteur. Il s'agit de se positionner hors du cadre de développement. Voici quelques travaux présentant une attaque par canal auxiliaire et le canal exploité:
+Les attaques par canal auxiliaires consistent à exploiter les caractéristiques matériels du support pour gagner en connaissances sur un programme ciblé. Puis exploiter ces connaissances pour acquérir d'avantage d'informations privées : identifiants, clés secrètes, messages personnels. Nous leurs attribuons le terme "canal auxiliaire" car il ne s'agit pas de trouver une faille perdue dans les limites d'un logiciel ou d'exploiter une mécanique du logiciel pour sortir de l'espace prévu par le concepteur. Il s'agit de se positionner hors du cadre de développement. Voici quelques travaux présentant une attaque par canal auxiliaire et le canal exploité:
 \begin{itemize}
     \item[\cite{DPA_Attack}] Consommation d'énergie 
     \item[\cite{Branch_Attack}] Prédiction de branchement 
@@ -51,7 +51,7 @@ Ce lien entre le temps et l'exécution du code est connu, pourtant la mesure de 
         }
         for(int i = 0; i < msg.length; i++){
             if(msg[i] != pwd[i]){
-            return False
+                return False
             }
         }
         return True

@@ -51,11 +51,7 @@ En reprenant ces règles, nous pouvons modifier notre exemple de code \ref{lst:t
             // Comparaison
             bool equal = true;
             for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-                if (msg_hash[i] != pwd_hash[i]) {
-                    equal = equal && false;
-                } else {
-                    equal = equal || false;
-                }
+                equal &= msg[i] != pwd[i]
             }
             return equal;
         }
