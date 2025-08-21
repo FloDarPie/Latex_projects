@@ -202,7 +202,7 @@ Ce module d'Érysichthon est particulier car il est lui aussi baptisé. Ce modul
 
 Ce module est nommé car il constitue un projet dans le projet, sa conception seule a pris plus de la moitié du temps de développement total. C'est un outil qui, à partir d'un projet en C, est capable de générer automatiquement des tests qui compilent et peuvent ensuite être proposé à des outils d'analyse binaire. Ce module est aggrégé à Érysichthon mais peut être porté vers d'autres projets. À la différence des logiciels qui produisent des tests unitaires ( uniquement sur des projet Java, Haskell ou C\# et souvent associé à des offres payantes), il y a ici une garantie quant à la complétude des tests produits. Toutes les fonctions présentes dans le projet C analysées auront un test associé.\smallbreak
 
-Ce module, comme son grand frère, est fonctionnel et abouti. En revanche, il nécessite quelques opérations manuelles supplémentaires et quelques améliorations pour pouvoir supporter n'importe quel projet C. Additionnellement il possède quelques optimisations propres à HACL* permettant d'accélérer la mise en service d'Érysichthon.
+Ce module, comme son grand frère, est fonctionnel et abouti. En revanche, il nécessite quelques opérations manuelles supplémentaires et quelques améliorations pour pouvoir supporter n'importe quel projet C. Additionnellement il possède quelques optimisations propres à HACL* permettant d'accélérer la mise en service d'Érysichthon (fichiers à ignorer spécifié en dur dans le code et certain chemins d'accès aux informations \eg : si Andhrímnir a besoin des informations de \texttt{Spec\_Hash\_Definitions\_hash\_alg} en réalité elles sont définis dans \texttt{Hacl\_Streaming\_Types} ).
 
 \section{Conception et usages}
 
@@ -258,7 +258,7 @@ Hacl_EC_K256_felem_sqr(a, out);
 
 Une première partie initie le fichier. Cette partie contient les appels inclusifs de la bibliothèque standard C, l'invocation de la bibliothèque HACL* au travers du fichier d'en-tête de référence (ici \texttt{Hacl\_EC\_K256}) et la signature de fabrication en commentaire. L'utilisation de la bibliothèque standard permet d'utiliser la fonction \texttt{exit}. Avec cet appel, nous construisons nos scripts Binsec avec une interruption sur cette fonction. Cet arrêt précoce permet d'accélérer l'analyse du binaire de la cible (ici \texttt{Hacl\_EC\_K256\_felem\_sqr}) et nous garantit que cette analyse soit complète.\smallbreak
 
-La deuxième partie contient tous les éléments déclaratifs nécessaires à l'invocation de la fonction. Puis se termine avec le corps du fichier C qui contient l'appel de la fonction, notre balise de fin avec la fonction \texttt{exit}. Cette construction est standardisée entre les fichiers et permet de mettre en place quelques optimisations.
+La deuxième partie contient tous les éléments déclaratifs nécessaires à l'invocation de la fonction. Puis se termine avec le corps du fichier C qui contient l'appel de la fonction, notre balise de fin avec la fonction \texttt{exit}. Cette construction est standardisée entre les fichiers et permet de mettre en place quelques optimisations dans la rédactions des scripts d'analyse Binsec. Cela nous permet aussi de nous repérer plus facilement lorsque nous effectuons du désassemblage de binaire à la main.
 
 
 \begin{figure}[!ht]
