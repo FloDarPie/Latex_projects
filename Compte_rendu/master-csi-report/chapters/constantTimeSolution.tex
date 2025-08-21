@@ -71,13 +71,13 @@ Avec cette modification, nous avons un code \ref{lst:timing_attack_CT_example} q
 Plusieurs outils existent et peuvent être utilisés tous au long du processus de développement d'un système sécurisé. Cela peut être durant la phase de conception du code source, au moment de la compilation ou encore en vérification de la compilation.\smallbreak
 
 
-Une solution légère est de ce servir du système libre <<\textbf{Compiler Explorer}\footnote{\url{https://godbolt.org/}}>>. Avec à disposition un éditeur de texte, il est possible de voir comment sera généré le code assembleur. En reprenant une partie du code \ref{fig:timing_attack_example}, nous pouvons voir sur la figure \ref{img:godbolt_example} que le choix du compilateur, ici sa version, introduit une légère modification. Ce changement n'est pas perceptible sans observation directe, il se perçoit directement grâce à la petite taille du code observé.
+Une solution légère est de ce servir du système libre <<\textbf{Compiler Explorer}\footnote{\url{https://godbolt.org/}}>>. Avec à disposition un éditeur de texte, il est possible de voir comment sera généré le code assembleur. En reprenant une partie du code \ref{fig:timing_attack_example}, nous pouvons voir sur la figure \ref{img:godbolt_example} que le choix du compilateur, ici sa version, introduit une légère modification. Ce changement n'est pas perceptible sans observation directe, il se perçoit directement grâce à la petite taille du code observé. Un autre exemple \ref{fig:comparaison_assembleur} est présenté à la fin du chapitre.
 
 \begin{figure}[!h]
   \begin{adjustwidth}{-18mm}{0mm}
     \centering
     \includegraphics[trim = 1mm 0mm 0mm 0mm, clip,width=0.9\paperwidth]{pictures/godbolt_example.png}
-    \caption{Capture d'écran de comparaison de code assembleur x86\_64 entre \texttt{GCC 15.1} et \texttt{GCC 5.1}}
+    \caption{Capture d'écran de comparaison de code assembleur x86\_64 entre \texttt{GCC 5.1} et \texttt{GCC 15.1}}
     \label{img:godbolt_example}
   \end{adjustwidth}
 \end{figure}
@@ -295,6 +295,7 @@ cmovznz4:
         \label{subcode:O1}
     \end{subfigure}
     \caption{Comparaison du code \ref{lst:Hacl_masking} en fonction de différentes options de compilation données au compilateur, réalisée avec l'aide de \textit{Compiler Explorer}.}
+    \label{fig:comparaison_assembleur}
 \end{figure}
 
 \raggedbottom

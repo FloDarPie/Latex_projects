@@ -51,7 +51,13 @@ Une fois ce préambule installé nous définissons formellement le comportement 
   \caption{Instruction \texttt{chargement}}
   \label{fig:instr_load}
   \centering
-  \includegraphics[scale = 0.7]{pictures/load.png}
+  
+    % version avec \scalebox
+    \scalebox{1.8}{% agrandir à 150%
+    $\textsc{Load}\quad
+    \frac{(l,r,m)\; e \vdash_t \text{bv}}
+         {(l,r,m)\; @ \; e \vdash_{t.[\text{bv}]} m \;\text{bv}}$
+    }
 \end{figure}
 
 Ici, l'évaluation de l'expression \texttt{e} sur une configuration $(l,r,m)$ produit une fuite de la valeur $bv$. En haut nous retrouvons la notation de l'opération effectuée et au-dessous la formalisation de la fuite : $t \cdot [bv]$ signifie que la valeur $bv$ s'ajoute à la liste des fuites. Ce second exemple \ref{fig:instr_branchement} présente une opération de branchement en fonction de $e$ vers les instructions $l_1$ et $l_2$. Nous voyons que la valeur est différente de zéro, ce qui nous produit une fuite vers l'instruction $l_1$. Cette fuite est à ajouter à notre liste $t$.
@@ -96,6 +102,10 @@ L'analyse dynamique emploie la preuve par l'exemple pour garantir la sécurité 
 
 Le fuzzing peut aussi être utilisé pour trouver des entrées maximisant la couverture et la fuite via canal auxiliaire, comme dans ct-fuzz \cite{ctfuzz}.\medbreak
 
+
+\section{Outils de vérifications}
+
+\ref{tab:tools_ct}
 
 \textit{Ces modèles et ces approches permettent la mise en place d'outils d'analyse performants et innovants. Nous allons maintenant observer plus en détail leur fonctionnement.}
 
