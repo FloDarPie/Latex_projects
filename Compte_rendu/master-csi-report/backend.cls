@@ -247,7 +247,8 @@ Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien
 \version{1.5}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setlength{\cftbeforechapterskip}{8pt}
+\setlength{\cftbeforechapterskip}{6pt}
+\setlength{\cftbeforepartskip}{18pt}
 
 \renewcommand{\memchapinfo}[4]{%
   \addtocontents{lol}{\protect\addvspace{10pt}}}
