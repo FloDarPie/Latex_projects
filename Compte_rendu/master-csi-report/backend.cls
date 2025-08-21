@@ -246,14 +246,8 @@
 Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien.bardin@cea.fr>}}
 \version{1.5}
 
-% \newcommand{\l@listing}[2]{%
-% \begingroup
-%   \def\numberline##1{##1\hspace{1em}}
-%   \hangindent=10mm
-%   \hangafter=5
-%   #1 \leavevmode\cleaders\hbox{ . }\hfill~#2\par
-%   \endgroup
-% }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\cftbeforechapterskip}{8pt}
 
 \renewcommand{\memchapinfo}[4]{%
   \addtocontents{lol}{\protect\addvspace{10pt}}}
@@ -277,3 +271,5 @@ Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien
   \section*{Liste des tables}%
   \@starttoc{lot}%
 }
+
+
