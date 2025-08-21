@@ -1,11 +1,9 @@
-\chapter{Érysichthon, implémentation et résultat}
+\chapter{Implémentation d'Érysichthon}
 \label{chap:erysichtonUsage}
 
-Nous allons voir comment un outil d'analyse à grande échelle a été construit, les difficultés rencontrées et les résultats obtenues.  
+Nous avons nos spécificités techniques et nous savons quelle forme notre outil doit avoir (figure \ref{fig:compilation_simple}). Nous pouvons commencer par synthétiser les opérations nécessaires puis nous les implémenterons pour avoir un outil fonctionnel.
 
 \section{Planification et préparations}
-
-Nous avons nos spécificités techniques et nous savons quelle forme notre outil doit avoir (figure \ref{fig:compilation_simple}). Nous pouvons commencer par synthétiser les opérations nécessaires.\smallbreak
 
 Nous allons normaliser les étapes nécessaires enfin que Binsec analyse entièrement un fichier et nous renvoie un parmi [\texttt{secure, unknown, insecure}]. Nous allons concevoir des protocoles présentant la méthodologie à suivre pour atteindre cet objectif. Nous commençons par le protocole \texttt{x86\_64}, la première architecture que nous avons étudiée. Ce protocole est particulier. Depuis la version \textbf{0.5.0} de Binsec il est possible de fournir un <<cliché mémoire>>\footnote{Plus couramment 'Core dump', terme technique anglais désignant une copie de la mémoire vive et des registres d'un programme. Ce fichier sert à être analysé, généralement par un débogueur.} pour accélérer l'analyse. Nous utiliserons donc cet avantage pour l'intégrer à notre graphe d'éxécution. La machine sur laquelle ce projet est développé est sur une architecture x86\_64. Cela nous permet d'utiliser l'outil GDB pour la génération de clichés mémoire.\medbreak
 

@@ -1,9 +1,18 @@
 \chapter{Résultats et réponses à nos questions de recherche}
 
+Nous avons ici un artefact de recherche qui initie la conception d'un outil entièrement automatisé, capable de couvrir plusieurs architectures et plusieurs compilateurs. Cet outil, présenté tout au long de ces chapitre précédents, permet d'obtenir des rapports précis sur la sécurité d'une bibliothèque cryptographique. 
 
-\section{}
+\section{Motivation de la méthode expérimentale}
 
-L'exécution s'est réalisé sur une machine équipée d'un processeur \textit{Intel Xeon E5-2620v4} avec 32 Gio de mémoire. Le temps nécessaire pour une analyse complète en x86\_64 avec \texttt{GCC 12.02} est de 4h07. Une analyse complète comprend la compilation de HACL*, la génération des fichiers de tests, la compilation desdits fichiers et l'analyse individuelle de chacun par Binsec. Nous avons ajouté un module pour synthétiser et générer des rapports d'analyse.\bigbreak
+Notre objectif est d'automatiser le processus de vérification d'un binaire d'une fonction d'une bibliothèque cryptographique. Nous savons effectuer ce travail localement, avec un fichier à tester, une compilation effectué avec plusieurs compilateurs et une analyse Binsec adapté à chaque version (\eg figures \ref{tab:resultats_arm} et \ref{tab:resultats_riscv}). Ce mécanisme, permettant une comparaison nette et forte entre les compilateurs est analogue à la méthode du parcours en largeur. Nous testons une variété de compilateur et les résultats obtenues au fur et à mesure nous permette d'évaluer une fonction à chaque fois.\medbreak
+
+La méthode développé intrésèquement avec Érysichthon est analogue au parcours en profondeur. Nous étudions toute la bibliothèque (ou du moins les fonctions présentent dans la liste des cibles autorisés) selon les paramètres ciblés avant de considérer réaliser une analyse vers une autre configuration (architecture / compilateur / optimisation). Cette approche demande une réflexion concernant le choix de la configuration puis sera plus tard ajouté à une liste de configuration à analyser. Les rapports obtenues permettent d'identifier plus rapidement quelles fonctions ont besoin d'être corrigés mais surtout de repérer les éventuels bogues qui peuvent survenir.\smallbreak
+
+Cette méthode nous a permis d'obtenir nos premier rapports. Nous allons discuter des résultats présentés.
+
+\section{Étude simple sur x86\_64}
+
+L'exécution s'est réalisé sur une machine équipée d'un processeur \textit{Intel Xeon E5-2620v4} avec 32 Gio de mémoire. Le temps nécessaire pour une analyse complète en x86\_64 avec \texttt{GCC 12.02} avec les options de compilations courante est de 4h07 en moyenne. Une analyse complète comprend la compilation de HACL*, la génération des fichiers de tests, la compilation desdits fichiers et l'analyse individuelle de chacun par Binsec. La génération des rapports se fait en fin d'analyse de Binsec avant qu'une nouvelle compilation de HACL* ne soit réaliser. Le rapport consiste à aggréger les rapports d'analyse Binsec, compter les évènements que l'on cible et dresser des tableaux.\bigbreak
 
 \begin{figure}[!ht]
   \centering
@@ -108,13 +117,14 @@ Pour résoudre la limitation \texttt{max depth}, nous utiliserons l'outil \textt
 Concernant l'erreur de type \texttt{timeout}, par défaut une exécution Binsec ne s'interrompt pas, nous avions ajouter ce garde-fou pour forcé l'arrêt de l'analyse de certaines fonctions qui s'étendaient dans le temps. Nos scripts Binsec ne présentant pas d'interruption dès la 
 De même, avoir accès à une machine avec suffisement de mémoire vive nous permet de retirer la limitation \texttt{timeout}. Elle a été ajouté car l'analyse des fonctions \texttt{timeout}
 
+
+
 \subsection*{Sécurité de HACL*}
 
-Revenons sur les resultats présentés sur la figure \ref{fig:graphe_total} et ignorons les fonctions marquées \texttt{unknown}. Les fichiers non sécurisés sont les plus nombreux avec l'option \texttt{-O3} (27) et le moins avec l'option \texttt{-O0} (21). Nous retrouvons le détail des résultats en annexe \ref{tab:resultats_insecure}. Cette expérimentation confirme les travaux de \citeauthor{schneider2024breakingbadcompilersbreak}, en revanche, nous nous interrogeons quant à la réalité des fuites détectées par Érysichthon. Est-ce qu'une attaque peut réellement être réalisée ?\smallbreak
-Nous analysons toute la bibliothèque HACL*, il est donc normal que certaines fonctions ne soient pas sécurisées car elle n'ont pas pour objectif de l'être. Peut importe les options de compilations que nou spouvons préciser. Ce sont des fonctions comme \texttt{Hacl\_P256\_\-vali\-date\_public\_key} ou \texttt{Hacl\_P256\_\-ecdsa\_\-verif\_p256\_sha384} qui effectuent des vérifications sur des données publiques. 
+Revenons sur les resultats présentés sur la figure \ref{fig:graphe_total} et ignorons les fonctions marquées \texttt{unknown}. Les fichiers non sécurisés sont les plus nombreux avec l'option \texttt{-O3} (27) et le moins avec l'option \texttt{-O0} (21). Nous retrouvons le détail des résultats en annexe \ref{tab:resultats_insecure}. Cette expérimentation confirme les travaux de \citeauthor{schneider2024breakingbadcompilersbreak}, dans le sens où augmenter le niveau d'optimisation de compilation augmente le nombre de fonctions qui sont non sécurisés. Nos résultats pourront s'aligner avec l'ajout du compilateur \texttt{LLVM}.\smallbreak 
 
-\begin{CitationBox}{est-ce que je peux finir sur ça ?}
-  Actuellement dans la liste, aucune fonction indiquée non sécurisé ne demande une réimplémentation et peut être conservé dans la bibliothèque.
-\end{CitationBox}
+En revanche, si la question de la sécurité des fonctions identifiées non sécurisées se posent, actuellement la réponse est non. Comme nous analysons toute la bibliothèque HACL*, il est normal que certaines fonctions ne soient pas sécurisées. Elle n'ont pas pour objectif de l'être. Ce sont des fonctions comme \texttt{Hacl\_P256\_\-vali\-date\_public\_key} ou \texttt{Hacl\_P256\_\-ecdsa\_\-verif\_p256\_sha384} qui effectuent des vérifications, des conversions, sur des données publiques. 
+
+Actuellement, dans la liste, aucune fonction indiquée non sécurisé ne demande une réimplémentation et peut être conservé dans la bibliothèque. En première conclusion préliminaire, nous pouvons affirmer qu'il est préférable de ne pas utiliser l'option de compilation \texttt{-O3}.
 
 

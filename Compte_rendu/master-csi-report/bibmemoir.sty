@@ -3,7 +3,8 @@
 \ProvidesPackage{bibmemoir}[Custom style for bibliography]
 
 % Load biblatex with your desired options
-\RequirePackage[backend=biber, style=alphabetic, sorting=ynt]{biblatex}
+\RequirePackage[backend=biber, style=alphabetic, sorting=ynt,maxnames=99, minnames=99 ]{biblatex}
+
 
 % Redefine the bibliography driver for articles
 \DeclareBibliographyDriver{article}{%
@@ -56,7 +57,7 @@
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \printtext[title]{%
-    \printfield{title}%
+    \text{\printfield{title}}%
     \setunit{\addcomma\space}%
     \printnames{author}%
     \setunit{\addcomma\space}%
