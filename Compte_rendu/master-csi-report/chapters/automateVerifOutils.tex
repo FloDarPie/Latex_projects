@@ -54,7 +54,7 @@ Une fois ce préambule installé nous définissons formellement le comportement 
   
     % version avec \scalebox
     \scalebox{1.8}{% agrandir à 150%
-    $\textsc{Load}\quad
+    $\smash{\scalebox{0.5556}{\textsc{LOAD}}}\quad
     \frac{(l,r,m)\; e \vdash_t \text{bv}}
          {(l,r,m)\; @ \; e \vdash_{t.[\text{bv}]} m \;\text{bv}}$
     }
@@ -67,7 +67,7 @@ Ici, l'évaluation de l'expression \texttt{e} sur une configuration $(l,r,m)$ pr
   \label{fig:instr_branchement}
   \centering
   \scalebox{1.8}{
-    $\textsc{T-ITE}\quad
+    $\smash{\scalebox{0.5556}{\textsc{T-ITE}}}\quad
         \frac{
         P.l = \textit{ite } e \,?\, l_1 : l_2 \quad(l, r, m) \vdash_t \text{bv} \quad \text{bv} \neq 0}
         {(l, r, m)\; \underset{t[l_1]}{\longrightarrow}\; (l_1, r, m)}$

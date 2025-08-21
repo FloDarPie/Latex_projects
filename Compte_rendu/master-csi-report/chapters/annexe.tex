@@ -4,7 +4,7 @@
   \caption{Liste des options de compilations et leurs effets (non exhaustive), \url{https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html}}
   \label{tab:compile_option}
   \small
-  \begin{adjustwidth}{-2.5cm}{-2cm}
+  \begin{adjustwidth}{-2.1cm}{-2cm}
   \begin{center}
     \begin{tabular}{ll}
     \hlineB{2}
@@ -26,16 +26,22 @@
   \end{adjustwidth}
 \end{table}
 
-\vfill
 
-\begin{figure}
+\begin{figure}[!htb]
   \centering
-  \includegraphics[scale = 0.5]{pictures/instructions_formelles.png}
-  \caption{Ensemble d'instructions défini formellement par \cite{binsecRel2019}}
-  \label{fig:ensemble_instr_formelles}
+  \begin{minipage}[b]{0.55\textwidth}
+    \centering
+    \includegraphics[scale=0.39]{pictures/instructions_formelles.png}
+    \caption{Ensemble d'instructions défini formellement par \cite{binsecRel2019}}
+    \label{fig:ensemble_instr_formelles}
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \textit{L'ensemble de ces règles a permis de décrire formellement le comportement
+    de l'extension \texttt{checkct}, qui permet de vérifier les propriétés
+    temps constants d'un programme.}
+  \end{minipage}
 \end{figure}
 
-L'ensemble de ces règles a permis de décrire formellement le comportement de l'extension \texttt{checkct}, qui permet de vérifier les propriétés temps constants d'un programme. 
 
 \chapter{Érysichthon, structure, exemples et résultats}
 
