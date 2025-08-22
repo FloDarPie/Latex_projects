@@ -122,7 +122,7 @@ Cela nous amène à l'erreur \texttt{killed}. Ce message n'est pas une erreur pr
 
 L'erreur \texttt{symbol} indique une erreur présente dans le scrit Binsec. Cela signifie que le fichier binaire n'a pas le symbole observé par Binsec. Cette erreur est dû à un fichier de test produit par Andhrímnir où deux fonctions utilisent des paramètres nommés identiquements. Cette erreur se corrige donc en améliorant le module Andhrímnir.
 
-Pour finir, \texttt{KO} et \texttt{error} sont des erreurs provoqués par Binsec. Dans le premier cas l'instruction binaire lui ait inconnu et dans le second cas il effectue une analyse vers un segment du binaire qu'il n'arrive pas à lire, il faut donc modifier le script pour éviter ce cas de figures.
+Pour finir, \texttt{KO} et \texttt{error} sont des erreurs provoqués par Binsec. Dans le premier cas l'instruction binaire lui ait inconnu et dans le second cas il effectue une analyse vers un segment du binaire incompréhensible (fin d'une instruction et début d'une autre ou même une zone sans instruction), il faut donc modifier le script Binsec pour prévenir ce cas de figures.
 
 
 \subsection*{Sécurité de HACL*}
@@ -134,3 +134,5 @@ En revanche, si la question de la sécurité des fonctions identifiées non séc
 Actuellement, dans la liste, aucune fonction indiquée non sécurisé ne demande une réimplémentation et peut être conservé dans la bibliothèque. En première conclusion préliminaire, nous pouvons affirmer qu'il est préférable de ne pas utiliser l'option de compilation \texttt{-O3}.
 
 
+\vfill
+\textit{Ces premiers résultats sont encourageants quand à la méthode employée et laisse de la place à de nombreuses améliorations futures. Nous allons discuter des actions que nous pouvons réaliser pour perfectionner le travail déjà accompli.}

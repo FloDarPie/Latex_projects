@@ -345,8 +345,11 @@ Dans le cas où aucun appel n'est détecté, Andhrímnir continue sa préparatio
 
 En réalité Andhrímnir ne recharge pas les informations d'une fonction dont il a besoin, il effectue cette opération de <<\texttt{collage}>>. Elle consiste à une instruction shell qui vient ajouter (coller) au fichier en cours de conception la partie déclaration du fichier. Cette astuce permet d'éviter une nouvelle étape d'accumulation d'informations.\medbreak
 
-La phase de lecture dans les fichiers de données json existe afin d'accélérer le développement et la mise en service d'Andhrímnir. Cela permet d'ajouter manuellement des instructions de haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point : certaines fonctions ont besoin que les paramètres déclarés respectent certaines conditions. Cet exemple est accompagné de son fichier json associé \ref{lst:exemple_json} et de son fichier de test \ref{lst:exemple_complet}.  
+La phase de lecture dans les fichiers de données \textit{json} existe afin d'accélérer le développement et la mise en service d'Andhrímnir. Cela permet d'ajouter manuellement des instructions de haut niveau pour la conception des tests. Le code en annexe \ref{lst:exemple_header} illustre ce point : certaines fonctions ont besoin que les paramètres déclarés respectent certaines conditions. Cet exemple est accompagné de son fichier \textit{json} associé \ref{lst:exemple_json} et de son fichier de test \ref{lst:exemple_complet}.  
 
+\begin{CitationBox}{Emploi et besoin de fichiers de données}
+  L'emploi de fichier \textit{json} est la solution qui nous est apparu lors de l'implémentation d'Érysichthon et d'Andhrímnir. Les deux ont besoin d'avoir des connaissances supplémentaires quand à leurs sources. Lors de la génération d'un test, il fallait déterminer la valeur des paramètres des fonctions appelées pour avoir une compilation optiamle. Lors de la génération des scripts Binsec, il fallait connaître le symbole des paramètres à suivre durant l'analyse symbolique. Dans le premier cas, l'information est caché dans le code \textit{F*} de HACL*, dans le second cas, l'information est dans le binaire. Cette solution permet de répondre aux deux besoins.
+\end{CitationBox}
 
 \subsection*{Make\_core\_dump et Compilation}
 
@@ -356,9 +359,9 @@ Une modification du script de compilation <<\texttt{configure}>> a été propos�
 
 \subsection*{Make\_ini}
 
-Ce module consiste à concevoir les fichiers d'instructions pour Binsec. Il doit spécifier les variables secrètes associées à la fonction analysée. À la suite des exemples cités précédemment, le code \ref{list:exemple_ini_final} illustre comment ces instructions s'organisent. Il est adapté pour l'architecture x86\_64 et exploite la mécanique des clichés mémoires.\smallbreak
+Ce module consiste à concevoir les fichiers d'instructions pour Binsec. Il doit spécifier les variables secrètes associées à la fonction analysée. À la suite des exemples cités précédemment, le code \ref{list:exemple_ini_final} illustre comment ces instructions s'organisent. Il est adapté pour l'architecture ciblé et pour le cas x86\_64 exploite la mécanique des clichés mémoires.\smallbreak
 
-Un premier temps initie le chargement des données, ensuite l'étiquette <<\texttt{secret}>> est accrochée aux variables à suivre durant l'analyse. Des commandes de gestion d'instructions particulières : des appels systèmes, des vérifications de registres inconnus de Binsec; permettent que l'analyse ne s'interrompe pas et nous donne un résultat pertinent (\texttt{secure}, \texttt{insecure}). Enfin nous indiquons notre arrêt d'exploration sur la fonction <<\texttt{exit}>> et nous donnons notre feu vert avec la commande d'exploration totale.\medbreak
+Un premier temps initie le chargement des données, ensuite l'étiquette <<\texttt{secret}>> est accrochée aux variables à suivre durant l'analyse. Cette phase emploie le fichier \textit{json} de référence du test pour détecter les variables qui ont besoins d'être étiqueter. Des commandes de gestion d'instructions particulières : des appels systèmes, des vérifications de registres inconnus de Binsec; permettent que l'analyse ne s'interrompe pas et nous donne un résultat pertinent (\texttt{secure}, \texttt{insecure}). Enfin nous indiquons notre arrêt d'exploration sur la fonction <<\texttt{exit}>> et nous donnons notre feu vert avec la commande d'exploration totale.\medbreak
 
 Dans le cadre d'autres architectures, comme ARM, le code \ref{lst:script_arm_exemple} montre que la différence à considérer est cette affectation manuelle des <<\texttt{IFUNC}>>. Pour le moment, la solution en place qui gère une affectation correcte est conçue en fonction du support matériel sur lequel l'outil est activé.
 
