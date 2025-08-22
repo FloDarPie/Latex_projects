@@ -85,11 +85,11 @@ Nous savons concevoir un modèle pour contrôler ou détecter les erreurs. Nous 
 
 Cette méthode consiste à déduire le fonctionnement d'un programme. Nous souhaitons vérifier que son fonctionnement respecte les propriétés de sécurité définies préalablement. Cette analyse sans exécution réalise une simulation du programme en explorant les chemins d'exécution possibles. De fait, les résultats obtenus sont souvent approximés car une exploration totale peut se révéler irréalisable. Historiquement il s'agit de la première méthode étudiée/employée et depuis elle a été dérivée en plusieurs approches.\medbreak
 
-\paragraph{Non-interférence.} Pour renforcer les résultats obtenus et réduire le nombre de faux positifs nous pouvons vérifier la propriété de non-interférence. Cette propriété est inhérente aux programmes. Un programme a des entrées et des sorties. Celles-ci peuvent être classées \textit{faibles} (peu importantes) ou \textit{hautes} (données secrètes, sensibles). Un programme est noninterférent si et seulement si pour n'importe quelle entrée faible le programme ressort la même sortie faible peu importe les valeurs des entrées hautes qui peuvent être précisées.
+\paragraph{Non-interférence} Pour renforcer les résultats obtenus et réduire le nombre de faux positifs nous pouvons vérifier la propriété de non-interférence. Cette propriété est inhérente aux programmes. Un programme a des entrées et des sorties. Celles-ci peuvent être classées \textit{faibles} (peu importantes) ou \textit{hautes} (données secrètes, sensibles). Un programme est noninterférent si et seulement si pour n'importe quelle entrée faible le programme ressort la même sortie faible peu importe les valeurs des entrées hautes qui peuvent être précisées.
 
 Appliqué à une analyse statique pour la vérification de programme, la mesure des ressources employées par l'ordinateur permet d'avoir une sortie faible pour comparer le comportement d'un programme en fonction de ses entrées (ici considérées secrètes).
 
-\paragraph{\textit{Self-Composition}}\footnote{Construction personnelle, le terme anglais est conservé.} La self-composition consiste à entrelacer deux exécutions d'un programme $P$ avec différents ensembles de variables secrètes dans un seul programme auto-composé $P;P'$. Des solveurs peuvent alors être utilisés pour vérifier la propriété de non-interférence. Cette approche a été utilisée par \citeauthor{ABPV13} \cite{ABPV13} pour vérifier manuellement des exemples limités, nécessitant de nombreuses annotations pour limiter l'explosion (quadratique) des états à comparer et explorer. \cite{binsecRel2019} emploie cette approche associée à des solveurs SMT pour vérifier uniquement les propriétés définies dans leur modèle. La restriction aux propriétés temps constant permet l'exploitation de cette méthode.
+\paragraph{\textit{Self-Composition}}\footnote{Construction personnelle, le terme anglais est conservé.} La self-composition consiste à entrelacer deux exécutions d'un programme $P$ avec différents ensembles de variables secrètes dans un seul programme auto-composé $P;P'$. Des solveurs peuvent alors être utilisés pour vérifier la propriété de non-interférence. Cette approche a été utilisée par \citeauthor{ABPV13} \cite{ABPV13} pour vérifier manuellement des exemples limités, nécessitant de nombreuses annotations pour limiter l'explosion (quadratique) des états à comparer et explorer. \cite{binsecRel2019} emploie cette approche associée à des solveurs SMT pour vérifier uniquement les propriétés définies dans leur modèle. La restriction aux propriétés temps constant permet l'exploitation de cette méthode sans le contrecoup de l'augmentation de la taille des formules.
 
 \paragraph{Systèmes de types} Cette approche diffère des précédentes car elle nécessite un travail supplémentaire du développeur. Il doit ajouter la spécification \texttt{secret} au valeurs employées pour que cette information se diffuse dans le compilateur et que des mesures adaptées soient effectuées au niveau du binaire. Cette approche est intéressante car elle permet une flexibilité plus importante lors de la production du code et permet de s'abstenir des contre-mesures décrites au chapitre \ref{chap:constantTimeSolution}. En revanche elle nécessite un compilateur spécialisé et aucune vérification sur le binaire produit n'est effectuée. 
 
@@ -112,6 +112,47 @@ Le fuzzing peut aussi être utilisé pour trouver des entrées maximisant la cou
 % https://blog.cr.yp.to/20240803-clang.html
 
 
-Nous avons présenté rapidement de nombreux outils capable d'effectuer de la vérification de binaire (voir la table \ref{tab:tools_ct}) et tous au long de la section précédentes nous avons présenté les méthodes employés par ceux-ci. 
+Nous avons présenté rapidement de nombreux outils capable d'effectuer de la vérification de binaire (voir la table \ref{tab:tools_ct}) et tous au long de la section précédentes nous avons présenté les méthodes employés par ceux-ci. \medbreak
+
+Ils sont tous conçus pour analyser spécialement type de fichier (C, Java, LLVM, \etc). Dans notre cas nous ciblons des binaires. Nous pouvons donc nous tourner vers ces candidats :
+\begin{itemize}
+\begin{multicols}{4}
+  \item Binsec
+  \item CacheAudit
+  \item ctgrind
+  \item DATA
+  \item dudect
+  \item KMO
+  \item MicroWalk
+  \item timecop
+\end{multicols}
+\end{itemize}
+
+\subsection*{Outils obsolète ou inadéquat}
+
+\texttt{ctgrind} et \texttt{timecop} sont tous les deux bâtis sur \textit{Valgrind}. L'analyse se base sur l'outil de détection d'erreur mémoire propre à \textit{Valgrind} : \textit{Memcheck}. Celui-ci détecte les branchement conditionnels et les accès mémoire calculés vers des régions non initialisée. Les vulnérabilités sont trouvées en marquant les variables secrètes comme non définies, au travers d'une annotation de code spécifique. Puis, durant l'exécution, \textit{Memcheck} associe chaque bit de données manipulées par le programme avec un bit de définition qu'il propage tout au long de l'analyse et qu'il vérifie lors d'un calcul d'une adresse ou d'un saut. Appliquée à \textit{Valgrind} l'analyse est pertinente. Cependant, dans le cadre de la recherche de faille temporelle cette approche produit un nombre considérable de faux positifs, car des erreurs non liées aux valeurs secrètes sont également rapportées.\medbreak
 
 
+\texttt{KMO} détecte les fuites d'information pour des attaques qui ciblent le cache. Cet outil développé en 2012 et plus maintenu utilisé une représentation interne du binaire pour compter les bits d'informations qui peuvent fuiter. En initialisation, l'outil fait deux estimations (borne supérieure et inférieure) de la quantité d'informations qu'un attaquant peut extraire en observant les adresses mémoires présentes dans le cache après l'exécution d'un programme. Grâce à l'observation qu'une estimation haute du nombre d'états atteignables par le programme est aussi une estimation haute du nombre de bits que peut connaître un attaquant, on peut déterminer de la sécurité d'un programme.
+
+
+\subsection*{Outils statistiques}
+
+\texttt{dudect} détecte les fuites temporelles par des mesures répétées du temps d'exécution et une comparaison à l'aide d'un test statistique. Le binaire est exécuté sous deux classes différentes d'entrées secrètes : un ensemble avec des valeurs constantes et un ensemble avec des valeurs sélectionnées aléatoirement avant chaque mesure. Les temps d'exécution de la fonction cible sont alors enregistrés en sondant les compteurs de cycles CPU. Si les deux distributions sont distinguables alors une fuite est rapportée uniquement si la valeur dépasse un seuil (prédéfini). Les garanties apparaissent à partir d'un grand nombre de mesures.\medbreak
+
+\texttt{MicroWalk} enregistre plusieurs exécutions de la fonction cible avec différentes entrée. La trace enregistrée contient les cibles des branches et les adresses mémoire rencontrées pendant l’exécution. Des scores d’information mutuelle (MI) sont ensuite calculés entre la trace de fuite et l’ensemble des entrées, fournissant une quantification du nombre de bits d’entrée divulgués. \texttt{MicroWalk} propose différents compromis entre granularité du score MI et performance, allant de l’information mutuelle sur l’ensemble du programme — donnant une quantification grossière des fuites — jusqu’à des instructions individuelles — pour une localisation précise des fuites.\medbreak
+
+\texttt{DATA} identifie les vulnérabilités par canaux auxiliaires basées sur les adresses grâce à une analyse dynamique. Premièrement, une phase de collecte des traces d’adresses. En comparant ces traces, il identifie des différences au niveau des adresses, indiquant d’éventuelles fuites. Cependant, de nombreuses différences proviennent des entrées publiques et ne sont donc pas critiques. Pour filtrer ces faux positifs, \texttt{DATA} utilise des tests statistiques. La deuxième phase teste si les différences dépendent de la clé privée en comparant des traces générées à partir d’une clé fixe avec des traces générées à partir de clés variables. Ce test entre fixe et aléatoire nécessite un contrôle sur la variable secrète. Enfin il y a une phase de classement des fuites pour détecter les relations entre les traces d’adresses et le secret.\medbreak
+
+
+\subsection*{Outils formels}
+
+
+\texttt{CacheAudit} prend en entrée un binaire de programme et une configuration de cache, et il en déduit des garanties de sécurité formelles et quantitatives adaptés à un jeux de modèles d'attaquants par canaux auxiliaires (observation des états de cache, des traces d'utilisation de caches et de chronométrage des temps d’exécution). Le principale défaut actuellement c'est l'usage limité à l'architecture x86\_64.\medbreak
+
+
+\texttt{Binsec} est une plateforme d'outils. On peut concevoir des scripts ou des extensions pour diriger les analyses qu'il effectue. Il a notamment une extension qui permet d'exploiter l'exécution symbolique pour vérifier les propriétés temps constant d'un binaire. \texttt{Binsec} détecte l'architecture du binaire puis convertit les instructions en une représentation interne (RI) codé en DBA. À partir de la RI, il réalise une exécution symbolique avec une vérification de la non-interférence et vérifie qu'aucune dépendance aux entrées secrètes n'existe.\medbreak
+
+\subsection*{Choix de notre outil d'analyse}
+
+Au regard du tour d'horizon des outils que nous venons d'effectuer, seul \texttt{Binsec} peut être retenu pour la suite du projet. L'analyse n'est pas statistiques, nous permet de couvrir plusieurs architectures, nous pouvons l'adapter à tous les binaires qui peuvent être issu d'une bibliothèque cryptographique. Un défaut que nous pouvons observer est sa complexité. \texttt{Binsec} est une platefome d'outils (27) est prendre en main toutes ses possibilités n'est pas simple. 

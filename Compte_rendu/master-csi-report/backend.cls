@@ -10,7 +10,7 @@
 \usepackage[french]{babel}
 
 \usepackage{amstext,amsmath,amssymb,amsfonts}
-\usepackage{multirow,colortbl}
+\usepackage{multirow,colortbl, multicol}
 \usepackage{xspace,varioref}
 \usepackage{hyperref, caption}
 \usepackage{tikz}
