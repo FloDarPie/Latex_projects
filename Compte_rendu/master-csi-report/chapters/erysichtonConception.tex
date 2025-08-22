@@ -24,7 +24,7 @@ La première étape de conception de primitives cryptologiques et de protocole n
 
 Plusieurs bibliothèques existent \cite{OpenSSL, BearSSL, polubelova2020haclxn} et remplissent différents objectifs :  rétrocompatibilité, politique temps constant, \etc. Notre choix est à réaliser en fonction des spécificités du produit que nous cherchons à déployer.\medbreak
 
-La seconde étape est à distinguer en deux parties. Cette opération de vérification de la sécurité de l'implémentation peut être réalisée sur le produit fini et sur les bibliothèques employés par le produit. Comme introduit, cette étape a pour objectif la vérification formelle du code du programme et la vérification logicielle au niveau binaire.\medbreak
+La seconde étape est à distinguer en deux parties. Cette opération de vérification de la sécurité de l'implémentation peut être réalisée sur le produit fini et sur les bibliothèques employées par le produit. Comme introduit, cette étape a pour objectif la vérification formelle du code du programme et la vérification logicielle au niveau binaire.\medbreak
 
 Utiliser la bibliothèque \textbf{HACL*} \cite{polubelova2020haclxn, HACL*} permet d'avancer la première étape et la première partie de la seconde étape. Cette bibliothèque a été conçue formellement et vient avec les preuves mathématiques de la sécurité de son implémentation. Comme présenté en \nameref{chap:supports}, elle est programmée en F*. Le projet permet une exploitation en C et directement avec des binaires \cite{HACL*}.\medbreak
 
@@ -36,7 +36,7 @@ L'objectif est donc d'analyser HACL* dans son entièreté. Avec cette analyse co
 
 Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red}{"ref vers fonctionement de Binsec"}, l'analyse se réalise sur un fichier binaire à l'aide d'instructions à adjoindre. Avec ce point de départ, nous commençons à construire notre carnet de spécifications.
 
-\textbf{Fichier binaire.} Il faut donc des fichiers binaires à fournir à Binsec. Or plus un binaire est imposant, plus son analyse sera difficile. Et comme Binsec emploie l'analyse symbolique, les formules se complexifient, le coût en mémoire augmente comme le nombre de branchement à explorer. Le temps d'analyse évoluent exponentiellement. L'idéal est donc d'analyser plein de petits fichiers binaires.\smallbreak
+\textbf{Fichier binaire.} Il faut donc des fichiers binaires à fournir à Binsec. Or plus un binaire est imposant, plus son analyse sera difficile. Et comme Binsec emploie l'analyse symbolique, les formules se complexifient, le coût en mémoire augmente comme le nombre de branchements à explorer. Le temps d'analyse évolue exponentiellement. L'idéal est donc d'analyser plein de petits fichiers binaires.\smallbreak
 
 \textbf{Analyse complète.} Chaque fonction de HACL* doit être analysée. En poursuivant la condition précédente, nous pouvons essayer de concevoir un binaire par fonction analysée. Nous distribuons ainsi l'analyse et nous parcourons ainsi toutes les fonctions présentes dans la bibliothèque.\medbreak
 
@@ -72,19 +72,19 @@ Sans reprendre les explications du fonctionnement de Binsec, voir \textcolor{red
     \end{minted}
 \end{listing}
 
-De même, comme nos fichiers analysés appartiennent à la bibliothèque extérieure HACL*, l'emploi de l'option \texttt{-static} est nécessaire pour prévenir la mise en place de liens vers la bibliothèque partagée dans le fichier binaire. Cette option ne nuit pas à la qualité de l'analyse, elle permet en revanche d'avoir tous les éléments sous la main lorsque nous désassemblons un fichier binaire. Retirer cette option lors de la compilation, c'est s'imposer des lourdeurs et rallonger le temps requis pour la vérification manuelle d'un fichier.\medbreak
+De même, comme nos fichiers analysés appartiennent à la bibliothèque extérieur HACL*, l'emploi de l'option \texttt{-static} est nécessaire pour prévenir la mise en place de liens vers la bibliothèque partagée dans le fichier binaire. Cette option ne nuit pas à la qualité de l'analyse, elle permet en revanche d'avoir tous les éléments sous la main lorsque nous désassemblons un fichier binaire. Retirer cette option lors de la compilation, c'est s'imposer des lourdeurs et rallonger le temps requis pour la vérification manuelle d'un fichier.\medbreak
 
 \textbf{Couverture de compilateur.} Les travaux de \citeauthor{schneider2024breakingbadcompilersbreak} \cite{schneider2024breakingbadcompilersbreak} ont clairement mis en évidence que le choix du compilateur est à considérer. Nous allons pouvoir identifier quel compilateur nous permet d'avoir le plus de fichiers binaires sécurisés. Cette analyse nous permet d'identifier les limites de la pratique de la programmation en temps constant.
 
-\textbf{Couverture d'architectures.} x86\_64 et ARM sont les architectures matérielles les plus répandues dans le monde. Étendre l'analyse vers différentes plateformes et observer les différences qui émergent nous permettra d'avancer dans la direction de la conception d'une bibliothèque cryptographique universelle. Nous pouvons aussi étendre cette analyse vers d'autres architectures comme PowerPC ou RiscV.\medbreak
+\textbf{Couverture d'architectures.} x86\_64 et ARM sont les architectures matérielles les plus répandues dans le monde. Étendre l'analyse vers différentes plateformes et observer les différences qui émergent nous permettra d'avancer dans la direction de la conception d'une bibliothèque cryptographique universelle. Nous pouvons aussi étendre cette analyse vers d'autres architectures comme PowerPC ou Risc-V.\medbreak
 
 
-\textbf{Automatisation.} Faire cette analyse sur un fichier binaire, comme le code \ref{lst:prise_en_main}, avec trois axes de complexité (complétude, de la couverture d'architectures et des compilateurs) n'est pas envisageable à la main. Il faut absolument que cette analyse soit automatisée.
+\textbf{Automatisation.} Faire cette analyse sur un fichier binaire, comme le code \ref{lst:prise_en_main}, avec trois axes de complexité (complétude, couverture d'architectures et couvertures de compilateurs) n'est pas envisageable à la main. Il faut absolument que cette analyse soit automatisée.
 
 
 \section{Initialisation et tests variés}
 
-Dans le cadre de la programmation sécuritaire, où sont développés les systèmes avec pour objectif d'un accident par siècle (métros automatiques, trains, avions\dots), les projets sont conçus selon le principe du cycle en V. Cette méthode au contraire de la méthode Agile permet de prévoir tous les cas de figure et d'usages, nous permettant de nous épargner les problèmes de correction de bogues.
+Dans le cadre de la programmation sécuritaire, où sont développés les systèmes avec pour objectif d'un accident par siècle (métros automatiques, trains, avions\dots), les projets sont conçus selon le principe du cycle en V. Cette méthode, au contraire de la méthode Agile, permet de prévoir tous les cas de figure et d'usages, nous permettant de nous épargner les problèmes de correction de bogues.
 
 \begin{figure}[!ht]
     \caption{Cycle en V}
@@ -140,13 +140,13 @@ Dans le cadre de la programmation sécuritaire, où sont développés les systè
     \rule{0.75\textwidth}{1pt}
 \end{center}
 
-Appliquer cette méthode à l'entièreté de ce projet n'est pas envisageable à cause du coût temporel qui est très élevé. Nous nous concentrons sur la réalisation d'une preuve de concept avec un produit minimal mais opérationnel. Le développement sera concentré sur l'objectif d'automatisation. Le développement d'outils permettant la réalisation des objectifs des couvertures  nécessiteront un travail futur.
+Appliquer cette méthode à l'entièreté de ce projet n'est pas envisageable à cause du coût temporel qui est très élevé. Nous nous concentrons sur la réalisation d'une preuve de concept avec un produit minimal mais opérationnel. Le développement sera concentré sur l'objectif d'automatisation. Le développement d'outils permettant la réalisation des objectifs des couvertures nécessitera un travail futur.
 
 \subsection*{Identification des besoins et exigences}
 
 Nous avons déjà conçu notre carnet d'exigences. En revanche nous ne connaissons pas le comportement des outils que nous souhaitons employer. La première opération est donc de s'approprier le fonctionnement de ceux-ci. Le code \ref{lst:prise_en_main} est un exemple de test réalisé dans cette phase du projet.
 
-Binsec est un outil utilisable de manière privilégiée au travers d'un terminal. Il s'invoque avec son alias, le binaire à analyser et les options qui seront effectuées :
+Binsec est un outil utilisable de manière privilégiée au travers d'un terminal. Il s'invoque avec son alias, le binaire à analyser et les options qui seront appliquées :
 
 \begin{listing}[!ht]
     \caption{Commande Binsec basique}
@@ -196,7 +196,7 @@ Ce code présenté ici est un exemple d'usage de Binsec et permet de réaliser u
 Ce script a pour objectif de vérifier les résultats apportés par \cite{schneider2024breakingbadcompilersbreak} concernant une fuite présente sur la fonction <<\textit{FStar\_UInt64\_eq\_mask}>> et d'étendre cette analyse à d'autres architectures. Dans une première démarche d'automatisation, ce code a été généré automatiquement par un script shell. Nous pouvons voir que l'analyse ne parcourt pas l'entièreté du binaire, seulement 8 sections sont chargées (sur 24). L'analyse commence à l'appel de la fonction \texttt{main} et se termine à la ligne 8 avec une adresse de fin. Cette adresse de fin est produite par le script shell pour attraper la fin de la fonction \texttt{main}. 
 
 \begin{listing}[!ht]
-    \caption{Instructions permettant d'analyser le code \ref{lst:Hacl_masking} compilé vers RiscV-32}
+    \caption{Instructions permettant d'analyser le code \ref{lst:Hacl_masking} compilé vers Risc-V 32bits}
     \label{lst:analyse_simple_binsec}
     \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos]{bash}
 load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
@@ -217,7 +217,7 @@ Ce modèle, qui nous servira de base pour la suite du développement, a permis u
 
 \subsection*{Application et observation entre architectures et compilateurs}
 
-Les tableaux qui suivent présente une courte étude sur la fonction \texttt{cmovznz4} de HACL*. Nous pouvons voir les version des compilateurs utilisés, en vert les analyses qui se sont achevées et concluent que le binaire est sécurisé, en rouge que le binaire présente une (ou plus) faille et en orange que l'analyse n'a pu finir. 
+Les tableaux qui suivent présentent une courte étude sur la fonction \texttt{cmovznz4} de HACL*. Nous pouvons voir les versions des compilateurs utilisés, en vert les analyses qui se sont achevées et concluent que le binaire est sécurisé, en rouge que le binaire présente une (ou plus) faille et en orange que l'analyse n'a pu finir. 
 
 \begin{figure}[!ht]
     \caption{Tableau de résultats d'analyse Binsec pour architecture ARMv7 et ARMv8}

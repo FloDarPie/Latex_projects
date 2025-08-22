@@ -5,7 +5,7 @@ Nous allons étudier les moyens à notre disposition pour réaliser une analyse 
 
 \section{Modélisation d'une attaque}
 
-En sécurité informatique, la première étape, essentielle avant de développer une solution, c'est de produire un modèle du danger contre lequel nous souhaitons se défendre. On parle parfois de \textit{modèle de fuite}. Cette étape de synthèse et d'abstraction est importante pour identifier les risques encourus par le futur système, souvent en identifiant les points de fuite employés par les attaques déjà publiées. \citeauthor{BewarCTSideChannel} \cite{BewarCTSideChannel} nous donne trois modèles d'adversaires à considérer lorsqu'on souhaite se défendre contre les attaques temporelles :
+En sécurité informatique, la première étape, essentielle avant de développer une solution, c'est de produire un modèle du danger contre lequel nous souhaitons nous défendre. On parle parfois de \textit{modèle de fuite}. Cette étape de synthèse et d'abstraction est importante pour identifier les risques encourus par le futur système, souvent en identifiant les points de fuite employés par les attaques déjà publiées. \citeauthor{BewarCTSideChannel} \cite{BewarCTSideChannel} nous donne trois modèles d'adversaires à considérer lorsqu'on souhaite se défendre contre les attaques temporelles :
 
 \begin{table}[!ht]
   \caption{Modèles d'adversaires pour les attaques temporelles \cite{BewarCTSideChannel}}
@@ -16,7 +16,7 @@ En sécurité informatique, la première étape, essentielle avant de développe
     \rowcolor{lightgray}
     \multicolumn{1}{|C|}{\textbf{Type d'attaque}} & \multicolumn{1}{C|}{\textbf{Description}} \\ \hline
     Par chronométrage & Observation du temps de calcul. \\ \hline
-    Par accès mémoire & Manipulation et observation des états d'un ou de plusieurs caches mémoires. \\ \hline
+    Par accès mémoire & Manipulation et observation des états d'un ou de plusieurs caches mémoire. \\ \hline
     Par récupération de traces & Suivi des appels de fonctions, des accès réussis ou manqués à la mémoire. \\ \hline
   \end{tabularx}
   \end{adjustbox}
@@ -34,7 +34,7 @@ Puis, avec ces modèles et les contre-mesures connues, nous pouvons constituer u
 
 Avec ces règles, il est alors possible de créer un outil qui analyse les programmes à sécuriser. C'est ainsi que le premier outil existant a été produit : \texttt{ctgrind} (2010).\medbreak
 
-D'autres chercheurs comme \citeauthor{binsecRel2019} \cite{binsecRel2019} s'attellent à la création de modèles formels. Cette méthode demande un travail de formalisation du comportement de programmes binaire et une implémentation plus rigoureuse de leurs outils. Cela permet en retour une évaluation complète et correcte de programmes complexes (\ie primitives cryptographiques asymétriques).
+D'autres chercheurs comme \citeauthor{binsecRel2019} \cite{binsecRel2019} s'attellent à la création de modèles formels. Cette méthode demande un travail de formalisation du comportement de programmes binaires et une implémentation plus rigoureuse de leurs outils. Cela permet en retour une évaluation complète et correcte de programmes complexes (\ie primitives cryptographiques asymétriques).
 
 \subsection*{Formalisation de modèle - \cite{binsecRel2019}}
 
@@ -93,7 +93,7 @@ Appliqué à une analyse statique pour la vérification de programme, la mesure 
 
 \paragraph{Systèmes de types} Cette approche diffère des précédentes car elle nécessite un travail supplémentaire du développeur. Il doit ajouter la spécification \texttt{secret} aux valeurs employées pour que cette information se diffuse dans le compilateur et que des mesures adaptées soient effectuées au niveau du binaire. Cette approche est intéressante car elle permet une flexibilité plus importante lors de la production du code et permet de s'abstenir des contre-mesures décrites au chapitre \ref{chap:constantTimeSolution}. En revanche elle nécessite un compilateur spécialisé et aucune vérification sur le binaire produit n'est effectuée. 
 
-\paragraph{Interprétation abstraite} Un programme est (généralement) trop complexe pour être entièrement formellement vérifié, donc il y a une sur-approximation des états atteignables par l'analyse. Ainsi, si l'analyse approximée est sécurisée alors le programme est sécurisé. Cette approche se retrouve dans CacheAudit \cite{CacheAudit} : modélisation par un graphe de flot de l'état des caches, de la mémoire et des successions d'évènement.
+\paragraph{Interprétation abstraite} Un programme est (généralement) trop complexe pour être entièrement formellement vérifié, donc il y a une sur-approximation des états atteignables par l'analyse. Ainsi, si l'analyse approximée est sécurisée alors le programme est sécurisé. Cette approche se retrouve dans CacheAudit \cite{CacheAudit} : modélisation par un graphe de flot de l'état des caches, de la mémoire et des successions d'évènements.
 
 \paragraph{Exécution symbolique} L'exécution symbolique consiste à exécuter le programme avec des entrées symboliques. Les chemins explorés sont associés à une formule logique, et un solveur vérifie si un ensemble de valeurs concrètes satisfait les formules générées. Cette méthode est utilisée pour vérifier l'absence de dépendance aux secrets dans les comportements temporels ou mémoire du programme.
 
@@ -112,7 +112,7 @@ Le fuzzing peut aussi être utilisé pour trouver des entrées maximisant la cou
 % https://blog.cr.yp.to/20240803-clang.html
 
 
-Nous avons présenté rapidement de nombreux outils capable d'effectuer de la vérification de binaire (voir la table \ref{tab:tools_ct}) et tous au long de la section précédentes nous avons présenté les méthodes employés par ceux-ci. \medbreak
+Nous avons présenté rapidement de nombreux outils capables d'effectuer de la vérification de binaire (voir la table \ref{tab:tools_ct}) et tout au long de la section précédente nous avons présenté les méthodes employées par ceux-ci. \medbreak
 
 Ils sont tous conçus pour analyser spécialement type de fichier (C, Java, LLVM, \etc). Dans notre cas nous ciblons des binaires. Nous pouvons donc nous tourner vers ces candidats :
 \begin{itemize}
@@ -130,17 +130,17 @@ Ils sont tous conçus pour analyser spécialement type de fichier (C, Java, LLVM
 
 \subsection*{Outils obsolète ou inadéquat}
 
-\texttt{ctgrind} et \texttt{timecop} sont tous les deux bâtis sur \textit{Valgrind}. L'analyse se base sur l'outil de détection d'erreur mémoire propre à \textit{Valgrind} : \textit{Memcheck}. Celui-ci détecte les branchement conditionnels et les accès mémoire calculés vers des régions non initialisée. Les vulnérabilités sont trouvées en marquant les variables secrètes comme non définies, au travers d'une annotation de code spécifique. Puis, durant l'exécution, \textit{Memcheck} associe chaque bit de données manipulées par le programme avec un bit de définition qu'il propage tout au long de l'analyse et qu'il vérifie lors d'un calcul d'une adresse ou d'un saut. Appliquée à \textit{Valgrind} l'analyse est pertinente. Cependant, dans le cadre de la recherche de faille temporelle cette approche produit un nombre considérable de faux positifs, car des erreurs non liées aux valeurs secrètes sont également rapportées.\medbreak
+\texttt{ctgrind} et \texttt{timecop} sont tous les deux bâtis sur \textit{Valgrind}. L'analyse se base sur l'outil de détection d'erreur mémoire propre à \textit{Valgrind} : \textit{Memcheck}. Celui-ci détecte les branchements conditionnels et les accès mémoire calculés vers des régions non initialisées. Les vulnérabilités sont trouvées en marquant les variables secrètes comme non définies, au travers d'une annotation de code spécifique. Puis, durant l'exécution, \textit{Memcheck} associe chaque bit de données manipulées par le programme avec un bit de définition qu'il propage tout au long de l'analyse et qu'il vérifie lors d'un calcul d'une adresse ou d'un saut. Appliquée à \textit{Valgrind} l'analyse est pertinente. Cependant, dans le cadre de la recherche de failles temporelles cette approche produit un nombre considérable de faux positifs, car des erreurs non liées aux valeurs secrètes sont également rapportées.\medbreak
 
 
-\texttt{KMO} détecte les fuites d'information pour des attaques qui ciblent le cache. Cet outil développé en 2012 et plus maintenu utilisé une représentation interne du binaire pour compter les bits d'informations qui peuvent fuiter. En initialisation, l'outil fait deux estimations (borne supérieure et inférieure) de la quantité d'informations qu'un attaquant peut extraire en observant les adresses mémoires présentes dans le cache après l'exécution d'un programme. Grâce à l'observation qu'une estimation haute du nombre d'états atteignables par le programme est aussi une estimation haute du nombre de bits que peut connaître un attaquant, on peut déterminer de la sécurité d'un programme.
+\texttt{KMO} détecte les fuites d'information pour des attaques qui ciblent le cache. Cet outil développé en 2012 et n'est plus maintenu, utilisait une représentation interne du binaire pour compter les bits d'informations qui peuvent fuiter. En initialisation, l'outil fait deux estimations (borne supérieure et inférieure) de la quantité d'informations qu'un attaquant peut extraire en observant les adresses mémoire présentes dans le cache après l'exécution d'un programme. Grâce à l'observation qu'une estimation haute du nombre d'états atteignables par le programme est aussi une estimation haute du nombre de bits que peut connaître un attaquant, on peut déterminer la sécurité d'un programme.
 
 
 \subsection*{Outils statistiques}
 
-\texttt{dudect} détecte les fuites temporelles par des mesures répétées du temps d'exécution et une comparaison à l'aide d'un test statistique. Le binaire est exécuté sous deux classes différentes d'entrées secrètes : un ensemble avec des valeurs constantes et un ensemble avec des valeurs sélectionnées aléatoirement avant chaque mesure. Les temps d'exécution de la fonction cible sont alors enregistrés en sondant les compteurs de cycles CPU. Si les deux distributions sont distinguables alors une fuite est rapportée uniquement si la valeur dépasse un seuil (prédéfini). Les garanties apparaissent à partir d'un grand nombre de mesures.\medbreak
+\texttt{dudect} détecte les fuites temporelles par des mesures répétées du temps d'exécution et une comparaison à l'aide d'un test statistique. Le binaire est exécuté sous deux classes différentes d'entrées secrètes : un ensemble avec des valeurs constantes et un ensemble avec des valeurs sélectionnées aléatoirement avant chaque mesure. Les temps d'exécution de la fonction cible sont alors enregistrés en sondant les compteurs de cycles CPU. Si les deux distributions sont distinguables, alors une fuite est rapportée uniquement si la valeur dépasse un seuil (prédéfini). Les garanties apparaissent à partir d'un grand nombre de mesures.\medbreak
 
-\texttt{MicroWalk} enregistre plusieurs exécutions de la fonction cible avec différentes entrées. La trace enregistrée contient les cibles des branches et les adresses mémoire rencontrées pendant l’exécution. Des scores d’information mutuelle (MI) sont ensuite calculés entre la trace de fuite et l’ensemble des entrées, fournissant une quantification du nombre de bits d’entrée divulgués. \texttt{MicroWalk} propose différents compromis entre granularité du score MI et performance, allant de l’information mutuelle sur l’ensemble du programme (quantifiant grossière des fuites) jusqu’à des instructions individuelles (pour localiser précisément les fuites).\medbreak
+\texttt{MicroWalk} enregistre plusieurs exécutions de la fonction cible avec différentes entrées. La trace enregistrée contient les cibles des branches et les adresses mémoire rencontrées pendant l’exécution. Des scores d’information mutuelle (MI) sont ensuite calculés entre la trace de fuite et l’ensemble des entrées, fournissant une quantification du nombre de bits d’entrée divulgués. \texttt{MicroWalk} propose différents compromis entre granularité du score MI et performance, allant de l’information mutuelle sur l’ensemble du programme (quantification grossière des fuites) jusqu’à des instructions individuelles (pour localiser précisément les fuites).\medbreak
 
 \texttt{DATA} identifie les vulnérabilités par canaux auxiliaires basées sur les adresses grâce à une analyse dynamique. Premièrement, une phase de collecte des traces d’adresses. En comparant ces traces, il identifie des différences au niveau des adresses, indiquant d’éventuelles fuites. Cependant, de nombreuses différences proviennent des entrées publiques et ne sont donc pas critiques. Pour filtrer ces faux positifs, \texttt{DATA} utilise des tests statistiques. La deuxième phase teste si les différences dépendent de la clé privée en comparant des traces générées à partir d’une clé fixe avec des traces générées à partir de clés variables. Ce test entre fixe et aléatoire nécessite un contrôle sur la variable secrète. Enfin il y a une phase de classement des fuites pour détecter les relations entre les traces d’adresses et le secret.\medbreak
 
@@ -148,15 +148,15 @@ Ils sont tous conçus pour analyser spécialement type de fichier (C, Java, LLVM
 \subsection*{Outils formels}
 
 
-\texttt{CacheAudit} prend en entrée un binaire de programme et une configuration de cache, et il en déduit des garanties de sécurité formelles et quantitatives adaptés à un jeu de modèles d'attaquants par canaux auxiliaires (observation des états de cache, des traces d'utilisation de caches et de chronométrage des temps d’exécution). Le principale défaut est l'usage limité à l'architecture x86\_64.\medbreak
+\texttt{CacheAudit} prend en entrée un binaire de programme et une configuration de cache, et il en déduit des garanties de sécurité formelles et quantitatives adaptées à un jeu de modèles d'attaquants par canaux auxiliaires (observation des états de cache, des traces d'utilisation de caches et de chronométrage des temps d’exécution). Le principal défaut est l'usage limité à l'architecture x86\_64.\medbreak
 
 
 \texttt{Binsec} est une plateforme d'outils. On peut concevoir des scripts ou des extensions pour diriger les analyses qu'il effectue. Il a notamment une extension qui permet d'exploiter l'exécution symbolique pour vérifier les propriétés de temps constant d'un binaire. \texttt{Binsec} détecte l'architecture du binaire puis convertit les instructions en une représentation interne (RI) codée en DBA. À partir de la RI, il réalise une exécution symbolique avec une vérification de la non-interférence et vérifie qu'aucune dépendance aux entrées secrètes n'existe.\medbreak
 
 \subsection*{Choix de notre outil d'analyse}
 
-Au regard du tour d'horizon des outils que nous venons d'effectuer, seul \texttt{Binsec} peut être retenu pour la suite du projet. L'analyse n'est pas statistique, nous permet de couvrir plusieurs architectures, nous pouvons l'adapter à tous les binaires qui peuvent être issus d'une bibliothèque cryptographique. Un défaut que nous pouvons observer est sa complexité. \texttt{Binsec} est une platefome d'outils (27) et prendre en main toutes ses possibilités n'est pas évident.
+Au regard du tour d'horizon des outils que nous venons d'effectuer, seul \texttt{Binsec} peut être retenu pour la suite du projet. L'analyse n'est pas statistique, elle nous permet de couvrir plusieurs architectures, et nous pouvons l'adapter à tous les binaires qui peuvent être issus d'une bibliothèque cryptographique. Un défaut que nous pouvons observer est sa complexité. \texttt{Binsec} est une plateforme d'outils (27) et prendre en main toutes ses possibilités n'est pas évident.
 
 
 \vfill
-\textit{Ce première partie ce conclut avec des réponses pour nos deux premières questions de recherche. Conserver les garanties de sécurité tout au long de la compilation est réalisable mais ne permet pas d'avoir une service utilisables sur différentes architectures. D'un autre côté nous avons pu mettre la main sur un outil d'analyse de binaire qui nous permettra d'effectuer la vérification d'une bibliothèque cryptogaphique. Nous allons maintenant nous pencher vers la réalisation d'un processus d'automatisation de la vérification d'un binaire.}
+\textit{Cette première partie se conclut avec des réponses pour nos deux premières questions de recherche. Conserver les garanties de sécurité tout au long de la compilation est réalisable mais ne permet pas d'avoir un service utilisable sur différentes architectures. D'un autre côté nous avons pu mettre la main sur un outil d'analyse de binaire qui nous permettra d'effectuer la vérification d'une bibliothèque cryptographique. Nous allons maintenant nous pencher sur la réalisation d'un processus d'automatisation de la vérification d'un binaire.}
