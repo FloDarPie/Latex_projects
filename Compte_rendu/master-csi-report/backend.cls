@@ -274,3 +274,47 @@ Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% DOS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{wrapfig}
+
+\newcommand{\darklogo}[2][1]{%
+  \begin{tikzpicture}
+    \node[inner sep=0pt] (logo) {\includegraphics[height=#1cm, keepaspectratio]{#2}};
+  \end{tikzpicture}%
+}
+
+\newcommand{\lastpage}{%
+  \newpage\null\thispagestyle{empty}\newpage
+  \clearpage
+  \thispagestyle{empty}%
+  \pagestyle{empty}%
+  %
+  % --- Image fixe à gauche + texte à droite ---
+  \begin{wrapfigure}{l}{0.25\textwidth}
+    \vspace{24pt} % pour coller en haut
+    \includegraphics[trim=18cm 5cm 8cm 10cm, clip, width=\linewidth]{pictures/page_garde.jpeg}%
+  \end{wrapfigure}
+
+
+  \noindent
+  \raggedright
+  \Huge \hfill Résumé \bigbreak
+  \normalsize
+  \input{chapters/abstract_texte.tex}
+  %
+  \vfill
+  \begin{figure}[!b]
+    \rule{\textwidth}{1pt}
+    \noindent
+    \hfill{\darklogo[1]{pictures/Universite_de_Bordeaux.pdf}}%
+    \hfill{\darklogo[0.8]{pictures/Inria-logo-rouge.png}}%
+    \hfill{\darklogo[1]{pictures/LOGO_CEA_ORIGINAL_2022.png}}\hfill
+  \end{figure}
+
+}
+
