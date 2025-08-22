@@ -308,6 +308,7 @@ Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien
   \raggedright
   \Huge \hfill Résumé \bigbreak
   \normalsize
+  \justifying
   \input{chapters/abstract_texte.tex}
   %
   \vfill
