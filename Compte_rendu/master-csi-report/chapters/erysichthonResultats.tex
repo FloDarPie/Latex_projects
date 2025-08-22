@@ -1,18 +1,18 @@
 \chapter{Résultats et réponses à nos questions de recherche}
 
-Nous avons ici un artefact de recherche qui initie la conception d'un outil entièrement automatisé, capable de couvrir plusieurs architectures et plusieurs compilateurs. Cet outil, présenté tout au long de ces chapitre précédents, permet d'obtenir des rapports précis sur la sécurité d'une bibliothèque cryptographique. 
+Nous avons ici un artefact de recherche qui initie la conception d'un outil entièrement automatisé, capable de couvrir plusieurs architectures et plusieurs compilateurs. Cet outil, présenté tout au long de ces chapitres précédents, permet d'obtenir des rapports précis sur la sécurité d'une bibliothèque cryptographique. 
 
 \section{Motivation de la méthode expérimentale}
 
-Notre objectif est d'automatiser le processus de vérification d'un binaire d'une fonction d'une bibliothèque cryptographique. Nous savons effectuer ce travail localement, avec un fichier à tester, une compilation effectué avec plusieurs compilateurs et une analyse Binsec adapté à chaque version (\eg figures \ref{tab:resultats_arm} et \ref{tab:resultats_riscv}). Ce mécanisme, permettant une comparaison nette et forte entre les compilateurs est analogue à la méthode du parcours en largeur. Nous testons une variété de compilateur et les résultats obtenues au fur et à mesure nous permette d'évaluer une fonction à chaque fois.\medbreak
+Notre objectif est d'automatiser le processus de vérification d'un binaire d'une fonction d'une bibliothèque cryptographique. Nous savons effectuer ce travail localement, avec un fichier à tester, une compilation effectuée avec plusieurs compilateurs et une analyse Binsec adaptée à chaque version (\eg figures \ref{tab:resultats_arm} et \ref{tab:resultats_riscv}). Ce mécanisme, permettant une comparaison nette et forte entre les compilateurs est analogue à la méthode du parcours en largeur. Nous testons une variété de compilateurs et les résultats obtenus au fur et à mesure nous permettent d'évaluer une fonction à chaque fois.\medbreak
 
-La méthode développé intrésèquement avec Érysichthon est analogue au parcours en profondeur. Nous étudions toute la bibliothèque (ou du moins les fonctions présentent dans la liste des cibles autorisés) selon les paramètres ciblés avant de considérer réaliser une analyse vers une autre configuration (architecture / compilateur / optimisation). Cette approche demande une réflexion concernant le choix de la configuration puis sera plus tard ajouté à une liste de configuration à analyser. Les rapports obtenues permettent d'identifier plus rapidement quelles fonctions ont besoin d'être corrigés mais surtout de repérer les éventuels bogues qui peuvent survenir.\smallbreak
+La méthode développée intrésèquement avec Érysichthon est analogue au parcours en profondeur. Nous étudions toute la bibliothèque (ou du moins les fonctions présentes dans la liste des cibles autorisés) selon les paramètres ciblés avant de considérer réaliser une analyse vers une autre configuration (architecture / compilateur / optimisation). Cette approche demande une réflexion concernant le choix de la configuration puis sera plus tard ajouté à une liste de configuration à analyser. Les rapports obtenus permettent d'identifier plus rapidement quelles fonctions ont besoin d'être corrigées mais surtout de repérer les éventuels bogues qui peuvent survenir.\smallbreak
 
-Cette méthode nous a permis d'obtenir nos premier rapports. Nous allons maintenant discuter des résultats récoltés.
+Cette méthode nous a permis d'obtenir nos premiers rapports. Nous allons maintenant discuter des résultats récoltés.
 
 \section{Étude simple sur x86\_64}
 
-L'exécution s'est réalisé sur une machine équipée d'un processeur \textit{Intel Xeon E5-2620v4} avec 32 Gio de mémoire. Le temps nécessaire pour une analyse complète en x86\_64 avec \texttt{GCC 12.02} avec les options de compilations courante est de 4h07 en moyenne. Une analyse complète comprend la compilation de HACL*, la génération des fichiers de tests, la compilation desdits fichiers et l'analyse individuelle de chacun par Binsec. La génération des rapports se fait en fin d'analyse de Binsec avant qu'une nouvelle compilation de HACL* ne soit réaliser. Le rapport consiste à aggréger les rapports d'analyse Binsec, compter les évènements que l'on cible et dresser des tableaux.\medbreak
+L'exécution s'est réalisée sur une machine équipée d'un processeur \textit{Intel Xeon E5-2620v4} avec 32 Gio de mémoire. Le temps nécessaire pour une analyse complète en x86\_64 avec \texttt{GCC 12.02} avec les options de compilations courantes est de 4h07 en moyenne. Une analyse complète comprend la compilation de HACL*, la génération des fichiers de tests, la compilation desdits fichiers et l'analyse individuelle de chacun par Binsec. La génération des rapports se fait en fin d'analyse de Binsec avant qu'une nouvelle compilation de HACL* ne soit réalisée. Le rapport consiste à agréger les rapports d'analyse Binsec, compter les événements que l'on cible et dresser des tableaux.\medbreak
 
 La configuration de notre première étude est donc : [x86\_64, \texttt{GCC 12.02}, \texttt{-O}0/1/2/3/s/z].\medbreak
 
@@ -49,7 +49,7 @@ La configuration de notre première étude est donc : [x86\_64, \texttt{GCC 12.0
 \end{figure}
 
 
-Les données détaillées peuvent être consultées en annexe \ref{tab:resultats_finaux}. En l'état, l'analyse rapporte entre 139 et 168 fichiers (en fonction des options de compilations, voir la figure \ref{fig:graphe_total}) dont l'analyse n'a pu se terminer. Il faudrait observer plus en détails ces fichiers pour connaître les causes précises de ces arrêts. Nous pouvons faire dans un premier temps une analyse haut niveau des raisons probables de ces interruptions. \medbreak
+Les données détaillées peuvent être consultées en annexe \ref{tab:resultats_finaux}. En l'état, l'analyse rapporte entre 139 et 168 fichiers (en fonction des options de compilation, voir la figure \ref{fig:graphe_total}) dont l'analyse n'a pas pu se terminer. Il faudrait observer plus en détails ces fichiers pour connaître les causes précises de ces arrêts. Nous pouvons faire dans un premier temps une analyse haut niveau des raisons probables de ces interruptions. \medbreak
 
 \begin{figure}[!ht]
 \begin{tikzpicture}
@@ -102,7 +102,7 @@ Le détail des valeurs est rapporté en annexe \ref{table:detail_unknown}.\small
 
 On peut voir avec cette figure \ref{fig:graphe_unknown} que les erreurs sont dues à :
 \begin{enumerate}
-  \item[\texttt{max depth}] Arrêt par limitations du nombre d'instruction à analyser, cela permet de réduire la profondeur des branchement conditionnels à explorer et limiter le risque de parcours infini.
+  \item[\texttt{max depth}] Arrêt par limitations du nombre d'instruction à analyser, cela permet de réduire la profondeur des branchements conditionnels à explorer et de limiter le risque de parcours infini.
   \item[\texttt{timeout}] Comme le précédent, limitation par le temps. 
   \item[\texttt{killed}] Consommation excessive des ressources, processus interrompu. 
   \item[\texttt{error}] Instruction inconnue de Binsec, il a besoin que le script d'instruction soit corrigé.
@@ -116,23 +116,23 @@ Chaque erreur préconise un correctif à apporter à Érysichthon. Nous allons d
 
 Pour résoudre la limitation \texttt{max depth}, nous utiliserons l'outil \texttt{perf}. Cela nous permet de déterminer le nombre d'instructions que contient le binaire. Identifier cette variable nous permet d'exécuter la commande \ref{lst:commande_binsec} précisément.\smallbreak
 
-Concernant l'erreur de type \texttt{timeout}, par défaut une exécution Binsec ne s'interrompt pas, nous avions ajouter ce garde-fou pour forcé l'arrêt de l'analyse de certaines fonctions qui s'étendaient dans le temps. Nos scripts Binsec peuvent être affiné en ciblant précisément les fonctions qui ont besoin de cette limitation. Actuellement, il est sûrement préférable de retirer cette option.\smallbreak
+Concernant l'erreur de type \texttt{timeout}, par défaut une exécution Binsec ne s'interrompt pas, nous avions ajouté ce garde-fou pour forcer l'arrêt de l'analyse de certaines fonctions qui s'étendaient dans le temps. Nos scripts Binsec peuvent être affiné en ciblant précisément les fonctions qui ont besoin de cette limitation. Actuellement, il est sûrement préférable de retirer cette option.\smallbreak
 
-Cela nous amène à l'erreur \texttt{killed}. Ce message n'est pas une erreur provoqué par Binsec mais par un moniteur externe qui vérifie que l'exécution d'Érysichthon ne consomme pas toute la mémoire vive de la machine hôte. Comme présenté au chapitre \ref{chap:erysichtonConception}, l'analyse d'un fichier binaire évolue exponentiellement. Il se trouve que ces fonctions sont comme un sandwich de plus petites fonctions et font exploser la complexité des formules SMT. L'erreur \texttt{max depth} n'est pas déclenché donc il faut sûrement affiné le script Binsec pour ces fonctions.
+Cela nous amène à l'erreur \texttt{killed}. Ce message n'est pas une erreur provoqué par Binsec mais par un moniteur externe qui vérifie que l'exécution d'Érysichthon ne consomme pas toute la mémoire vive de la machine hôte. Comme présenté au chapitre \ref{chap:erysichtonConception}, l'analyse d'un fichier binaire évolue exponentiellement. Il se trouve que ces fonctions sont comme un sandwich de plus petites fonctions et font exploser la complexité des formules SMT. L'erreur \texttt{max depth} n'est pas déclenché donc il faut sûrement affiner le script Binsec pour ces fonctions.
 
-L'erreur \texttt{symbol} indique une erreur présente dans le scrit Binsec. Cela signifie que le fichier binaire n'a pas le symbole observé par Binsec. Cette erreur est dû à un fichier de test produit par Andhrímnir où deux fonctions utilisent des paramètres nommés identiquements. Cette erreur se corrige donc en améliorant le module Andhrímnir.
+L'erreur \texttt{symbol} indique une erreur présente dans le scrit Binsec. Cela signifie que le fichier binaire n'a pas le symbole observé par Binsec. Cette erreur est due à un fichier de test produit par Andhrímnir où deux fonctions utilisent des paramètres nommés identiquement. Cette erreur se corrige donc en améliorant le module Andhrímnir.
 
-Pour finir, \texttt{KO} et \texttt{error} sont des erreurs provoqués par Binsec. Dans le premier cas l'instruction binaire lui ait inconnu et dans le second cas il effectue une analyse vers un segment du binaire incompréhensible (fin d'une instruction et début d'une autre ou même une zone sans instruction), il faut donc modifier le script Binsec pour prévenir ce cas de figures.
+Pour finir, \texttt{KO} et \texttt{error} sont des erreurs provoqués par Binsec. Dans le premier cas l'instruction binaire lui ait inconnu et dans le second cas il effectue une analyse vers un segment du binaire incompréhensible (fin d'une instruction et début d'une autre ou même une zone sans instruction), il faut donc modifier le script Binsec pour prévenir ce cas de figure.
 
 
 \subsection*{Sécurité de HACL*}
 
-Revenons sur les resultats présentés sur la figure \ref{fig:graphe_total} et ignorons les fonctions marquées \texttt{unknown}. Les fichiers non sécurisés sont les plus nombreux avec l'option \texttt{-O3} (27) et le moins avec l'option \texttt{-O0} (21). Nous retrouvons le détail des résultats en annexe \ref{tab:resultats_insecure}. Cette expérimentation confirme les travaux de \citeauthor{schneider2024breakingbadcompilersbreak}, dans le sens où augmenter le niveau d'optimisation de compilation augmente le nombre de fonctions qui sont non sécurisés. Nos résultats pourront s'aligner avec l'ajout du compilateur \texttt{LLVM}.\smallbreak 
+Revenons sur les résultats présentés sur la figure \ref{fig:graphe_total} et ignorons les fonctions marquées \texttt{unknown}. Les fichiers non sécurisés sont les plus nombreux avec l'option \texttt{-O3} (27) et le moins avec l'option \texttt{-O0} (21). Nous retrouvons le détail des résultats en annexe \ref{tab:resultats_insecure}. Cette expérimentation confirme les travaux de \citeauthor{schneider2024breakingbadcompilersbreak}, dans le sens où augmenter le niveau d'optimisation de compilation augmente le nombre de fonctions qui sont non sécurisées. Nos résultats pourront s'aligner avec l'ajout du compilateur \texttt{LLVM}.\smallbreak 
 
-En revanche, si la question de la sécurité des fonctions identifiées non sécurisées se posent, actuellement la réponse est non. Comme nous analysons toute la bibliothèque HACL*, il est normal que certaines fonctions ne soient pas sécurisées. Elle n'ont pas pour objectif de l'être. Ce sont des fonctions comme \texttt{Hacl\_P256\_\-vali\-date\_public\_key} ou \texttt{Hacl\_P256\_\-ecdsa\_\-verif\_p256\_sha384} qui effectuent des vérifications, des conversions, sur des données publiques. 
+En revanche, si la question de la sécurité des fonctions identifiées non sécurisées se pose, actuellement la réponse est non. Comme nous analysons toute la bibliothèque HACL*, il est normal que certaines fonctions ne soient pas sécurisées. Elles n'ont pas pour objectif de l'être. Ce sont des fonctions comme \texttt{Hacl\_P256\_\-vali\-date\_public\_key} ou \texttt{Hacl\_P256\_\-ecdsa\_\-verif\_p256\_sha384} qui effectuent des vérifications, des conversions, sur des données publiques. 
 
-Actuellement, dans la liste, aucune fonction indiquée non sécurisé ne demande une réimplémentation et peut être conservé dans la bibliothèque. En première conclusion préliminaire, nous pouvons affirmer qu'il est préférable de ne pas utiliser l'option de compilation \texttt{-O3}.
+Actuellement, dans la liste, aucune fonction indiquée non sécurisée ne demande une réimplémentation et peut être conservée dans la bibliothèque. En première conclusion préliminaire, nous pouvons affirmer qu'il est préférable de ne pas utiliser l'option de compilation \texttt{-O3}.
 
 
 \vfill
-\textit{Ces premiers résultats sont encourageants quand à la méthode employée et laisse de la place à de nombreuses améliorations futures. Nous allons discuter des actions que nous pouvons réaliser pour perfectionner le travail déjà accompli.}
+\textit{Ces premiers résultats sont encourageants quant à la méthode employée et laissent de la place à de nombreuses améliorations futures. Une application concrète et exploitable pour l'amélioration de HACL* a été développée et nous permettra d'avoir des garanties formelles sur les binaires utilisables par des utilisateurs de la bibliothèque. Nous allons discuter des actions que nous pouvons réaliser pour perfectionner le travail déjà accompli.}

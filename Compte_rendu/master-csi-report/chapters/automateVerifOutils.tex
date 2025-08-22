@@ -5,7 +5,7 @@ Nous allons étudier les moyens à notre disposition pour réaliser une analyse 
 
 \section{Modélisation d'une attaque}
 
-En sécurité informatique, la première étape, essentielle avant de développer une solution, c'est de produire un modèle du danger dont l'on souhaite se défendre. On parle parfois de \textit{modèle de fuite}. Cette étape de synthèse et d'abstraction est importante pour identifier les risques encourus par le futur système, souvent en identifiant les points de fuites employés par les attaques déjà publiées. \citeauthor{BewarCTSideChannel} \cite{BewarCTSideChannel} nous donne les trois modèles d'adversaires que nous devons considérer lorsqu'on souhaite se défendre contre les attaques temporelles :
+En sécurité informatique, la première étape, essentielle avant de développer une solution, c'est de produire un modèle du danger contre lequel nous souhaitons se défendre. On parle parfois de \textit{modèle de fuite}. Cette étape de synthèse et d'abstraction est importante pour identifier les risques encourus par le futur système, souvent en identifiant les points de fuite employés par les attaques déjà publiées. \citeauthor{BewarCTSideChannel} \cite{BewarCTSideChannel} nous donne trois modèles d'adversaires à considérer lorsqu'on souhaite se défendre contre les attaques temporelles :
 
 \begin{table}[!ht]
   \caption{Modèles d'adversaires pour les attaques temporelles \cite{BewarCTSideChannel}}
@@ -16,23 +16,23 @@ En sécurité informatique, la première étape, essentielle avant de développe
     \rowcolor{lightgray}
     \multicolumn{1}{|C|}{\textbf{Type d'attaque}} & \multicolumn{1}{C|}{\textbf{Description}} \\ \hline
     Par chronométrage & Observation du temps de calcul. \\ \hline
-    Par accès mémoire & Manipulation et observation des états d'un ou des caches mémoires. \\ \hline
+    Par accès mémoire & Manipulation et observation des états d'un ou de plusieurs caches mémoires. \\ \hline
     Par récupération de traces & Suivi des appels de fonctions, des accès réussis ou manqués à la mémoire. \\ \hline
   \end{tabularx}
   \end{adjustbox}
 \end{table}
 
-Ces types d'attaques forment une base pour la conception de nos modèles d'attaquant. Considérer le mode opératoire <<récupération de traces>> induit un modèle plus fort. Des travaux comme ceux de \citeauthor{twartingCT} \cite{twartingCT} portent directement sur des améliorations matérielles permettant une défense contre ce modèle. Considérer un hypothétique attaquant plus puissant, avec des accès à des ressources supplémentaires, permet de concevoir un système plus sûr. Certains outils comme \cite{ctfuzz,DATA2} ou cette étude \cite{notThatHardCT} exploitent notamment cette mécanique pour attester de la sécurité d'un programme.\medbreak
+Ces types d'attaques forment une base pour la conception de nos modèles d'attaquant. Considérer le mode opératoire <<récupération de traces>> induit un modèle plus puissant. Des travaux comme ceux de \citeauthor{twartingCT} \cite{twartingCT} portent directement sur des améliorations matérielles permettant une défense contre ce modèle. Considérer un hypothétique attaquant plus puissant, avec des accès à des ressources supplémentaires, permet de concevoir un système plus sûr. Certains outils comme \cite{ctfuzz,DATA2} ou cette étude \cite{notThatHardCT} exploitent notamment cette mécanique pour attester de la sécurité d'un programme.\medbreak
 
 
 Puis, avec ces modèles et les contre-mesures connues, nous pouvons constituer un ensemble de règles qui vérifient ces risques. \cite{CTsaferCrypto} résume celles-ci en une liste de trois règles :
 \begin{enumerate}
   \item Toute boucle révèle le nombre d'itérations effectuées. 
-  \item Tout accès mémoire révèle l'adresse (ou l'indice) accédé.
+  \item Tout accès mémoire révèle l'adresse (ou l'indice) accédée.
   \item Toute instruction conditionnelle révèle quelle branche a été prise.
 \end{enumerate}
 
-Avec ces règles, il est alors possible de créer un outil qui analyse les programmes à sécuriser. C'est de cette façon que le premier outil existant a été produit : \texttt{ctgrind} (2010).\medbreak
+Avec ces règles, il est alors possible de créer un outil qui analyse les programmes à sécuriser. C'est ainsi que le premier outil existant a été produit : \texttt{ctgrind} (2010).\medbreak
 
 D'autres chercheurs comme \citeauthor{binsecRel2019} \cite{binsecRel2019} s'attellent à la création de modèles formels. Cette méthode demande un travail de formalisation du comportement de programmes binaire et une implémentation plus rigoureuse de leurs outils. Cela permet en retour une évaluation complète et correcte de programmes complexes (\ie primitives cryptographiques asymétriques).
 
@@ -41,9 +41,9 @@ D'autres chercheurs comme \citeauthor{binsecRel2019} \cite{binsecRel2019} s'atte
 Si nous voulons concevoir un modèle formel, nous pouvons nous appuyer sur l'article \citetitle{formalConstantTime} \cite{formalConstantTime}.\medbreak
 
 
-Nous commençons par définir un programme. Il s'agit d'une suite d'instructions binaire. Et une instruction est une action sur la mémoire. Cela nous permet de définir notre programme comme une suite de configurations $(l,r,m)$; $l$ la ligne d'instruction, $r$ le dictionnaire de registre et $m$ la mémoire. La configuration initiale est définie par $c_0 \triangleq (l_0,r_0,m_0)$ où $l_0$ est l'adresse de l'instruction d'entrée du programme, $r_0$ un dictionnaire de registres vide et $m_0$ une mémoire vide.\smallbreak
+Nous commençons par définir un programme. Il s'agit d'une suite d'instructions binaires. Et une instruction est une action sur la mémoire. Cela nous permet de définir notre programme comme une suite de configurations $(l,r,m)$; $l$ la ligne d'instruction, $r$ le dictionnaire de registre et $m$ la mémoire. La configuration initiale est définie par $c_0 \triangleq (l_0,r_0,m_0)$ où $l_0$ est l'adresse de l'instruction d'entrée du programme, $r_0$ un dictionnaire de registres vide et $m_0$ une mémoire vide.\smallbreak
 
-Ainsi, avec cette modélisation, une instruction est un changement appliqué à notre configuration. Ce changement peut être représenté par $ c_0 \underset{t}{\to} c_1 $, $c_0$ et $c_1$ deux configurations successives, $\to$ la transition entre les deux et $t$ une fuite émise par cette transition. Notons que certaines instructions ne produisent pas de fuites.\smallbreak
+Ainsi, avec cette modélisation, une instruction est un changement appliqué à notre configuration. Ce changement peut être représenté par $ c_0 \underset{t}{\to} c_1 $, $c_0$ et $c_1$ sont deux configurations successives, $\to$ la transition entre les deux et $t$ une fuite émise par cette transition. Notons que certaines instructions ne produisent pas de fuites.\smallbreak
 
 Une fois ce préambule installé nous définissons formellement le comportement de nos instructions. Regardons par exemple comment se formalise un chargement :
 
@@ -85,15 +85,15 @@ Nous savons concevoir un modèle pour contrôler ou détecter les erreurs. Nous 
 
 Cette méthode consiste à déduire le fonctionnement d'un programme. Nous souhaitons vérifier que son fonctionnement respecte les propriétés de sécurité définies préalablement. Cette analyse sans exécution réalise une simulation du programme en explorant les chemins d'exécution possibles. De fait, les résultats obtenus sont souvent approximés car une exploration totale peut se révéler irréalisable. Historiquement il s'agit de la première méthode étudiée/employée et depuis elle a été dérivée en plusieurs approches.\medbreak
 
-\paragraph{Non-interférence} Pour renforcer les résultats obtenus et réduire le nombre de faux positifs nous pouvons vérifier la propriété de non-interférence. Cette propriété est inhérente aux programmes. Un programme a des entrées et des sorties. Celles-ci peuvent être classées \textit{faibles} (peu importantes) ou \textit{hautes} (données secrètes, sensibles). Un programme est noninterférent si et seulement si pour n'importe quelle entrée faible le programme ressort la même sortie faible peu importe les valeurs des entrées hautes qui peuvent être précisées.
+\paragraph{Non-interférence} Pour renforcer les résultats obtenus et réduire le nombre de faux positifs nous pouvons vérifier la propriété de non-interférence. Cette propriété est inhérente aux programmes. Un programme a des entrées et des sorties. Celles-ci peuvent être classées \textit{faibles} (peu importantes) ou \textit{hautes} (données secrètes, sensibles). Un programme est non-trois modèles d'adversaires à considérer lorsqu'on souhaite se interférent si et seulement si pour n'importe quelle entrée faible le programme ressort la même sortie faible peu importe les valeurs des entrées hautes qui peuvent être précisées.
 
 Appliqué à une analyse statique pour la vérification de programme, la mesure des ressources employées par l'ordinateur permet d'avoir une sortie faible pour comparer le comportement d'un programme en fonction de ses entrées (ici considérées secrètes).
 
 \paragraph{\textit{Self-Composition}}\footnote{Construction personnelle, le terme anglais est conservé.} La self-composition consiste à entrelacer deux exécutions d'un programme $P$ avec différents ensembles de variables secrètes dans un seul programme auto-composé $P;P'$. Des solveurs peuvent alors être utilisés pour vérifier la propriété de non-interférence. Cette approche a été utilisée par \citeauthor{ABPV13} \cite{ABPV13} pour vérifier manuellement des exemples limités, nécessitant de nombreuses annotations pour limiter l'explosion (quadratique) des états à comparer et explorer. \cite{binsecRel2019} emploie cette approche associée à des solveurs SMT pour vérifier uniquement les propriétés définies dans leur modèle. La restriction aux propriétés temps constant permet l'exploitation de cette méthode sans le contrecoup de l'augmentation de la taille des formules.
 
-\paragraph{Systèmes de types} Cette approche diffère des précédentes car elle nécessite un travail supplémentaire du développeur. Il doit ajouter la spécification \texttt{secret} au valeurs employées pour que cette information se diffuse dans le compilateur et que des mesures adaptées soient effectuées au niveau du binaire. Cette approche est intéressante car elle permet une flexibilité plus importante lors de la production du code et permet de s'abstenir des contre-mesures décrites au chapitre \ref{chap:constantTimeSolution}. En revanche elle nécessite un compilateur spécialisé et aucune vérification sur le binaire produit n'est effectuée. 
+\paragraph{Systèmes de types} Cette approche diffère des précédentes car elle nécessite un travail supplémentaire du développeur. Il doit ajouter la spécification \texttt{secret} aux valeurs employées pour que cette information se diffuse dans le compilateur et que des mesures adaptées soient effectuées au niveau du binaire. Cette approche est intéressante car elle permet une flexibilité plus importante lors de la production du code et permet de s'abstenir des contre-mesures décrites au chapitre \ref{chap:constantTimeSolution}. En revanche elle nécessite un compilateur spécialisé et aucune vérification sur le binaire produit n'est effectuée. 
 
-\paragraph{Interprétation abstraite} Un programme est (généralement) trop complexe pour être entièrement formellement vérifié, donc il y a une sur approximation des états atteignables par l'analyse. Ainsi, si l'analyse approximée est sécurisée alors le programme est sécurisé. Cette approche se retrouve dans CacheAudit \cite{CacheAudit} : modélisation par un graphe de flot de l'état des caches, de la mémoire et des successions d'évènement.
+\paragraph{Interprétation abstraite} Un programme est (généralement) trop complexe pour être entièrement formellement vérifié, donc il y a une sur-approximation des états atteignables par l'analyse. Ainsi, si l'analyse approximée est sécurisée alors le programme est sécurisé. Cette approche se retrouve dans CacheAudit \cite{CacheAudit} : modélisation par un graphe de flot de l'état des caches, de la mémoire et des successions d'évènement.
 
 \paragraph{Exécution symbolique} L'exécution symbolique consiste à exécuter le programme avec des entrées symboliques. Les chemins explorés sont associés à une formule logique, et un solveur vérifie si un ensemble de valeurs concrètes satisfait les formules générées. Cette méthode est utilisée pour vérifier l'absence de dépendance aux secrets dans les comportements temporels ou mémoire du programme.
 
@@ -140,7 +140,7 @@ Ils sont tous conçus pour analyser spécialement type de fichier (C, Java, LLVM
 
 \texttt{dudect} détecte les fuites temporelles par des mesures répétées du temps d'exécution et une comparaison à l'aide d'un test statistique. Le binaire est exécuté sous deux classes différentes d'entrées secrètes : un ensemble avec des valeurs constantes et un ensemble avec des valeurs sélectionnées aléatoirement avant chaque mesure. Les temps d'exécution de la fonction cible sont alors enregistrés en sondant les compteurs de cycles CPU. Si les deux distributions sont distinguables alors une fuite est rapportée uniquement si la valeur dépasse un seuil (prédéfini). Les garanties apparaissent à partir d'un grand nombre de mesures.\medbreak
 
-\texttt{MicroWalk} enregistre plusieurs exécutions de la fonction cible avec différentes entrée. La trace enregistrée contient les cibles des branches et les adresses mémoire rencontrées pendant l’exécution. Des scores d’information mutuelle (MI) sont ensuite calculés entre la trace de fuite et l’ensemble des entrées, fournissant une quantification du nombre de bits d’entrée divulgués. \texttt{MicroWalk} propose différents compromis entre granularité du score MI et performance, allant de l’information mutuelle sur l’ensemble du programme — donnant une quantification grossière des fuites — jusqu’à des instructions individuelles — pour une localisation précise des fuites.\medbreak
+\texttt{MicroWalk} enregistre plusieurs exécutions de la fonction cible avec différentes entrées. La trace enregistrée contient les cibles des branches et les adresses mémoire rencontrées pendant l’exécution. Des scores d’information mutuelle (MI) sont ensuite calculés entre la trace de fuite et l’ensemble des entrées, fournissant une quantification du nombre de bits d’entrée divulgués. \texttt{MicroWalk} propose différents compromis entre granularité du score MI et performance, allant de l’information mutuelle sur l’ensemble du programme (quantifiant grossière des fuites) jusqu’à des instructions individuelles (pour localiser précisément les fuites).\medbreak
 
 \texttt{DATA} identifie les vulnérabilités par canaux auxiliaires basées sur les adresses grâce à une analyse dynamique. Premièrement, une phase de collecte des traces d’adresses. En comparant ces traces, il identifie des différences au niveau des adresses, indiquant d’éventuelles fuites. Cependant, de nombreuses différences proviennent des entrées publiques et ne sont donc pas critiques. Pour filtrer ces faux positifs, \texttt{DATA} utilise des tests statistiques. La deuxième phase teste si les différences dépendent de la clé privée en comparant des traces générées à partir d’une clé fixe avec des traces générées à partir de clés variables. Ce test entre fixe et aléatoire nécessite un contrôle sur la variable secrète. Enfin il y a une phase de classement des fuites pour détecter les relations entre les traces d’adresses et le secret.\medbreak
 
@@ -148,11 +148,15 @@ Ils sont tous conçus pour analyser spécialement type de fichier (C, Java, LLVM
 \subsection*{Outils formels}
 
 
-\texttt{CacheAudit} prend en entrée un binaire de programme et une configuration de cache, et il en déduit des garanties de sécurité formelles et quantitatives adaptés à un jeux de modèles d'attaquants par canaux auxiliaires (observation des états de cache, des traces d'utilisation de caches et de chronométrage des temps d’exécution). Le principale défaut actuellement c'est l'usage limité à l'architecture x86\_64.\medbreak
+\texttt{CacheAudit} prend en entrée un binaire de programme et une configuration de cache, et il en déduit des garanties de sécurité formelles et quantitatives adaptés à un jeu de modèles d'attaquants par canaux auxiliaires (observation des états de cache, des traces d'utilisation de caches et de chronométrage des temps d’exécution). Le principale défaut est l'usage limité à l'architecture x86\_64.\medbreak
 
 
-\texttt{Binsec} est une plateforme d'outils. On peut concevoir des scripts ou des extensions pour diriger les analyses qu'il effectue. Il a notamment une extension qui permet d'exploiter l'exécution symbolique pour vérifier les propriétés temps constant d'un binaire. \texttt{Binsec} détecte l'architecture du binaire puis convertit les instructions en une représentation interne (RI) codé en DBA. À partir de la RI, il réalise une exécution symbolique avec une vérification de la non-interférence et vérifie qu'aucune dépendance aux entrées secrètes n'existe.\medbreak
+\texttt{Binsec} est une plateforme d'outils. On peut concevoir des scripts ou des extensions pour diriger les analyses qu'il effectue. Il a notamment une extension qui permet d'exploiter l'exécution symbolique pour vérifier les propriétés de temps constant d'un binaire. \texttt{Binsec} détecte l'architecture du binaire puis convertit les instructions en une représentation interne (RI) codée en DBA. À partir de la RI, il réalise une exécution symbolique avec une vérification de la non-interférence et vérifie qu'aucune dépendance aux entrées secrètes n'existe.\medbreak
 
 \subsection*{Choix de notre outil d'analyse}
 
-Au regard du tour d'horizon des outils que nous venons d'effectuer, seul \texttt{Binsec} peut être retenu pour la suite du projet. L'analyse n'est pas statistiques, nous permet de couvrir plusieurs architectures, nous pouvons l'adapter à tous les binaires qui peuvent être issu d'une bibliothèque cryptographique. Un défaut que nous pouvons observer est sa complexité. \texttt{Binsec} est une platefome d'outils (27) est prendre en main toutes ses possibilités n'est pas simple. 
+Au regard du tour d'horizon des outils que nous venons d'effectuer, seul \texttt{Binsec} peut être retenu pour la suite du projet. L'analyse n'est pas statistique, nous permet de couvrir plusieurs architectures, nous pouvons l'adapter à tous les binaires qui peuvent être issus d'une bibliothèque cryptographique. Un défaut que nous pouvons observer est sa complexité. \texttt{Binsec} est une platefome d'outils (27) et prendre en main toutes ses possibilités n'est pas évident.
+
+
+\vfill
+\textit{Ce première partie ce conclut avec des réponses pour nos deux premières questions de recherche. Conserver les garanties de sécurité tout au long de la compilation est réalisable mais ne permet pas d'avoir une service utilisables sur différentes architectures. D'un autre côté nous avons pu mettre la main sur un outil d'analyse de binaire qui nous permettra d'effectuer la vérification d'une bibliothèque cryptogaphique. Nous allons maintenant nous pencher vers la réalisation d'un processus d'automatisation de la vérification d'un binaire.}

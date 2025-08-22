@@ -2,19 +2,27 @@
 
 \section*{Discussion}
 
+
 Les résulats obtenues grâce à l'analyse d'Érysichthon ne permettent pas encore de conclure sur la sécurité globale de la bibliothèque Hacl*, il reste encore trop de fonctions non analysées ($\sim 39\%$). En revanche les premiers résultats sont encourageants et montre que l'utilisation des contre-mesures développé au chapitre \ref{chap:constantTimeSolution} est effectivement une bonne pratique. Compléter Érysichthon pour avoir une analyse complète est en tête de liste de la liste des tâche du projet.\medbreak
 
 Actuellement, un seul compilateur a permis de produire ces résultats, il faut absolument étendre l'utilisation à d'autres compilateurs pour pouvoir croiser les résultats et avoir une étude plus complète quant à la sécurité de cette bibliothèque.\smallbreak
+
+\subsection*{Retour sur les résultats}
 
 Nous savons que les optimisations de compilateur modifient le binaire et peuvent insérer des fuites parce que les modifications changent la structure du programme. Avec cette outil, au lieu d'appeler frontalement \texttt{-O2}, nous pouvons plutôt appeler nominativement les options qui se cachent derrière : \texttt{-falign-functions}, \texttt{-falign-jumps}, \etc. Cette solution permettrait d'identifier les passes de compilateurs qui sont déterminantes pour l'apparition de failles. Il faut en revanche être attentif avec cette solution car \texttt{GCC},utilisé ici, fonctionne différemment de \texttt{LLVM+Clang}. Ce dernier emploie une représentation interne pour effectuer la transformation entre un programme source et un programme binaire.Cette représentation interne évolue entre les différentes étapes de compilations. Cela induit que certaines étapes, même si elle ne nous plaisent pas car elles ajoutent des failles, sont nécessaires pour les suivantes. Nous avons notamment pu croiser ce cas de figures durant notre période de test et à moins d'avoir un code adapté à chaque compilateur, la solution retenu fu de désactiver les optimisations de compilateurs pour le bloc de code concerné.\medbreak
 
 En poursuivant dans cette voie, il nous est aussi possible d'identifier précisément les fonctions qui ont besoins d'être sécurisée et d'adapter leur compilation. Nous pourrions avoir une liste \texttt{sécurisées} qui identifie les fonctions dont la compilation induit trop de dégâts et les autres seraient compilées avec niveau d'optimisation plus élevé. Par exemple, si \textit{A.c} est compilé avec \texttt{-O0}, \textit{A.o} sera généré sans optimisation. De même, si \textit{B.c} est compilé \texttt{-O3}, \textit{B.o} contiendra des fonctions optimisées. Ainsi, dans le binaire final \textit{C.o}, les appels vers une fonction de \textit{A.o} sont des instructions de saut vers le code compilé avec \texttt{-O0}, et les appels vers \textit{B.o} des sauts vers du code compilé avec \texttt{-O3}. Nous obtenons un mélange de fonctions optimisées et non optimisées dans le même exécutable. Cette solution réduira les performances globales et mais préservera un niveau de sécurité plus élevé. Cette solution pave la voie vers une nouvelle étude.\medbreak
 
+\subsection*{Implémentation dans le cadre d'une CI}
 
+Utiliser Érysichthon c'est retrouver des vulnérabilités documentés, il nous a aussi permis d'identifier une vingtaine de fonctions présentant des fuites (même si la sécurité n'est pas engagée). Donc ajouter Érysichthon à une chaîne de tests, \textit{CI} ou Intégration Continue en langue de molière, est l'objectif principal que nous nous fixons. \citeauthor{schneider2024breakingbadcompilersbreak}, notre référence, énumèrais une liste de solution permettant de garantir la sécurité temps constant d'une librairie. Les solutions notables étaient de mettre en place un "\textit{distributeur}" de binaire, permettant au développeur de piocher selon ses besoins avec bien entendu tous les codes sources publiques, ou d'effectuer massivement des tests. La voie prise pour assurer la sécurité d'HACL* s'aligne avec cette dernière solution. Et ajouter cet outil à un mécanisme d'intégration continue permettra d'avoir des rapports réguliers dès la publication d'une nouvelle version de HACL* (lors d'ajout de nouvelles primitives cryptographiques ou de modification du code source).\smallbreak
+
+L'avantage indéniable de cette méthode est que les failles seront découverte au fur et à mesure des tests effectués sur des compilateurs de plus en plus récents, limitant le risque d'avoir une faille se révélant dans la nature.
 
 
 \section*{Ouverture}
 
+La sécurité des binaires face aux attaques temporelles n'est pas chose aisé. Nous nous sommes concentrés
 
 
 
