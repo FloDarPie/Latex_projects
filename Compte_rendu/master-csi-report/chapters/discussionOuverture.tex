@@ -22,8 +22,34 @@ L'avantage indéniable de cette méthode est que les failles seront découverte 
 
 \section*{Ouverture}
 
-La sécurité des binaires face aux attaques temporelles n'est pas chose aisé. Nous nous sommes concentrés
+La sécurité des binaires face aux attaques temporelles n'est pas chose aisé. Nous nous sommes concentrés avec ce projet sur la vérification de binaire et la conception d'une certification de sécurité vers un compilateur. Nous considérons le compilateur comme une boîte noire. Cette approche se justifie par la non main mise sur le développement de tels projets. Historiquement les ordinateurs étaient lents et la conception du logiciel devait être réalisé avec précision pour optimiser ou guider la conception des binaires. Les compilateurs et leurs optimisations ont permis d'améliorer globalement la production de binaire et réduire les coûts de compilation. Aujourd'hui les ordinateurs ont des composants très rapide. La lecture des instructions est plus rapide que l'exécution desdites instructions.\smallbreak
 
+\subsection*{Prompt état de l'art des processeurs}
 
+Le rapport de \citeauthor{constantTimePornin} \cite{constantTimePornin} décrit très bien les mécanismes employé par les processeurs pour accélérer l'exécution de programmes. Une modélisation d'un processus peut être présenté ainsi :
+\begin{enumerate}
+    \item Charge l'instruction pointé par le compteur de programme, incrémente ce dernier.
+    \item Décode l'instruction.
+    \item Exécute l'instruction.
+\end{enumerate}
 
-travaux directement sur le compilateur / support matériel
+La dernière étape peut induire une modification de la mémoire, des chargements ou modifications de valeurs de registre ou résoudre des calculs. Tandis que chaque étape peut se résoudre selon un même rythme, cette troisième opération, à cause de sa variance, peut entraîner des ralentissements. Les constructeurs de matériels ont donc développé des techniques accélérer le temps total d'exécution et permettre ainsi des gains de performances. \smallbreak
+
+Voici les principales techniques employées :
+
+\begin{itemize}
+    \item[\textbf{Pipeline}] Permet l'exécution parallèle de différentes instructions. Les instructions se résolvent toujours dans l'ordre abstrait, mais l’exécution de la suivante commence alors que la précédente (et éventuellement d’autres encore en cours) n’est pas terminée.
+    \item[\textbf{Prédiction de branche}] Pré-chargement de branchement. Grâce à la méthode précédente, le processeur peut avancer dans son préchargement d'instructions en explorant les deux côtés d'un branchement mémoire puis défausser la branche inutile.
+    \item[\textbf{Renommage de registres}] Modification des registres employés pour éviter les dépendances. Grâce au Pipeline, il peut y avoir des ralentissements dans la prédiction à cause de valeurs dépendantes entre les instructions. Cette méthode emploie un autre registre temporairement pour simuler le comportement attendu.
+    \item[\textbf{Micro-opérations}] Utilisation d'un encodge interne pour découper les instructions binaires en unité plus petites. Cette opération invisible pour le développeur permet d'optimiser le binaire (\eg combiner une comparaison et un branchement en une seule opération).
+    \item[\textbf{Exécution désordonné}\footnote{Plus connus sous le terme technique de référence anglais : Out-of-order Execution}] Certaines opération demande malgré tout plus de temps d'exécution, grâce à sa capacité à lire et traduire en vance les opérations à réaliser, le processeur peut réordonner la file d'exécution.
+\end{itemize}\medbreak
+
+Ces résultats impliquent une rupture de la politique temps constant et sont invisible aux yeux du développeur. Une connaissance approfondi sur le fonctionnement des processeurs est nécessaires pour avoir connaissance de ces éléments et des possiblitié de les contre-carrés. Intel et ARM ont mis à disposition des variables à spécifier pour permettre la désactivation de tels optimisations pour certaines opérations (multiplication et division d'entier). Ces solutions partielles ne permettent pas d'avoir des garanties sur l'ensemble du binaire que l'on exécute.
+
+\subsection*{Travaux de recherche au niveau du processeur}
+
+Les architectures portées par Intel et ARM sont propriétaires et donc nous offre peu de possiblités d'évolution. RISC-V de l'autre côté, grâce à son enregistrement dans l'espace commun peut acceuillir des travaux d'universitaires. Cela a permis à des équipes Inria de développer des mécanismes au niveau du processeur qui permet de garantir une exécution sans fuite par canal auxiliaire. Les travaux de \citeauthor{twartingCT} \cite{twartingCT} proposent l'ajout d'instructions \textit{lock} et \textit{unlock} dans l'ISA de l'architectures pour encapsuler des opérations qui doivent être réalisées avec des accès au cache mémoire. Cette protection vient avec l'ajout d'une nouvelle structure microarchitecturale à ajouter sur une carte mère.\smallbreak
+
+Plus récemment, \citeauthor{cryptoeprint:2025/1331} \cite{cryptoeprint:2025/1331} propose un circuit logique qui réalise une opération de masquage et permet de conserver les propriétés temps constant.
+

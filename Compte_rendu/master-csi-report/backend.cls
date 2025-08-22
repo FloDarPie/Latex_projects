@@ -289,7 +289,10 @@ Yanis Sellami\texttt{<yanis.sellami@cea.fr>}\\Sebastien Bardin\texttt{<sebastien
 }
 
 \newcommand{\lastpage}{%
-  \newpage\null\thispagestyle{empty}\newpage
+  \newpage
+  \justifying
+  \input{chapters/remerciements.tex}
+  \thispagestyle{empty}\newpage
   \clearpage
   \thispagestyle{empty}%
   \pagestyle{empty}%

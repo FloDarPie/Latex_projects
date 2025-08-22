@@ -1,3 +1,14 @@
 \chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
 
-Nous avons pu concevoir un outil
+À travers ce mémoire nous avons vus la mise au point d'Érysichthon, un outil d'analyse automatique de bibliothèque cryptographique. Cette conception a demandé l'implémentation d'un ensemble de module et notamment d'Andhrímnir, un outil de génération de tests. Ce module permet d'avoir au minimum un test par fonctions présentes dans la bibliothèque analysé. Érysichthon est un outil utilisant Binsec, notamment les extensions permettant la vérification formelles des fuites temporelles par l'analyse symbolique non-interférante.\smallbreak
+
+Cette conception c'est réalisé grâce l'étalonnage des réponses à nos questions de recherche. Les travaux de \citeauthor{schneider2024breakingbadcompilersbreak} ont mis en lumière (\textbf{QR1}) que la propagation des garanties de sécurité n'est pas nécessairement conservé lors de la compilation. Vouloir conserver cette propagation demande d'utiliser un compilateur spécialisé et de rajouter des spécifications dans le code source pour préserver le niveau de sécurité attendu. Nous avons aussi pu voir les contraintes inhérente à cette solution, ce qui nous a décidé à explorer d'autres solutions. Celle retenue nous a guidé vers l'étude et l'analyse de binaire après compilation. Cette solution consiste à de vérifier si les éléments de sécurité ont été préservés ou si des fuites sont apparues. Le choix judicieux (\textbf{QR2}) d'utiliser Binsec nous a permis de mettre en place une méthodologie et l'automatisation de l'analyse de binaire à travers un éventail d'architectures et de compilateur. Avec ces briques et de nouveaux protocoles, nous avons pu dresser un cahier des charges (\textbf{QR3}) pour effectuer un changement d'échelle et réussir à concevoir un outil effectuant la vérification de bibliothèque cryptographique.\smallbreak
+
+La première bibliothèque cryptographique vérifié par Érysichthon est HACL*. Cette bibliothèque a la particularité d'être formellement vérifiée et présente des garanties de sécurité à propos du code source de ses fonctions. L'étude \cite{schneider2024breakingbadcompilersbreak} avait mis en lumière des fuites en fonction des compilateurs employés. Nous avons avons reproduis les analyses réalisée et cela nous a permis d'identifier des bogues présent dans Binsec.\smallbreak
+
+Cette étape nous a permis de concevoir des méthodes pour automatiser les analyses manuelles que nous venions de réaliser. La production de protocoles précis et détaillés nous a permis d'accélérer le processus d'implémentation d'Érysichthon et d'effectuer notre première analyse complète de HACL* sur x86\_64 avec \texttt{GCC 12.02}.\smallbreak
+
+Discuter des résulats obtenus nous a permis d'établir une liste de correctifs nécessaire pour avoir une analyse complète d'une bibliothèque cryptographique. Nous avons pu, avec cette analyse de HACL*, concevoir une pré-certification de la sécurité de cette bibliothèque. Nous attestons d'une sécurité de bout en bout, initié formellement dans le code source et conservé au niveau assembleur dans le binaire compilé. 
+
+
