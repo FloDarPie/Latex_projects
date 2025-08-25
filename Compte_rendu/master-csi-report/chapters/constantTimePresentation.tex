@@ -12,10 +12,10 @@ L'Informatique repose sur deux fondations que nous tendons à distinguer dans l'
 
 Les attaques par canal auxiliaires consistent à exploiter les caractéristiques matérielles du support pour gagner en connaissances sur un programme ciblé. Puis exploiter ces connaissances pour acquérir davantage d'informations privées : identifiants, clés secrètes, messages personnels. Nous leur attribuons le terme "canal auxiliaire" car il ne s'agit pas de trouver une faille perdue dans les limites d'un logiciel ou d'exploiter une mécanique du logiciel pour sortir de l'espace prévu par le concepteur. Il s'agit de se positionner hors du cadre de développement. Voici quelques travaux présentant une attaque par canal auxiliaire et le canal exploité :
 \begin{itemize}
-    \item[\cite{DPA_Attack}] Consommation d'énergie 
-    \item[\cite{Branch_Attack}] Prédiction de branchement 
-    \item[\cite{Thermal_Attack}] Variation de température
-    \item[\cite{DRAM_Attack}] Accès à la mémoire DRAM
+    \item[\cite{DPA_Attack}] Consommation d'énergie %- lecture des niveaux de consommation d'électricité pour déterminer les opérations executées
+    \item[\cite{Branch_Attack}] Prédiction de branchement %- 
+    \item[\cite{Thermal_Attack}] Variation de température %- permet la prédicton d'application executé
+    \item[\cite{DRAM_Attack}] Accès à la mémoire DRAM %- exploite des lignes mémoires partagées entre différents CPU
 \end{itemize}\medbreak
 
 Le point commun entre ces attaques est la nécessité d'avoir un point de contact avec la cible. Il faut que l'attaquant puisse récupérer le matériel informatique ou le programme qu'il souhaite attaquer pour ensuite poser des sondes/capteurs afin d'accumuler de la connaissance et mener son exploitation.\bigbreak
