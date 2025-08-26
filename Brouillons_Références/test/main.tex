@@ -1,36 +1,11 @@
-\documentclass{beamer}
-\usepackage{tikz}
-
-% Définir une couleur personnalisée
-\definecolor{customBleuSombre}{rgb}{0, 0.285, 0.563}
-
-% Définir la commande pour la barre de progression
-\newcommand{\progressbar}{
-  \tikz[remember picture,overlay]{
-    \fill[customBleuSombre!40] (current page.south west) rectangle ++(\paperwidth*\insertframenumber/\inserttotalframenumber,4pt);
-  }
-}
+\documentclass{article}
+\usepackage{graphicx}
 
 \begin{document}
 
-% Ajouter la barre de progression à chaque diapositive
-\addtobeamertemplate{footline}{}{
-  \progressbar
-}
-
-\begin{frame}
-    \frametitle{Diapositive 1}
-    Contenu de la diapositive 1.
-\end{frame}
-
-\begin{frame}
-    \frametitle{Diapositive 2}
-    Contenu de la diapositive 2.
-\end{frame}
-
-\begin{frame}
-    \frametitle{Diapositive 3}
-    Contenu de la diapositive 3.
-\end{frame}
+\begin{figure}
+  
+\caption{Aide}
+\end{figure}
 
 \end{document}
