@@ -27,8 +27,8 @@
 
 \begin{frame}{Introduction}
     
-    \begin{block}{1999 : Howgrave-Graham et Smart \cite{latAtk}}
-        \citetitle{latAtk} 
+    \begin{block}{1999 : Howgrave-Graham et Smart }
+        latAtk
     \end{block}
 
     2001 : Publication dans le journal \textit{Designs, Codes and Cryptography}
@@ -37,17 +37,8 @@
 
 \begin{frame}{Introduction}
     
-    Outils développés en \textit{SageMath} :
-
-    \begin{enumerate}
-        \item Un générateur de paramètres DSA
-        \item Un générateur de signatures et de traces pour tous les protocoles étudiés
-        \item Les fonctions de l'attaque de notre référence
-        \item Un programme pour filtrer et agréger les résultats avant de les tracer avec \textit{numpy}, \textit{pandas}, \textit{matplotlib} et \textit{seaborn}
-        
-    \end{enumerate}
+   +++
 \end{frame}
-
 
 \begin{frame}{Sommaire}
 
@@ -55,8 +46,6 @@
         \tableofcontents
 
 \end{frame}
-
-
 
 
 
@@ -88,29 +77,13 @@
         \end{itemize}
     \end{column}
 
-    \begin{column}{0.5 \linewidth}
-        \begin{figure}
-            \centering
-            \includegraphics[width=0.5\linewidth]{img/reseaux/The-closest-vector-problem.png}
-            \caption{CVP \cite{CVP_illustration}}
-            \label{fig:CVP}
-        \end{figure}
-    \end{column}
-
-
 \end{columns}
-
 \end{frame}
 
 
 \begin{frame}{Réduction de base}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\linewidth]{img/reseaux/Screenshot 2025-02-20 at 10-55-09 Lattice reduction algorithms - cryptanalysis.pdf.png}
-    \caption{Exemple de réduction de réseaux \cite{AlicePelletMary}}
-    \label{fig:exempleReseau}
-\end{figure}
++++
     
 \end{frame}
 
@@ -118,8 +91,7 @@
 \begin{frame}{Algorithme de réduction de réseau}
     \begin{figure}
         \centering
-        \includegraphics[width=0.34\linewidth]{img/reseaux/Screenshot 2025-02-20 at 10-56-37 Lattice reduction algorithms - cryptanalysis.pdf.png}
-        \caption{Comparaison du facteur d'approximation et le temps de calcul entre LLL, BKZ et Sieving \cite{AlicePelletMary}}
+        \caption{Comparaison du facteur d'approximation et le temps de calcul entre LLL, BKZ et Sieving AlicePelletMary}
         \label{fig:algoReduc}
     \end{figure}
 \end{frame}
@@ -152,7 +124,7 @@
 
     Paramètres publics:
     \begin{enumerate}
-        \item $p_{1024}$ et $q_{160}$, deux nombres premiers et tel que $q |(p-1)$, \cite{dsaFIPS}
+        \item $p_{1024}$ et $q_{160}$, deux nombres premiers et tel que $q |(p-1)$, dsaFIPS
         \item $g$ un générateur de $({Z} / p \mathbb{Z})^{\times}$
      \end{enumerate}
      \smallbreak
@@ -185,22 +157,21 @@
     \end{empheq}
 \end{frame}
 
-\begin{frame}{Interêt des courbes elliptiques}
-    \begin{table}[ht]
-    \centering
-    \caption{Taille de clés pour une sécurité équivalente entre la signature DSA et la signature avec les courbes elliptiques (EC). Issu de \cite{guide_elliptic_crypto}, p.19}
-    \begin{tabular}{|lccccc|}
-    
-        \toprule
-        & \multicolumn{5}{c|}{\textbf{Security level (bits)}} \\
-        & 80 & 112 & 128 & 192 & 256 \\
-        \midrule
-        DSA paramètre $p$  & 1024 & 2048 & 3072 & 8192 & 15360 \\
-        EC paramètre $n$ & 160  & 224  & 256  & 384  & 512  \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-\end{frame}
+% \begin{frame}{Interêt des courbes elliptiques}
+%     \begin{table}[ht]
+%     \centering
+%     \caption{Taille de clés pour une sécurité équivalente entre la signature DSA et la signature avec les courbes elliptiques (EC). Issu de guide_elliptic_crypto, p.19}
+%     \begin{tabular}{|lccccc|}
+%         \toprule
+%         & \multicolumn{5}{c|}{\textbf{Security level (bits)}} \\
+%         & 80 & 112 & 128 & 192 & 256 \\
+%         \midrule
+%         DSA paramètre $p$  & 1024 & 2048 & 3072 & 8192 & 15360 \\
+%         EC paramètre $n$ & 160  & 224  & 256  & 384  & 512  \\
+%         \bottomrule
+%     \end{tabular}
+% \end{table}
+% \end{frame}
 
 \subsection{Signature ECDSA}
 \begin{frame}{Elliptic Curve DSA}
@@ -220,9 +191,9 @@
     \end{empheq}
 
     
-    \end{frame}
-    
-    \begin{frame}{Signature ECDSA - vérification}
+\end{frame}
+
+\begin{frame}{Signature ECDSA - vérification}
     
     Vérification de $(\sigma_1, \sigma_2)$ : \\
     \begin{enumerate}
@@ -492,316 +463,7 @@ avec $\mathbf{s}_{i}$ le vecteur colonne $\left(s_{i, j}\right)_{j=2}^{d}$.\smal
 \subsection{DSA 1024 160}
 
 \begin{frame}{Comparaison avec l'article}
-
-\begin{center}
-    \begin{table}[H]
-        \centering
-        \caption{Comparaison de résultats entre \cite{latAtk} et notre implémentation, réalisé sur bergman}
-        \label{tab:comparaison_signatures}
-        
-        \begin{tabular}{|c|c|cc|cc|}
-            \toprule
-            Epsilon & Bits connus & \multicolumn{2}{|c|}{Nombre d'équations\footnote{Le nombre d'équations présenté est le minimum requis pour que l'attaque fonctionne.}} & \multicolumn{2}{|c|}{Temps (secondes)} \\
-            \cmidrule{3-6}
-            && Nous & Eux & Nous & Eux \\
-            \midrule
-                % 0.5   & 80 & 2  & 2  & 0.00303  & 0.0102  \\
-                0.25  & 40 & 4  & 4  & 0.00428  & 0.0360 \\
-                0.1   & 16 & 10 & 11 & 0.00956  & 0.4428 \\
-                0.05  & 8  & 24 & 30 & 0.05998 & 8.6970 \\
-                0.03125 & 5  & 80 & $/$  & 7163.72 & \textit{échec} \\
-                % 0.025 & 4 & \textit{to determine} & - & \textit{A calculer} & - \\
-            \bottomrule
-        \end{tabular}
-    \end{table}
-\end{center}
-
-\end{frame}
-
-\begin{frame}{Comparaison avec l'article - cas non contigu}
-
-\begin{center}
-    \begin{table}[H]
-        \centering
-        \caption{Comparaison de résultats entre \cite{latAtk} et notre implémentation, réalisé sur lautrec}
-        \label{tab:comparaison_signatures_non_contigu}
-        
-        \begin{tabular}{|c|c|cc|cc|}
-            \toprule
-            Epsilon & $d$  & \multicolumn{2}{|c|}{Nombre d'équations} & \multicolumn{2}{|c|}{Temps (secondes)} \\
-            \cmidrule{3-6}
-            && Nous & Eux & Nous & Eux \\
-            \midrule
-                0.5 & 4  & 2 & 2 & 0.0067 & 0.304  \\
-                    & 8  & 2 & 2 & 0.032 & 1.135 \\
-                    & 16 & 3 {\footnotesize (6\%)} & $/$ & 0.899 & \textit{échec} \\
-                \hline
-                0.25 & 2 & 4 & 4 & 0.050 & 0.393 \\
-                     & 4 & 4 {\footnotesize (95\%)} & 4 & 0.024 & 1.785 \\
-                     & 8 & 5 {\footnotesize (3\%)} & $/$ & 0.452 & \textit{échec} \\
-                \hline
-                 0.1 & 2 & 12 {\footnotesize (88\%)} & 12 & 0.087 & 6.256 \\
-                     & 4 & $/$ & $/$ & \textit{échec} & \textit{échec} \\
-    
-            \bottomrule
-        \end{tabular}
-    \end{table}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Considérations matérielles} \label{annexe:machines}
-
-\begin{center}
-    \begin{table}[ht]
-        \centering
-        \caption{configurations des machines utilisées}
-        \label{tab:configurations}
-        \begin{tabular}{|c|c|c|}
-            \toprule
-            Machine & modèle CPU & RAM (GO) \\
-            \midrule
-                \makeatletter\def\@currentlabel{bergman}\makeatother
-                bergman\label{bergman}  & Intel i9-13900 & 64 \\
-                \makeatletter\def\@currentlabel{lautrec}\makeatother
-                lautrec\label{lautrec}  & Intel Xeon E-2236 & 32 \\
-                \makeatletter\def\@currentlabel{jolicoeur}\makeatother
-                jolicoeur\label{jolicoeur} & AMD Opteron 6276 & 124 \\
-                \makeatletter\def\@currentlabel{wylde}\makeatother
-                wylde\label{wylde} & Intel Xeon W-1250P & 48 \\
-                \makeatletter\def\@currentlabel{moore}\makeatother
-                moore\label{moore} & Intel Xeon W-1250P & 48 \\
-                \makeatletter\def\@currentlabel{plomet}\makeatother
-                plomet\label{plomet}  & Intel Xeon W-1290 & 64 \\
-                % \makeatletter\def\@currentlabel{perbosc}\makeatother
-                % perbosc\label{perbosc}  & Intel Xeon W-1290 & 64 \\
-                % \makeatletter\def\@currentlabel{goya}\makeatother
-                % goya\label{goya}  & Intel Xeon E-2236 & 32 \\
-                %\makeatletter\def\@currentlabel{millet}\makeatother
-                %millet\label{millet} & 2x Intel Xeon Gold 5118  & 64 \\
-                %\makeatletter\def\@currentlabel{perbosc}\makeatother
-                %perbosc\label{perbosc} & Intel Xeon W-1290 & 64 \\
-                %\makeatletter\def\@currentlabel{hendrix}\makeatother
-                %hendrix\label{hendrix} & Intel Xeon W-1250P & 48 \\
-                %\makeatletter\def\@currentlabel{holdsworth}\makeatother
-                %holdsworth\label{holdsworth} & Intel Xeon W-1250P & 48 \\
-                %\makeatletter\def\@currentlabel{jordan}\makeatother
-                %jordan \label{jordan} & Intel Xeon W-1250P & 48 \\
-                % \makeatletter\def\@currentlabel{biot}\makeatother
-                % biot\label{biot} & Intel(R) Core(TM) i9-12900 & 64 \\
-            \bottomrule
-        \end{tabular}
-    \end{table}
-\end{center}
-
-Configuration plausible pour l'ordinateur des chercheurs en 1999 :
-\begin{itemize}
-    \item Intel Pentium II - 32 bits, cadencé entre 233 et 450 MHz % https://en.wikipedia.org/wiki/Pentium_II
-    \item DDR RAM 256 Megaoctets
-    % \item Windows 98 / distribution basée sur Linux Kernel 2.1.0 - 32bits
-\end{itemize}
-
-\end{frame}
-
-
-\begin{frame}{Remarque}
-\begin{center}
-    \begin{table}[H]
-        \centering
-        \caption{Extrait de résultat sur DSA historique, non contigu sur lautrec, contigu sur plomet}
-        \label{tab:echec_non_contigu}
-        \begin{tabular}{|c|c|c|c|c|}
-            \toprule
-            & Epsilon & Nombre d'équations & Temps (secondes) & Réussite \\
-            \midrule
-             Non Contigu (d=16) \label{tab:obsrv1} &  0.4     & 6  & 142.297 & \textit{False} \\
-             Contigu \label{tab:obsrv2}    &  0.03125 & 80 & 7163.72 & \textit{True} \\
-            \bottomrule
-        \end{tabular}
-    \end{table}
-\end{center}
-\begin{center}
-    \begin{tikzpicture}
-        \draw (0,0) rectangle (6,0.3);
-        \filldraw[fill=red] (0.5,0) rectangle (2,0.3);
-        \filldraw[fill=red] (3,0) rectangle (4,0.3);
-        \filldraw[fill=red] (4.5,0) rectangle (5,0.3);
-    \end{tikzpicture}
-    \smallbreak
-    \begin{tikzpicture}[overlay]
-        \draw[->, line width=2pt] (0,0.5) -- (0,0);
-    \end{tikzpicture}
-    \smallbreak
-    \begin{tikzpicture}
-        \draw (0,0) rectangle (6,0.3);
-        \filldraw[fill=red] (0.5,0) rectangle (5,0.3);
-    \end{tikzpicture}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{DSA 1024 160 - 8 bits / epsilon=0.05}
-\vspace*{-0.28cm}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.60\linewidth]{img/courbes/proba_160_005/1024_160_lineplot.png}
-    \vspace*{-0.20cm}
-    \caption{\footnotesize Probabilité de succès de l'attaque en fonction du nombre de signatures sur jolicoeur}
-    \label{fig:proba_005_1024_160_lineplot}
-\end{figure}
-\end{frame}
-
-% \begin{frame}{ECDSA P-256 - 20 bits / epsilon=0.08}
-% \vspace*{-0.28cm}
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.60\linewidth]{img/courbes/proba_P256_008/P256_lineplot.png}
-%     \vspace*{-0.20cm}
-%     \caption{\footnotesize Probabilité de succès de l'attaque en fonction du nombre de signatures sur \ref{jolicoeur}}
-%     \label{fig:proba_008_P256_lineplot}
-% \end{figure}
-% \end{frame}
-
-\subsection{ECDSA P-256}
-
-\begin{frame}{ECDSA P-256 - 10 bits / epsilon=0.04}
-\vspace*{-0.28cm}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.60\linewidth]{img/courbes/proba_P256_004/P256_lineplot.png}
-    \vspace*{-0.20cm}
-    \caption{\footnotesize Probabilité de succès de l'attaque en fonction du nombre de signatures sur jolicoeur}
-    \label{fig:proba_004_P256_lineplot}
-\end{figure}
-\end{frame}
-
-\begin{frame}{ECDSA P-256 - comparaison LLL / BKZ-NTL}
-\vspace*{-0.28cm}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.60\linewidth]{img/courbes/P-256-jolicoeur/P-256_meant_maxm_epsi_time.png}
-    \vspace*{-0.20cm}
-    \caption{\footnotesize Comparaison du temps de calcul en fonction de la valeur d'epsilon sur jolicoeur}
-    \label{fig:P-256_epsi_time}
-\end{figure}
-\end{frame}
-
-\section{Conclusion}
-
-\begin{frame}{Références}
-    
-    \printbibliography
-\end{frame}
-
-
-\section{Ouverture}
-
-\begin{frame}{Records}
-
-
-\cite{improvedECDSA} => algorithmes de réduction de réseau et des techniques de criblage avec prédicat. Records en termes de temps d'exécution et de nombre d'échantillons. % et de probabilité de succès.
-
-\begin{center}
-    \begin{table}[H]
-    \centering
-    \caption{Comparaison avec les précédents records des attaques par réseau sur (EC)DSA. Chaque colonne correspond à la taille des courbes et chaque ligne correspond au nombre de bits de fuite de clé éphémère par signature.}
-    \label{table:comparaison}
-    \begin{tabular}{|c|c|c|c|c|}
-        \hline
-         & \textbf{4-bit} & \textbf{3-bit} & \textbf{2-bit} & \textbf{1-bit} \\
-        \hline
-        \textbf{112-bit} & - & - & - & \small\cite{improvedECDSA} \\
-        \hline
-        \textbf{160-bit} & - & [2002] & \small[2013],[2021],[2022] & $/$ \\
-        \hline
-        \textbf{256-bit} & \small[2019],[2020] & \small[2021],[2022] & \small\cite{improvedECDSA} & $/$ \\
-        \hline
-        \textbf{384-bit} & \small[2021],[2022] & \small\cite{improvedECDSA} & $/$ & $/$ \\
-        \hline
-    \end{tabular}
-    \end{table}
-\end{center}
-
-\end{frame}
-
-\begin{frame}{$w$-NAF}
-    \begin{center}
-    \begin{table}[htbp]
-        \caption{Tableau de Conversion entre Différentes Formes NAF}
-        \label{tab:comparaison_NAF}
-        \centering
-        \begin{tabular}{|l|cccc|}
-            \toprule
-            \textbf{Décimal} & \textbf{Binaire} & \textbf{1-NAF} & \textbf{2-NAF} & \textbf{3-NAF} \\
-            9 & 1001 & $1001$ & $1 0 0 1$ & $1 0 0 0 (-7)$ \\
-            11 & 1011 & $1 0 (-1) 0 (-1)$ & $1 0 0 3$ & $1 0 0 0 (-5)$ \\
-            29 & 11101 & $1 0 0 (-1) 0 1$ & $1 0 0 0 0 (-3)$ & $1 0 0 0 0 (-3)$ \\
-            42 & 101010 & $101010$ & $3 0 0 (-3) 0$ & $1 0 0 0 5 0$\\
-            85 & 1010101 & $1010101$ & $1 0 0 3 0 0 (-3)$ & $5 0 0 0 5$ \\
-            170 & 10101010 & $10101010$ & $1 0 0 3 0 0 (-3) 0$ & $5 0 0 0 5 0$ \\
-            \hline
-        \end{tabular}
-    \end{table}
-\end{center}
-\end{frame}
-
-\begin{frame}{Algorithme de réduction}
-    \begin{center}
-    \begin{table}[H]
-        \caption{Tableau de comparaison des tailles de réseau après application de Flatter, LLL et une étude antérieure}
-        \label{tab:flatter}
-        \centering
-        \begin{tabular}{|c|c|c|c|c|}
-        \hline
-        \textbf{Dimension} & \textbf{Nombre de bits} & \textbf{fpLLL (s)} & \textbf{\cite{ref32}} & \textbf{\cite{flatter}} \\
-        \hline
-        128 & 100000 & 3831 & 400 & 69 \\
-        \hline
-        256 & 10000 & 2764 & 200 & 83 \\
-        \hline
-        384 & 10000 & 10855 & 780 & 246 \\
-        \hline
-        \end{tabular}
-    \end{table}
-\end{center}
-\end{frame}
-
-\begin{frame}{Algorithme de réduction}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.5\linewidth]{img/annexe/LLL&L4.png}
-        \caption{Comparaison de performances entre LLL et L4}
-        \label{fig:L4}
-    \end{figure}
-\end{frame}
-
-\section{Annexe}
-
-\begin{frame}[fragile]
-    \frametitle{Implémentation}
-    \begin{minted}[breaklines]{python}
-    def hide_contiguous(y,epsilon, q) :
-        if not 0 < epsilon <= 1 :
-            raise ValueError(" - epsilon doit être entre 0 et 1.")
-        y = int(y)
-    
-        total = len(bin(q)[2:])
-        nb_bits = floor(total*epsilon)    # nb de bit de y connus
-        unknow = total - nb_bits          # nb de bits inconnus
-        
-        # séparation en deux blocs initiaux ou finaux
-        __lambda = floor(random() * nb_bits)
-        mu = unknow + __lambda
-        
-        #application de masque
-        a = y & ((1 << __lambda) - 1)
-        b = (y >> __lambda) & ((1 << (mu - __lambda)) - 1)
-        c = y >> mu
-        
-        return a,b,c,__lambda,mu
-    \end{minted}
++++
 \end{frame}
 
 \end{document}

@@ -37,25 +37,32 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setbeamertemplate{title page}{
     \thispagestyle{empty}
+    \vspace*{-1cm}
+    \begin{figure}
+        \includegraphics[scale = 0.5]{img/theme/RF-INria_Bloc-marque.png}
+        \hfill
+        \includegraphics[width=0.09\linewidth]{img/theme/LOGO_CEA_ORIGINAL_2022.png}
+        \hfill
+        \includegraphics[width=0.2\linewidth]{img/theme/ub-logo.png}
+    \end{figure}
     \vfill
-    \begingroup
-    \centering
     % ------------------------
-    \begin{beamercolorbox}[sep=10pt,center,shadow=true,rounded=true]{title}
+    \begin{beamercolorbox}[sep=10pt,shadow=true,rounded=true]{title}
         \usebeamerfont{title}\inserttitle\par%
+        \includegraphics[scale = 0.5, width = 100pt]{img/theme/ligne2.png}\\
+        \usebeamerfont{subtitle}\insertsubtitle\par%
     \end{beamercolorbox}%
     \vfill
     % ------------------------
-    \begin{beamercolorbox}[sep=8pt,center]{author}
+    \begin{beamercolorbox}[sep=10pt]{author}
         \usebeamerfont{author}\authors
     \end{beamercolorbox}
     \vfill
     % ------------------------
-    \begin{beamercolorbox}[sep=8pt,center]{institute}
+    \begin{beamercolorbox}[sep=8pt]{institute}
         \usebeamerfont{institute}\uni
     \end{beamercolorbox}
-    \endgroup
-    \vfill
+    \vspace*{-1cm}
 }
 
 
@@ -72,30 +79,25 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
 \newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
 
 \setbeamertemplate{footline} {
-    % display a line
-    % \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
-    % \end{beamercolorbox}
-    
-    % second line
-    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
-      leftskip=.3cm,rightskip=.3cm ]{title in head/foot}%
-      {\usebeamerfont{author in head/foot}\author}%
-      \hfill%
-      {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
     \end{beamercolorbox}
 
-    % thrid line
-    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm ]{author in head/foot}
-      \leavevmode{\usebeamerfont{title in head/foot}\insertshorttitle}
-      \hfill
-     {\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}
+    \begin{beamercolorbox}[ht=3ex,dp=1.125ex,%
+        leftskip=.5cm,rightskip=.5cm ]{title in head/foot}%
+        {\usebeamerfont{author in head/foot}\ajd}%
+        \hfill
+        \includegraphics[height=2.5ex]{img/theme/Inria-logo-rouge.png}
+        \hspace{50pt}
+        \includegraphics[height=2.5ex]{img/theme/LOGO_CEA_ORIGINAL_2022.png}
+        \hspace{50pt}
+        \includegraphics[height=2.5ex]{img/theme/ub-logo.png}
+        \hfill
+        {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
     \end{beamercolorbox}
-    
-    % \begin{beamercolorbox}[colsep=2pt]{upper separation line foot}
-    % \end{beamercolorbox}
-    % \progressbar
-    
-  }
+    \begin{beamercolorbox}[wd=\paperwidth]{progressbar}
+        \progressbar
+    \end{beamercolorbox}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -109,7 +111,7 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
     \begin{beamercolorbox}{section in head/foot}
         \vskip1.5pt\insertsectionnavigationhorizontal{\paperwidth}{\hfill}{\hfill}\vskip3pt
     \end{beamercolorbox}
-    \progressbar
+
     \begin{beamercolorbox}[colsep=4pt]{upper separation line head}
     \end{beamercolorbox}
     
@@ -126,13 +128,49 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
   \ifshowtoc
     \begin{frame}
     \begin{center}
-        \usebeamercolor[fg]{section title}
-        \huge \insertsection
+        \textbf{\huge%
+          \padzeroes[2]{\decimal{section}} \\[1ex]
+          \insertsection} \\[1ex]
+          {\includegraphics{img/theme/ligne2.png}}
     \end{center}
     \end{frame}
   \fi
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%       Formatage des titres
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\pngangle}{img/theme/angle.png}
+\pgfdeclareimage[height=2ex]{Angle}{\pngangle}
+\newcommand{\anglepng}{\pgfuseimage{Angle}}
+
+\newlength{\angleheight}
+\settoheight{\angleheight}{\pgfuseimage{Angle}}
+\newlength{\anglewidth}
+\settowidth{\anglewidth}{\pgfuseimage{Angle}}
+\newlength{\titleH}
+
+\newlength\vmargin
+\setlength\vmargin{.07\paperheight}
+\newlength\hmargin
+\setlength\hmargin{.05\paperwidth}
+
+\defbeamertemplate*{frametitle}{inria}[1][]{%
+    % textblock 
+    \begin{textblock*}{\anglewidth}(\hmargin,\vmargin)
+        \anglepng
+    \end{textblock*}
+    \begin{textblock*}{\textwidth}(\hmargin+\anglewidth,\vmargin+\angleheight)
+        \textbf{\LARGE \insertframetitle}
+    \end{textblock*}
+
+    \settoheight{\titleH}{\insertframetitle}
+    \addtolength{\titleH}{\angleheight}
+    \vspace*{2\titleH}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
