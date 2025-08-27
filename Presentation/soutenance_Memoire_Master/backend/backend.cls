@@ -59,27 +59,24 @@
 
 \newcommand{\ajd}{\DTMtwodigits{\the\day}/\DTMtwodigits{\the\month}/\the\year}
 
-\newcommand{\oldprogressbar}{
-  \tikz[remember picture]{
-  \pgfmathsetlengthmacro{\barwidth}{\paperwidth * \insertframenumber / \inserttotalframenumber}
-    \path[fill=customBleuSombre!40] (current page.south west) rectangle ++(\barwidth,4pt);
-  }
-}
 
-\newcommand{\progressbar}{
+\newcommand{\progressbar}{%
   \tikz[remember picture,overlay]{
     \def\shift{-1pt}
-    % largeur de la barre = proportion d'avancement
-    \pgfmathsetlengthmacro{\barwidth}{(\paperwidth - \shift) * \insertframenumber / \inserttotalframenumber}
+    % proportion
+    \pgfmathsetmacro{\progress}{\insertframenumber/\inserttotalframenumber}
+    \pgfmathsetlengthmacro{\barwidth}{\paperwidth * \progress}
 
-    % On définit une zone de découpe à gauche 
+    % zone de découpe
     \begin{scope}
-      \clip (current page.south west) ++(-0pt,-1pt) rectangle ++(\barwidth,5pt);
-      % On place l'image du gradient avec une hauteur de 5pt
-      \node[anchor=south west, inner sep=0pt] at ([xshift=\shift, yshift=\shift]current page.south west)
-        {\includegraphics[width=\barwidth,height=5pt]{img/theme/ligne.png}};
+      \clip (current page.south west) ++(0pt,-1pt)
+        rectangle ++(\barwidth,5pt);
+
+      % on garde l’image avec largeur fixe = page entière
+      \node[anchor=south west, inner sep=0pt] at ([yshift=\shift]current page.south west)
+        {\includegraphics[width=\paperwidth,height=5pt]{img/theme/ligne.png}};
     \end{scope}
-  }
+  }%
 }
 
 

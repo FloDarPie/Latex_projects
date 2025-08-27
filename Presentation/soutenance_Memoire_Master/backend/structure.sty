@@ -125,20 +125,25 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% \setbeamertemplate{part in toc}{%
+%   \leavevmode
+%   \textcolor{blue}{\textbf{Partie \inserttocpartnumber: \inserttocpart}}%
+%   \vskip1ex
+% }
+
 \setbeamertemplate{section in toc}{%
   \leavevmode
-  \hspace*{1.5em} % indentation section
+  \hspace*{1.5em}
   \textcolor{black}{\textbf{\inserttocsectionnumber.~\inserttocsection}}%
-  \vskip0.4ex % espace vertical avant les sous-sections
+  \vskip0.4ex 
 }
 
 \setbeamertemplate{subsection in toc}{%
   \leavevmode
-  \hspace*{3.5em} % indentation sous-section
+  \hspace*{3.5em}
   \inserttocsubsectionnumber.~\inserttocsubsection%
-  \vskip0.2ex % petit espace après chaque sous-section
+  \vskip0.2ex
 }
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
