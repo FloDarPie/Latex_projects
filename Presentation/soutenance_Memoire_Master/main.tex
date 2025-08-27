@@ -16,7 +16,7 @@
 %-----------------------------------------------------------------------------
 
 \begin{document}
-
+\justifying
 
 \begin{frame}
     \titlepage
@@ -25,7 +25,7 @@
 \section*{Introduction}
 \showtoctrue % active l'affichage des slides de transition
 
-\begin{frame}{Introduction}
+\begin{frame}{Introduction - 1}
     
     \pause
     \begin{block}{1996 : Paul C. Kocher, \textit{Timing Attacks on Implementations of Diffie-Hellman, RSA, DSS, and Other Systems} }
@@ -38,13 +38,23 @@
     2011 : \citeauthor{stillPractical} \citetitle{stillPractical}
 \end{frame}
 
-\begin{frame}{Introduction}
+\begin{frame}{Introduction - 2}
+    \begin{exampleblock}{HACL*}
+        \textit{"\textbf{H}igh \textbf{A}ssurance \textbf{C}ryptography \textbf{L}ibrary"}\footnote{\url{https://hacl-star.github.io/}} est une bibliothèque cryptographique, écrite en F* ("F star"), implémentant tous les algorithmes de cryptographie modernes et est prouvée mathématiquement sûre. 
+        \smallbreak
+        HACL* est notamment utilisé dans plusieurs systèmes de production tels que Mozilla Firefox, le noyau Linux, le VPN WireGuard...
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Introduction - 3}
     \begin{enumerate}
         \item[\textbf{QR1}] Est-il possible de propager les garanties de sécurité pendant la compilation ?
         \item[\textbf{QR2}] Est-il possible d'automatiser la détection de ces failles sur des fichiers compilés ?
         \item[\textbf{QR3}] Est-il possible d'appliquer ces mécanismes pour assurer la vérification d'une bibliothèque cryptographique ?
     \end{enumerate}
 \end{frame}
+
+
 
 \begin{frame}{Sommaire}
 
@@ -55,15 +65,33 @@
 
 
 
-\section{sec A}
-\section{sec B}
-\subsection{petit B.1}
-\subsection{petit B.2}
+\section{Méthodes de protection et limitations}
 
-\section{sec C}
-\subsection{petit C.1}
-\section{sec D}
-\subsection{petit D.1}
-\subsection{petit D.2}
+\begin{frame}{Usages de compilateur}
+    
+\end{frame}
+
+\begin{frame}{Bonnes pratiques de programmations}
+    
+\end{frame}
+
+\section{Outils de vérifications}
+\begin{frame}{Usages de compilateur}
+    
+\end{frame}
+\section{Automatismes}
+\begin{frame}{Usages de compilateur}
+    
+\end{frame}
+\section{Érysichthon}
+
+\subsection{Conception générale}
+\begin{frame}{Usages de compilateur}
+    
+\end{frame}
+\subsection{Andhrímnir}
+\begin{frame}{Usages de compilateur}
+    
+\end{frame}
 
 \end{document}

@@ -27,6 +27,7 @@
 %fonts
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
+\usepackage{ragged2e}
 
 %numéroter les captions
 \usepackage{caption}

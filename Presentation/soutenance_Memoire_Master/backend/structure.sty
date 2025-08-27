@@ -2,10 +2,31 @@
 %  Inner Theme Settings
 %--------------------------------------
 
+\newcommand{\pngangle}{img/theme/angle.png}
+\pgfdeclareimage[height=2ex]{Angle}{\pngangle}
+\newcommand{\anglepng}{\pgfuseimage{Angle}}
+
+\newlength{\angleheight}
+\settoheight{\angleheight}{\pgfuseimage{Angle}}
+\newlength{\anglewidth}
+\settowidth{\anglewidth}{\pgfuseimage{Angle}}
+\newlength{\titleH}
+
+\newlength\vmargin
+\setlength\vmargin{.07\paperheight}
+\newlength\hmargin
+\setlength\hmargin{.05\paperwidth}
+
+\newlength\fullpageinnerhmargin
+\setlength\fullpageinnerhmargin{\dimexpr\hmargin+2\anglewidth}
+
+\setbeamersize{%
+  text margin left = \fullpageinnerhmargin,
+  text margin right = \fullpageinnerhmargin,
+}
+
 \pgfdeclareverticalshading[lower.bg,upper.bg]{bmb@transition}{200cm}{%
 color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
-
-\setbeamersize{text margin left=2em,text margin right=2em}
 
 
 \setbeamertemplate{navigation symbols}{}
@@ -125,22 +146,15 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \setbeamertemplate{part in toc}{%
-%   \leavevmode
-%   \textcolor{blue}{\textbf{Partie \inserttocpartnumber: \inserttocpart}}%
-%   \vskip1ex
-% }
-
 \setbeamertemplate{section in toc}{%
   \leavevmode
-  \hspace*{1.5em}
   \textcolor{black}{\textbf{\inserttocsectionnumber.~\inserttocsection}}%
   \vskip0.4ex 
 }
 
 \setbeamertemplate{subsection in toc}{%
   \leavevmode
-  \hspace*{3.5em}
+  \hspace*{2.5em}
   \inserttocsubsectionnumber.~\inserttocsubsection%
   \vskip0.2ex
 }
@@ -170,21 +184,6 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\pngangle}{img/theme/angle.png}
-\pgfdeclareimage[height=2ex]{Angle}{\pngangle}
-\newcommand{\anglepng}{\pgfuseimage{Angle}}
-
-\newlength{\angleheight}
-\settoheight{\angleheight}{\pgfuseimage{Angle}}
-\newlength{\anglewidth}
-\settowidth{\anglewidth}{\pgfuseimage{Angle}}
-\newlength{\titleH}
-
-\newlength\vmargin
-\setlength\vmargin{.07\paperheight}
-\newlength\hmargin
-\setlength\hmargin{.05\paperwidth}
-
 \defbeamertemplate*{frametitle}{inria}[1][]{%
     % textblock 
     \begin{textblock*}{\anglewidth}(\hmargin,\vmargin)
@@ -201,7 +200,7 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%       Equation bloc
+%       Equation bloc et les autres
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -231,6 +230,9 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
 
 \makeatother
 
+\addtobeamertemplate{block begin}{}{\justifying}
+\addtobeamertemplate{block alerted begin}{}{\justifying}
+\addtobeamertemplate{block example begin}{}{\justifying}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
