@@ -1,0 +1,29 @@
+\frametitle{Internet est attaqué !!!}
+\vfill
+{\footnotesize
+\begin{minted}{text}
+Newsgroups: comp.risks
+Subject: Virus on the Arpanet - Milnet
+<Stoll@DOCKMASTER.ARPA> Thu, 3 Nov 88 06:46 EST
+
+Hi Gang!
+
+It's now 3:45 AM on Wednesday 3 November 1988. I'm tired, so don't
+believe everything that follows... Apparently, there is a massive
+attack on Unix systems going on right now.
+
+I have spoken to systems managers at several computers, on both the
+east & west coast, and I suspect this may be a system wide problem.
+Symptom: hundreds or thousands of jobs start running on a Unix system
+bringing response to zero.
+[...]
+
+This virus is spreading very quickly over the Milnet. Within the past
+4 hours, I have evidence that it has hit >10 sites across the country,
+both Arpanet and Milnet sites. I suspect that well over 50 sites have
+been hit. Most of these are "major" sites and gateways.
+[...]
+
+This is bad news.
+\end{minted}
+}
