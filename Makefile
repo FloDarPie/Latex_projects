@@ -31,10 +31,17 @@ all: fast clean
 latexmk:
 	latexmk -pdf -outdir=$(TEX_DIR) $(TEX_FILE)
 
-biblio:
+biber:
 	cd $(TEX_DIR) && \
 	pdflatex $(notdir $(TEX_FILE)) && \
-	bibtex $(notdir $(BIB_FILE)) && \
+	biber  $(basename $(notdir $(TEX_FILE))) && \
+	pdflatex $(notdir $(TEX_FILE)) && \
+	pdflatex $(notdir $(TEX_FILE))
+
+biblatex:
+	cd $(TEX_DIR) && \
+	pdflatex $(notdir $(TEX_FILE)) && \
+	biblatex  $(basename $(notdir $(TEX_FILE))) && \
 	pdflatex $(notdir $(TEX_FILE)) && \
 	pdflatex $(notdir $(TEX_FILE))
 

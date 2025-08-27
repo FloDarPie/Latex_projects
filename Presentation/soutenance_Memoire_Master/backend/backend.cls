@@ -61,25 +61,27 @@
 
 \newcommand{\oldprogressbar}{
   \tikz[remember picture]{
-  \pgfmathsetlengthmacro{\barwidth}{\paperwidth * \insertframenumber / 34}
+  \pgfmathsetlengthmacro{\barwidth}{\paperwidth * \insertframenumber / \inserttotalframenumber}
     \path[fill=customBleuSombre!40] (current page.south west) rectangle ++(\barwidth,4pt);
   }
 }
 
 \newcommand{\progressbar}{
   \tikz[remember picture,overlay]{
+    \def\shift{-1pt}
     % largeur de la barre = proportion d'avancement
-    \pgfmathsetlengthmacro{\barwidth}{\paperwidth * \insertframenumber / 34}
+    \pgfmathsetlengthmacro{\barwidth}{(\paperwidth - \shift) * \insertframenumber / \inserttotalframenumber}
 
-    % On définit une zone de découpe à gauche
+    % On définit une zone de découpe à gauche 
     \begin{scope}
-      \clip (current page.south west) rectangle ++(\barwidth,4pt);
-      % On place l'image du gradient à la largeur totale du papier
-      \node[anchor=south west, inner sep=0pt] at (current page.south west)
-        {\includegraphics[width=\paperwidth,height=4pt]{img/theme/ligne.png}};
+      \clip (current page.south west) ++(-0pt,-1pt) rectangle ++(\barwidth,5pt);
+      % On place l'image du gradient avec une hauteur de 5pt
+      \node[anchor=south west, inner sep=0pt] at ([xshift=\shift, yshift=\shift]current page.south west)
+        {\includegraphics[width=\barwidth,height=5pt]{img/theme/ligne.png}};
     \end{scope}
   }
 }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %

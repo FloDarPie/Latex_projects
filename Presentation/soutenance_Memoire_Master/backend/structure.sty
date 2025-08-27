@@ -65,6 +65,24 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
     \vspace*{-1cm}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%      HEADLINE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\useoutertheme[subsection=false]{smoothbars}
+
+\setbeamertemplate{headline}{
+    
+    \begin{beamercolorbox}{section in head/foot}
+        \vskip1.5pt\insertsectionnavigationhorizontal{\paperwidth}{\hfill}{\hfill}\vskip3pt
+    \end{beamercolorbox}
+
+    \begin{beamercolorbox}[colsep=4pt]{upper separation line head}
+    \end{beamercolorbox}
+    
+    
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -82,7 +100,7 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
     \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
     \end{beamercolorbox}
 
-    \begin{beamercolorbox}[ht=3ex,dp=1.125ex,%
+    \begin{beamercolorbox}[ht=3ex,dp=1.5ex,%
         leftskip=.5cm,rightskip=.5cm ]{title in head/foot}%
         {\usebeamerfont{author in head/foot}\ajd}%
         \hfill
@@ -90,33 +108,37 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
         \hspace{50pt}
         \includegraphics[height=2.5ex]{img/theme/LOGO_CEA_ORIGINAL_2022.png}
         \hspace{50pt}
-        \includegraphics[height=2.5ex]{img/theme/ub-logo.png}
+        \includegraphics[height=3ex]{img/theme/ub-logo.png}
         \hfill
         {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
     \end{beamercolorbox}
-    \begin{beamercolorbox}[wd=\paperwidth]{progressbar}
-        \progressbar
-    \end{beamercolorbox}
+    
+   \begin{beamercolorbox}[wd=\paperwidth,ht=3pt,dp=-1pt,leftskip=-1pt,rightskip=-1pt]{progressbar}
+    \progressbar
+\end{beamercolorbox}
+    
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%       Barre de progression en haut
+%        Sommaire
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\useoutertheme[subsection=false]{smoothbars}
 
-\setbeamertemplate{headline}{
-    
-    \begin{beamercolorbox}{section in head/foot}
-        \vskip1.5pt\insertsectionnavigationhorizontal{\paperwidth}{\hfill}{\hfill}\vskip3pt
-    \end{beamercolorbox}
-
-    \begin{beamercolorbox}[colsep=4pt]{upper separation line head}
-    \end{beamercolorbox}
-    
-    
+\setbeamertemplate{section in toc}{%
+  \leavevmode
+  \hspace*{1.5em} % indentation section
+  \textcolor{black}{\textbf{\inserttocsectionnumber.~\inserttocsection}}%
+  \vskip0.4ex % espace vertical avant les sous-sections
 }
+
+\setbeamertemplate{subsection in toc}{%
+  \leavevmode
+  \hspace*{3.5em} % indentation sous-section
+  \inserttocsubsectionnumber.~\inserttocsubsection%
+  \vskip0.2ex % petit espace après chaque sous-section
+}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
