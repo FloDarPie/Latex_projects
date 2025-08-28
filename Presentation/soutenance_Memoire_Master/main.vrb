@@ -1,55 +1,15 @@
-\frametitle{Opérations dangereuses}
+\frametitle{Adaptation}
+\textbf{Codes :} Instructions permettant d'analyser le code précédent compilé vers Risc-V 32bits
 
-    \begin{columns}
-        \begin{column}{0.4\textwidth}
-            \begin{blockSimple}{Opérations influantes :}
-                \begin{itemize}
-                    \item Accès mémoire
-                    \item Décalage/rotation de valeurs \hfill\onslide<2>{(caché)}
-                    \item Saut conditionnel
-                    \item Division/multiplication
-                \end{itemize}
-            \end{blockSimple}
-        \end{column}
-        \pause
-        \begin{column}{0.5\textwidth}
-            \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\tiny,linenos, gobble=8]{C}
-                bool check_pwd(msg, pwd){
-                if (msg.length != pwd.length){
-                    return False
-                }
-                for(int i = 0; i < msg.length; i++){
-                    if(msg[i] != pwd[i]){
-                        return False
-                    }
-                }
-                return True
-                }
-            \end{minted}
-            \begin{tikzpicture}[scale = 0.5, transform shape]
-            % Noeuds
-            \node (start) [startstop] {check\_pwd};
-            \node (valid) [right of=start, xshift=9cm, green] {\huge{$\checkmark$}};
-            \draw [arrow] (start) -- (valid);
+    \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos]{bash}
+load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
 
-            \node (inputs) [below of = start, yshift=0.2cm] {(msg, pwd)};
-            \node (if) [process] [right of=start, xshift=2cm] {if};
-            \node (not) [above of=if, red] {\huge{$\times$}};
-            \node (for) [process] [right of=if,, xshift=2cm] {for};
-            \node (for1) [above of=for,xshift=1cm, red] {\huge{$\times$}};
-            \node (for2) [right of=for1, red] {\huge{$\times$}};
-            \node (for3) [right of=for2, red] {\huge{$\times$}};
+secret global  r, cin, y, x
 
-            \draw [arrow] (if) -- (not);
-            \draw [arrow] (for) -- (for1);
-            \draw [arrow] (for) -- (for2);
-            \draw [arrow] (for) -- (for3);
+starting from <main>
 
-            \node (t) [above of=start] {};
-            \node (a) [above of=valid, xshift=-0.3cm] {};
-            \draw [arrow] (t) -- node[above left] {Temps ($\mu$s)} (a.west);
+with concrete stack pointer
+halt at  0x0000000000000464
+explore all
 
-            \end{tikzpicture}
-        \end{column}
-    \end{columns}
-
+\end{minted}

@@ -350,12 +350,190 @@
 \end{frame}
 
 \section{Automatismes}
-\begin{frame}{Premiers scripts}
+\begin{frame}[fragile]{Premiers scripts}
+
+    \textbf{Code :} Instructions permettant de trouver le mot d'un passe d'un binaire d'exercice
+    \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos, fontsize=\tiny]{bash}
+starting from core with
+  argv<64> := rsi
+  arg1<64> := @[argv + 8, 8]
+  size<64> := nondet            # 0 < strlen(argv[1]) < 128
+  assume 0 < size < 128,       all_printables<1> := true
+  @[arg1, 128] := 0
+  for i<64> in 0 to size - 1 do
+    @[arg1 + i] := nondet as password
+    all_printables := all_printables && " " <= password <= "~"
+  end
+  assume all_printables
+end
+
+replace <puts>, <printf> by return end
+
+reach <puts> such that @[rdi, 14] = "Good password!"
+then print ascii stream password
+
+cut at <puts> if @[rdi, 17] = "Invalid password!"
+halt at <printf>
+\end{minted}
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Simplification}
+\textbf{Codes :} Instructions permettant d'analyser le code précédent compilé vers Risc-V 32bits
     
+\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos,fontsize=\scriptsize]{C}
+#include <stdlib.h>
+#include <stdint.h>
+#include "Hacl_P256.h"
+
+#define SIZE 4
+uint64_t cin;
+uint64_t x[SIZE]; uint64_t y[SIZE]; uint64_t r[SIZE];
+
+int main(){
+  bn_cmovznz4(r, cin, x, y);
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Adaptation}
+    \textbf{Codes :} Instructions permettant d'analyser le code précédent compilé vers Risc-V 32bits
+    
+    \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos]{bash}
+load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
+
+secret global  r, cin, y, x
+
+starting from <main>
+
+with concrete stack pointer
+halt at  0x0000000000000464
+explore all
+
+\end{minted}
+\end{frame}
+
+\begin{frame}{Premiers pas vers l'automatisation}
+    
+    \textbf{Table :} Tableau de résultats d'analyse Binsec pour architecture ARMv7 et ARMv8
+    \begin{center}    
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+            \rowcolor{blue!10}
+            \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{fonction analysée} & \multicolumn{5}{c|}{\textbf{cmovznz4}} \\
+            \hline
+            \rowcolor{blue!30}
+            \textbf{Clang+LLVM} & \textbf{14.0.6} & \textbf{15.0.6} & \textbf{16.0.4} & \textbf{17.0.6} & \textbf{18.1.8} \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-O0} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-O1} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-Os} & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
+            \hline
+            \rowcolor{orange!30!red!50}
+            \textbf{-Oz} & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark \\
+            \hline
+        \end{tabular}   
+    \end{center}
+    \raggedleft
+     \small{
+        \checkmark : \textit{binary secure} ;
+        \textasciitilde : \textit{binary unknown} ;
+        $\times$ : \textit{binary insecure}
+    }
+\end{frame}
+
+\begin{frame}{Reherche de failles}
+    \textbf{Table :} Tableau de résultats d'analyse Binsec pour architecture Risc-V
+    \begin{center}
+    \begin{tabular}{|c|cc|cc|}
+        \hline
+        \rowcolor{blue!10}
+        \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{fonction analysée} & \multicolumn{2}{c|}{\textbf{cmovznz4} - 64 bits} & \multicolumn{2}{c|}{\textbf{cmovznz4} - 32 bits} \\
+        \hline
+        \rowcolor{blue!30}
+        \textbf{Compilateur et architecture} & gcc 15.1.0 & clang 19.1.7 & gcc 15.1.0& clang 19.1.7 \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O0} &  \cellcolor{orange!60}\textasciitilde  & \cellcolor{red!60}$\times$ & \cellcolor{orange!60}\textasciitilde & \cellcolor{red!60}$\times$ \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O1} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O2} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O3} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Os} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Oz} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
+        \hline
+    \end{tabular}
+    \end{center}
+\raggedleft
+     \small{
+        \checkmark : \textit{binary secure} ;
+        \textasciitilde : \textit{binary unknown} ;
+        $\times$ : \textit{binary insecure}
+    }
 \end{frame}
 
 \begin{frame}{Cahier des charges}
+\begin{columns}
+    \column{0.3\textwidth}
+    \begin{blockSimple}{Objectifs du futur outil}
+        \begin{itemize}
+            \item Petits fichiers binaire
+            \item Analyse complète de la bibliothèque
+            \item Analyse correcte
+            \item Automatique
+            \pause
+            \item Couverture [architectures, compilateurs] 
+        \end{itemize}
+    \end{blockSimple}
+    \column{0.5\textwidth}
+    \textbf{Figure :} Flot de travail de l'outil
+    \smallbreak
+    \begin{tikzpicture}[node distance=2cm, scale=1, transform shape]
+
+    % Styles des noeuds
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{intermediate} = [circle, minimum size=0.5cm, text centered, draw=white, fill=white]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
     
+    % Noeuds
+    \node (hacl) [startstop] {HACL*};
+    \node (inter) [intermediate, below of=hacl,xshift=1cm, yshift=1cm] {};
+    \node (compilateur) [process, below of=hacl] {Compilateur};
+    \node (binsec) [startstop, below of=compilateur] {Binsec};
+    
+    % Flèches
+    \draw [arrow, red] (hacl) -- node[anchor=west] {-test.c} (compilateur);
+    \draw [arrow, red] (inter) -- ++(2,0) |- node[anchor=west, pos=0.25] {.ini} (binsec);
+    \draw [arrow, blue] (compilateur) -- node[anchor=east] {.exe} (binsec);
+    
+    % Annotations
+    \node[align=center, left of=compilateur, xshift=-0.2cm] {\scriptsize x86\_64\\ \scriptsize ARM\\ \scriptsize Risc-V};
+    \node[align=center, below of=binsec, yshift=30pt] {\scriptsize Secure/Insecure/Unknown};
+    
+    \end{tikzpicture}
+\end{columns}
 \end{frame}
 
 \section{Érysichthon}

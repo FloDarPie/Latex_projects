@@ -19,7 +19,7 @@
 \usepackage{tikz}     % To draw
 \usetikzlibrary{positioning,arrows.meta}
 
-\usepackage{multicol}
+\usepackage{multicol, csquotes}
 
 % Tabluar env
 \usepackage{hhline}
