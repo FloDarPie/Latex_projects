@@ -19,16 +19,42 @@
 
 \begin{itemize}
   \item Introduction — contexte et objectifs
-  \item \important{Points clés} à mettre en avant
-  \item Exemple concret
-  \item Conclusion rapide
+  \item Méthodes de protection et limitations
+  \item Outils de vérifications
+  \item Érysichthon
+  \begin{itemize}
+    \item Conception générale
+    \item Andhrímnir
+  \end{itemize}
+  \item Résultats
+  \item Conclusion
 \end{itemize}
 
+\subsection*{Introduction}
 \begin{multicols}{2}
-\subsection*{Détails utiles}
-- Définition 1 \\
-- Définition 2 \\
-- Formule : $E = mc^2$
+  \begin{itemize}
+    \item Attaquer sur la sécurité et le besoin d'avoir des libs cryptographiques
+    \item Présenter HACL*
+    \item Historique timing attacks
+    \item Introduction de la problématique
+  \end{itemize}
 \end{multicols}
 
+\subsection*{Méthodes de protection et limitations}
+- compilateurs
+\begin{multicols}{2}
+\begin{itemize}
+  \item CompCert $=>$ garanties formelles $//$ retard sur les standards
+  \item Jasmine $=>$ annotations de codes, execute toutes les branches $//$ pas employable sur un projet industriel, artefact de recherche
+  \item Raccoon $=>$ annotations de codes $//$ pas le temps constants
+  \item Constantine $=>$ linéarisation $//$ 16.36x taille binaire \& 27.1x temps
+\end{itemize}
+\end{multicols}
+- assembleur\\
+- programmation en temps constant 
+
+\subsection*{Outils de vérifications}
+\subsection*{Érysichthon}
+\subsection*{Résultats}
+\subsection*{Conclusion}
 \end{document}

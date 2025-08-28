@@ -17,6 +17,7 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{tikz}     % To draw
+\usetikzlibrary{positioning,arrows.meta}
 
 \usepackage{multicol}
 
@@ -70,6 +71,7 @@
     % proportion
     \pgfmathsetmacro{\progress}{\insertframenumber/\inserttotalframenumber}
     \pgfmathsetlengthmacro{\barwidth}{\paperwidth * \progress}
+    \pgfmathsetmacro{\personalWidth}{\paperwidth-\shift}
 
     % zone de découpe
     \begin{scope}
@@ -77,8 +79,8 @@
         rectangle ++(\barwidth,5pt);
 
       % on garde l’image avec largeur fixe = page entière
-      \node[anchor=south west, inner sep=0pt] at ([yshift=\shift]current page.south west)
-        {\includegraphics[width=\paperwidth,height=5pt]{img/theme/ligne.png}};
+      \node[anchor=south west, inner sep=0pt] at ([xshift=\shift,yshift=\shift]current page.south west)
+        {\includegraphics[width=\personalWidth pt,height=5pt]{img/theme/ligne.png}};
     \end{scope}
   }%
 }

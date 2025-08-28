@@ -26,25 +26,24 @@
 \showtoctrue % active l'affichage des slides de transition
 
 \begin{frame}{Introduction - 1}
-    
     \pause
-    \begin{block}{1996 : Paul C. Kocher, \textit{Timing Attacks on Implementations of Diffie-Hellman, RSA, DSS, and Other Systems} }
-        Une mesure précise du temps requis par des opérations sur les clés secrètes permettrait à un attaquant de casser le cryptosystème.
-    \end{block}
-
-    \pause
-    2003 : \citeauthor{270176} \citetitle{270176}\\
-    \pause
-    2011 : \citeauthor{stillPractical} \citetitle{stillPractical}
-\end{frame}
-
-\begin{frame}{Introduction - 2}
     \begin{exampleblock}{HACL*}
         \textit{"\textbf{H}igh \textbf{A}ssurance \textbf{C}ryptography \textbf{L}ibrary"}\footnote{\url{https://hacl-star.github.io/}} est une bibliothèque cryptographique, écrite en F* ("F star"), implémentant tous les algorithmes de cryptographie modernes et est prouvée mathématiquement sûre. 
         \smallbreak
         HACL* est notamment utilisé dans plusieurs systèmes de production tels que Mozilla Firefox, le noyau Linux, le VPN WireGuard...
     \end{exampleblock}
 \end{frame}
+
+\begin{frame}{Introduction - 2}
+    \begin{block}{1996 : Paul C. Kocher, \textit{Timing Attacks on Implementations of Diffie-Hellman, RSA, DSS, and Other Systems} }
+        Une mesure précise du temps requis par des opérations sur les clés secrètes permettrait à un attaquant de casser le cryptosystème.
+    \end{block}
+    \pause
+    2003 : \citeauthor{270176} \citetitle{270176}\\
+    \pause
+    2011 : \citeauthor{stillPractical} \citetitle{stillPractical}
+\end{frame}
+
 
 \begin{frame}{Introduction - 3}
     \begin{enumerate}
@@ -54,68 +53,165 @@
     \end{enumerate}
 \end{frame}
 
-
-
 \begin{frame}{Sommaire}
-
         \small
         \tableofcontents
-
 \end{frame}
 
 
 
 \section{Méthodes de protection et limitations}
 
-\begin{frame}{Usages de compilateurs spécialisés}
-    \begin{columns}
+\begin{frame}{État des lieux}
+    \begin{blockSimple}{Usage sécurisé}
+        \centering
+        \begin{tikzpicture}[>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
+
+        % Nœuds avec apparition progressive
+        \node[src] (src) {Source};
+        \node[comp, right=18mm of src] (cmp) {Compilateur};
+        \node[asm, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+
+        \end{tikzpicture}
+    \end{blockSimple}
+\end{frame}
+
+
+\begin{frame}{Analyse en remontée - 1}
+
+    \begin{blockSimple}{Écrire en assembleur}
+        \begin{columns}
+            \begin{column}{0.3\textwidth}
+                + Efficace\\
+                + Contrôle total
+            \end{column}
+            \begin{column}{0.5\textwidth}
+            - Restreint l'architecture et les usages\\
+            - Beaucoup de connaissance spécifique au processeur ciblé
+            \end{column}
+        \end{columns}        
+    \end{blockSimple}
+
+    \vspace{6em}
+    \begin{blockSimple}{}
+        \centering
+        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
+
+        % Nœuds avec apparition progressive
+        \node[gray] (src) {Source};
+        \node[gray, right=18mm of src] (cmp) {Compilateur};
+        \node[asm, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+
+        \end{tikzpicture}
+    \end{blockSimple}
+\end{frame}
+
+
+\begin{frame}{Analyse en remontée - 2}
+
+    \begin{blockSimple}{Utilisation des compilateurs}
+        \begin{columns}
         \begin{column}{0.5\textwidth}
-            \begin{blockSimple}{Petit tour d'horizon}
             \begin{itemize}
                 \item Constantine - 2021
-                \item Jasmine - 2017
+                \item Jasmin - 2017
                 \item \alt<1>{Raccoon - 2015}{\sout{Raccoon} - 2015}
                 \item CompCert - 2008 (2019)
             \end{itemize}
-        \end{blockSimple}
         \end{column}
-        \pause
         \begin{column}{0.5\textwidth}
-          \begin{blockSimple}{Freins}
-            \pause
-                \begin{itemize}
-                \item Couverture des architectures supportée
-                \item Informations à transmettre
-                \item Spécifitées ne sont plus respectées
-                \end{itemize}
-                
-            \end{blockSimple}
+          \onslide<2>{
+            \begin{itemize}
+            \item[-] Couverture des architectures supportée
+            \item[-] Informations à transmettre
+            \item[-] Spécifications ne sont plus respectées
+            \end{itemize}
+          }
         \end{column}
     \end{columns}
+    \end{blockSimple}
+    \vspace{3em}
+    \begin{blockSimple}{}
+        \centering
+        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
 
+        % Nœuds avec apparition progressive
+        \node[gray] (src) {Source};
+        \node[comp, right=18mm of src] (cmp) {Compilateur};
+        \node[gray, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+
+        \end{tikzpicture}
+    \end{blockSimple}
+\end{frame}
+
+\begin{frame}{Analyse en remontée - 3}
+
+    \begin{blockSimple}{Programmation en temps constant}
+        \begin{columns}
+            \begin{column}{0.3\textwidth}
+                + Position haut niveau\\
+                + Couverture d'architectures importantes
+            \end{column}
+            \begin{column}{0.5\textwidth}
+            - Rigueur et conception particulière des actions\\
+            - Identification des points de fuites
+            \end{column}
+        \end{columns}        
+    \end{blockSimple}
+
+    \vspace{4em}
+    \begin{blockSimple}{}
+        \centering
+        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
+
+        % Nœuds avec apparition progressive
+        \node[src] (src) {Source};
+        \node[gray, right=18mm of src] (cmp) {Compilateur};
+        \node[gray, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+
+        \end{tikzpicture}
+    \end{blockSimple}
+\end{frame}
+
+
+
+\begin{frame}{Exemple}
 
 \end{frame}
 
-\begin{frame}{Bonnes pratiques de programmations}
-    
-\end{frame}
 
 \section{Outils de vérifications}
-\begin{frame}{Usages de compilateur}
+\begin{frame}{empty}
     
 \end{frame}
 \section{Automatismes}
-\begin{frame}{Usages de compilateur}
+\begin{frame}{empty}
     
 \end{frame}
 \section{Érysichthon}
 
 \subsection{Conception générale}
-\begin{frame}{Usages de compilateur}
+\begin{frame}{empty}
     
 \end{frame}
 \subsection{Andhrímnir}
-\begin{frame}{Usages de compilateur}
+\begin{frame}{empty}
     
 \end{frame}
 
