@@ -22,6 +22,9 @@
     \titlepage
 \end{frame}
 
+\comment{  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
+
+
 \section*{Introduction}
 \showtoctrue % active l'affichage des slides de transition
 
@@ -53,13 +56,22 @@
     \end{enumerate}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         SUMMARY
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Sommaire}
         \small
         \tableofcontents
 \end{frame}
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         PREMIERE PARTIE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Méthodes de protection et limitations}
 
 \begin{frame}{État des lieux}
@@ -190,16 +202,147 @@
 \end{frame}
 
 
+} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
 
-\begin{frame}{Exemple}
+
+\begin{frame}[fragile]{Opérations dangereuses}
+
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{blockSimple}{Opérations influantes :}
+                \begin{itemize}
+                    \item Accès mémoire
+                    \item Décalage/rotation de valeurs \hfill\onslide<2>{(caché)}
+                    \item Saut conditionnel
+                    \item Division/multiplication
+                \end{itemize}
+            \end{blockSimple}
+        \end{column}
+        \pause
+        \begin{column}{0.5\textwidth}
+            \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\tiny,linenos, gobble=8]{C}
+                bool check_pwd(msg, pwd){
+                if (msg.length != pwd.length){
+                    return False
+                }
+                for(int i = 0; i < msg.length; i++){
+                    if(msg[i] != pwd[i]){
+                        return False
+                    }
+                }
+                return True
+                }
+            \end{minted}
+            \begin{tikzpicture}[scale = 0.5, transform shape]
+            % Noeuds
+            \node (start) [startstop] {check\_pwd};
+            \node (valid) [right of=start, xshift=9cm, green] {\huge{$\checkmark$}};
+            \draw [arrow] (start) -- (valid);
+            
+            \node (inputs) [below of = start, yshift=0.2cm] {(msg, pwd)};
+            \node (if) [process] [right of=start, xshift=2cm] {if};
+            \node (not) [above of=if, red] {\huge{$\times$}};
+            \node (for) [process] [right of=if,, xshift=2cm] {for};
+            \node (for1) [above of=for,xshift=1cm, red] {\huge{$\times$}};
+            \node (for2) [right of=for1, red] {\huge{$\times$}};
+            \node (for3) [right of=for2, red] {\huge{$\times$}};
+
+            \draw [arrow] (if) -- (not);
+            \draw [arrow] (for) -- (for1);
+            \draw [arrow] (for) -- (for2);
+            \draw [arrow] (for) -- (for3);
+
+            \node (t) [above of=start] {};
+            \node (a) [above of=valid, xshift=-0.3cm] {};
+            \draw [arrow] (t) -- node[above left] {Temps ($\mu$s)} (a.west);
+            
+            \end{tikzpicture}
+        \end{column}
+    \end{columns}
 
 \end{frame}
 
+\begin{frame}{Plus de problème ?}
+    \pause
+    \begin{blockSimple}{Mauvaises nouvelles \alt<2>{?}{!}}
+        2019 : \citeauthor{binsecRel2019}, \citetitle{binsecRel2019}\\
+        \pause
+        2024 : \citeauthor{schneider2024breakingbadcompilersbreak}, \citetitle{schneider2024breakingbadcompilersbreak}
+    \end{blockSimple}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         DEUXIEME PARTIE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Outils de vérifications}
-\begin{frame}{empty}
-    
+\begin{frame}{Spécialisations}
+    \begin{columns}% t = alignement en haut
+    % Colonne gauche : tableau
+    \column{0.6\textwidth}
+    \tiny
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Outil} & \textbf{Cible} & \textbf{Techn.} & \textbf{Garanties} \\
+        \rowcolor{lightgray}
+        ctgrind \cite{ctgrind} & Binaire & Dynamique & $\blacktriangle$ \\
+        ABPV13 \cite{ABPV13} & C & Formel & $\bullet$ \\
+        \rowcolor{lightgray}
+        VirtualCert \cite{VirtualCert} & x86 & Formel & $\bullet$ \\
+        ct-verif \cite{ctverif} & LLVM & Formel & $\bullet$ \\
+        \rowcolor{lightgray}
+        FlowTracker \cite{FlowTracker} & LLVM & Formel & $\bullet$ \\
+        Blazer \cite{Blazer} & Java & Formel & $\bullet$ \\
+        \rowcolor{lightgray}
+        BPT17 \cite{BPT17} & C & Symbolique & $\blacktriangle$ \\
+        MemSan \cite{MemSan} & LLVM & Dynamique & $\blacktriangle$ \\
+        \rowcolor{lightgray}
+        Themis \cite{Themis} & Java & Formel & $\bullet$ \\
+        COCO-CHANNEL \cite{COCOCHANNEL} & Java & Symbolique & $\bullet$ \\
+        \rowcolor{lightgray}
+        DATA \cite{DATA1,DATA2} & Binaire & Dynamique & $\blacktriangle$ \\
+        MicroWalk \cite{MicroWalk} & Binaire & Dynamique & $\blacktriangle$ \\
+        \rowcolor{lightgray}
+        timecop \cite{timecop} & Binaire & Dynamique & $\blacktriangle$ \\
+        SC-Eliminator \cite{SCEliminator} & LLVM & Formel & $\bullet$ \\
+        \rowcolor{lightgray}
+        Binsec/Rel \cite{binsecRel2019} & Binaire & Symbolique & $\blacktriangle$ \\
+        CT-WASM \cite{CTWASM} & WASM & Formel & $\bullet$ \\
+        \rowcolor{lightgray}
+        FaCT \cite{FaCT} & DSL & Formel & $\bullet$ \\
+        haybale-pitchfork \cite{haybale-pitchfork} & LLVM & Symbolique & $\blacktriangle$ \\
+        \bottomrule
+    \end{tabular}
+
+    % Colonne droite : légende et titre
+    \column{0.5\textwidth}
+    \textbf{Liste d’outils de vérification}\\[1ex]
+    Source : \cite{notThatHardCT}\\[2ex]
+    \begin{scriptsize}
+        
+        \textbf{Cible}
+        \begin{itemize}
+        \item[[C, Java]] Code source
+        \item[Binaire] Binaire
+        \item[DSL] Surcouche de langage
+        \item[Trace] Trace d'exécution
+        \item[WASM] Assembleur web
+    \end{itemize}
+    \textbf{Techn.}
+    \begin{itemize}
+        \item[Formel] Programmation formelle 
+        \item[[*]] type d'analyse
+    \end{itemize}
+    \textbf{Garanties (attaques temporelles)}\\
+        $\bullet$ = Analyse correcte,$\blacktriangle$ =  Limitée
+    \end{scriptsize}
+    \end{columns}
 \end{frame}
+
+
+
 \section{Automatismes}
 \begin{frame}{empty}
     

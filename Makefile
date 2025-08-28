@@ -1,4 +1,4 @@
-.PHONY: submakefile fast biblio pdf all latexmk
+.PHONY: submakefile fast biber biblatex pdf all latexmk
 
 # Chemin du projet
 p ?= .
@@ -33,22 +33,22 @@ latexmk:
 
 biber:
 	cd $(TEX_DIR) && \
-	pdflatex $(notdir $(TEX_FILE)) && \
+	pdflatex -shell-escape $(notdir $(TEX_FILE)) && \
 	biber  $(basename $(notdir $(TEX_FILE))) && \
-	pdflatex $(notdir $(TEX_FILE)) && \
-	pdflatex $(notdir $(TEX_FILE))
+	pdflatex -shell-escape $(notdir $(TEX_FILE)) && \
+	pdflatex -shell-escape $(notdir $(TEX_FILE))
 
 biblatex:
 	cd $(TEX_DIR) && \
-	pdflatex $(notdir $(TEX_FILE)) && \
+	pdflatex -shell-escape $(notdir $(TEX_FILE)) && \
 	biblatex  $(basename $(notdir $(TEX_FILE))) && \
-	pdflatex $(notdir $(TEX_FILE)) && \
-	pdflatex $(notdir $(TEX_FILE))
+	pdflatex -shell-escape $(notdir $(TEX_FILE)) && \
+	pdflatex -shell-escape $(notdir $(TEX_FILE))
 
 fast:
 	cd $(TEX_DIR) && \
-	pdflatex $(notdir $(TEX_FILE)) && \
-	pdflatex $(notdir $(TEX_FILE))
+	pdflatex -shell-escape $(notdir $(TEX_FILE)) && \
+	pdflatex -shell-escape $(notdir $(TEX_FILE))
 
 clean:
 	rm -f $(TEX_DIR)*.aux $(TEX_DIR)*.log $(TEX_DIR)*.out $(TEX_DIR)*.toc $(TEX_DIR)*.bbl \

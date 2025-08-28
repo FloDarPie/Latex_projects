@@ -21,9 +21,12 @@
 
 \usepackage{multicol}
 
-% maths
-\usepackage{amsmath}
-\usepackage{amssymb}
+% Tabluar env
+\usepackage{hhline}
+\usepackage{boldline}
+\usepackage{tabularx, multirow}
+\usepackage[table]{xcolor}
+
 
 %fonts
 \usepackage{lmodern}
@@ -115,3 +118,4 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath}
 \usepackage{empheq}
+\usepackage{amssymb}
