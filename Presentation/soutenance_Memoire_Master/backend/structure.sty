@@ -230,9 +230,22 @@ color(0pt)=(lower.bg); color(2pt)=(lower.bg); color(4pt)=(lower.bg)}
 
 \makeatother
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Blocks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \addtobeamertemplate{block begin}{}{\justifying}
 \addtobeamertemplate{block alerted begin}{}{\justifying}
 \addtobeamertemplate{block example begin}{}{\justifying}
+
+\newenvironment{blockSimple}[1]{%
+  \par\vskip\medskipamount%
+  \begin{beamercolorbox}[leftskip=0.5em, rightskip=0.5em]{normal text}%
+    \textbf{#1}\par\smallskip%
+}{%
+  \end{beamercolorbox}%
+  \vskip\medskipamount%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %

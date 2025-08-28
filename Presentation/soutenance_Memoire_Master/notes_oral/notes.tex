@@ -1,0 +1,34 @@
+% --- Ton document en A5 ---
+\documentclass[10pt,a5paper]{article}
+
+\usepackage[a5paper,margin=1.2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{multicol}
+\setlength{\columnsep}{0.5cm}
+\usepackage{enumitem}
+\setlist{nosep}
+\usepackage{xcolor}
+\newcommand{\important}[1]{\textbf{\textcolor{red}{#1}}}
+\pagestyle{empty}
+
+\begin{document}
+
+\section*{Plan de l'oral}
+
+\begin{itemize}
+  \item Introduction — contexte et objectifs
+  \item \important{Points clés} à mettre en avant
+  \item Exemple concret
+  \item Conclusion rapide
+\end{itemize}
+
+\begin{multicols}{2}
+\subsection*{Détails utiles}
+- Définition 1 \\
+- Définition 2 \\
+- Formule : $E = mc^2$
+\end{multicols}
+
+\end{document}

@@ -43,6 +43,9 @@
 % formatage de compteur
 \usepackage{fmtcount}
 
+%pour barré des mots avec \sout
+\usepackage[normalem]{ulem}
+
 
 \usepackage[absolute,overlay]{textpos}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
