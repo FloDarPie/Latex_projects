@@ -17,7 +17,7 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{tikz}     % To draw
-\usetikzlibrary{positioning,arrows.meta}
+\usetikzlibrary{arrows.meta, bending, positioning, shapes.geometric, arrows, backgrounds, fit, calc}
 
 \usepackage{multicol, csquotes}
 

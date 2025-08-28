@@ -202,9 +202,6 @@
 \end{frame}
 
 
-} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
-
-
 \begin{frame}[fragile]{Opérations dangereuses}
 
     \begin{columns}
@@ -536,11 +533,80 @@ explore all
 \end{columns}
 \end{frame}
 
+} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
+
 \section{Érysichthon}
 \subsection{Conception générale}
 \begin{frame}{Conception générale}
-    graphes
+    \begin{tikzpicture}[remember picture, overlay]
+    \begin{scope}[shift={([yshift=-2.5cm]current page.north)}]
+    % Styles
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+    \tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    \tikzset{zone1/.style={rectangle, rounded corners, draw=red, dashed, fill=red!10, inner sep=0.3cm}}
+    \tikzset{zone2/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.3cm, opacity = 0.7}}
+    \tikzset{zone22/.style={rectangle, rounded corners, draw=none, fill=blue!10, inner sep=0.3cm}}
+    \tikzset{zone3/.style={rectangle, rounded corners, draw=green, dashed, fill=green!10, inner sep=0.3cm}}
+    
+    % Noeuds
+    \node (hacl) [startstop] {HACL*};
+    \node (c) [below of=hacl] {Fonction};
+    \node (ini) [below of=c, xshift=2cm] {.ini};
+    \node (test) [below of=c, xshift=-2cm] {-test.c};
+    \node (script) [below of=c] {.script};
+    \node (compilateur) [process, below of=test] {Compilateur};
+    \node (exe) [below of=compilateur] {-test.exe};
+    \node (blanc1) [below of=script] {};
+    \node (blanc2) [below of=blanc1] {};
+    \node (gdb) [process, below of=blanc2] {GDB};
+    \node (snap) [right of=gdb, xshift=2cm] {.snapshot};
+    \node (binsec) [startstop, right of=snap, xshift=1.5cm] {Binsec};
+    
+    % Flèches
+    \draw [arrow] (hacl) -- (c);
+    \draw [arrow] (c) -- (ini);
+    \draw [arrow] (c) -- (test);
+    \draw [arrow] (c) -- (script);
+    \draw [arrow] (test) -- (compilateur);
+    \draw [arrow] (compilateur) -- (exe);
+    \draw [arrow] (exe) -- (gdb);
+    \draw [arrow] (script) -- (gdb);
+    \draw [arrow] (gdb) -- (snap);
+    \draw [arrow] (snap) -- (binsec);
+    \draw [arrow] (ini) -- (binsec);
+
+    % Zones
+    \begin{scope}[on background layer]
+        \node [zone1, fit=(c) (ini) (test) (script)] {};
+        \node [zone2, fit=(script) (gdb)] {};
+              \node [zone2, fit=(gdb) (snap) (binsec)] {};
+              \draw [zone22]
+              ([xshift=-10pt, yshift=10pt]gdb.north west) --
+              ([xshift=10pt, yshift=10pt]gdb.north east) -- 
+              ([xshift=10pt, yshift=-9pt]gdb.south east) -- 
+              ([xshift=1pt, yshift=-1pt]gdb.south west) --
+              cycle;  
+    \node [zone3, fit=(compilateur) (exe)] {};
+    \end{scope}
+\end{scope}
+    \node[anchor=north east] at ([xshift=-5mm,yshift=-5mm]current page.north east) {
+    \begin{tikzpicture}[font=\small]
+    \node[rectangle, draw=black, fill=white, rounded corners, inner sep=2mm] {
+        \begin{tabular}{l}
+        \textbf{Légende :} \\
+        \textcolor{red}{\rule{0.5cm}{0.3cm}} Difficile \\
+        \textcolor{blue}{\rule{0.5cm}{0.3cm}} Relativement simple \\
+        \textcolor{green}{\rule{0.5cm}{0.3cm}} Simple
+        \end{tabular}
+    };
+    \end{tikzpicture}
+};
+    \end{tikzpicture}
 \end{frame}
+
+
+
 
 \begin{frame}{Spécifications architecturales}
     graphes
