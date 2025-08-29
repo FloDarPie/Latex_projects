@@ -25,6 +25,7 @@
 % \comment{  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
 % } %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
 
+
 \section*{Introduction}
 \showtoctrue % active l'affichage des slides de transition
 
@@ -666,7 +667,7 @@ explore all
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}{Constructions en modules}
+\begin{frame}{Construction en modules}
     \begin{center}
         \begin{tikzpicture}[auto]
 
@@ -1014,6 +1015,26 @@ Hacl_EC_K256_felem_sqr(a, out);
   \end{tikzpicture}
 \end{frame}
 
+
+\begin{frame}{Fin de stage}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{blockSimple}{Liste des freins au temps constant}
+                \begin{itemize}
+                    \item Mécanisme de Pipeline
+                    \item Micro instructions
+                    \item Renommage des registres
+                    \item Prédiction de branches
+                    \item Éxecution désordonnée
+                    \item In silicium JIT
+                \end{itemize}
+            \end{blockSimple}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \includegraphics[width=\textwidth]{img/pornin.png}
+        \end{column}
+    \end{columns}
+\end{frame}
 
 \end{document}
 
