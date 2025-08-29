@@ -1,35 +1,62 @@
-\frametitle{Exemple de test}
-\textbf{Code :}Test de la fonction Hacl\_EC\_K256\_felem\_sqr
-  \begin{minted}[fontsize=\scriptsize]{c}
-// Made by
-// ANDHRÍMNIR - 0.3.0
-// 09-07-2025
-//
+\frametitle{Petit exemple}
+\begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\tiny,linenos, gobble=8]{C}
+                bool check_pwd(msg, pwd){
+                if (msg.length != pwd.length){
+                    return False
+                }
+                for(int i = 0; i < msg.length; i++){
+                    if(msg[i] != pwd[i]){
+                        return False
+                    }
+                }
+                return True
+                }
+            \end{minted}
+            \begin{tikzpicture}[scale = 0.5, transform shape]
+            % Noeuds
+            \node (start) [startstop] {check\_pwd};
+            \node (valid) [right of=start, xshift=9cm, green] {\huge{$\checkmark$}};
+            \draw [arrow] (start) -- (valid);
 
-#include <stdlib.h>
-#include "Hacl_EC_K256.h"
+            \node (inputs) [below of = start, yshift=0.2cm] {(msg, pwd)};
+            \node (if) [process] [right of=start, xshift=2cm] {if};
+            \node (not) [above of=if, red] {\huge{$\times$}};
+            \node (for) [process] [right of=if,, xshift=2cm] {for};
+            \node (for1) [above of=for,xshift=1cm, red] {\huge{$\times$}};
+            \node (for2) [right of=for1, red] {\huge{$\times$}};
+            \node (for3) [right of=for2, red] {\huge{$\times$}};
 
-#define BUFFER_SIZE 5
-uint64_t a[BUFFER_SIZE];
-uint64_t out[BUFFER_SIZE];
+            \draw [arrow] (if) -- (not);
+            \draw [arrow] (for) -- (for1);
+            \draw [arrow] (for) -- (for2);
+            \draw [arrow] (for) -- (for3);
 
+            \node (t) [above of=start] {};
+            \node (a) [above of=valid, xshift=-0.3cm] {};
+            \draw [arrow] (t) -- node[above left] {Temps ($\mu$s)} (a.west);
 
-int main (int argc, char *argv[]){
-Hacl_EC_K256_felem_sqr(a, out);
-  exit(0);
-}
-  \end{minted}
-\onslide<2>{
-  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+            \end{tikzpicture}
+        \end{column}
+        \pause
+\begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
 
-    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
+    \tikzset{stop/.style={draw=red, fill=red!80, opacity=0.2}}
 
-    \node[intro, fit={(0.3,4.1) (12.74,5.9)}, label={[labelshift]center:Phase introductive : 8 lignes}]{};
-    \node[definition, fit={(0.3,2.3) (12.74,3.5)}, label={[labelshift]center:Phase déclarative}]{};
-    \node[main, fit={(0.3,0.8) (12.74,1.7)}, label={[labelshift]center:Phase principale}]{};
+    \fill[stop] (-6.45,1.85) circle[radius=0.3cm];
+    \fill[stop] (-6,0.71) circle[radius=0.3cm];
 
   \end{tikzpicture}
-}
+        \pause
+        \begin{column}{0.5\textwidth}
+            \begin{blockSimple}{Opérations influantes :}
+                \begin{itemize}
+                    \item Accès mémoire
+                    \item Décalage/rotation de valeurs \hfill\onslide<2>{(caché)}
+                    \item Saut conditionnel
+                    \item Division/multiplication
+                \end{itemize}
+            \end{blockSimple}
+        \end{column}
+    \end{columns}

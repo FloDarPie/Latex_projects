@@ -22,15 +22,18 @@
     \titlepage
 \end{frame}
 
-% \comment{  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
-% } %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
+\comment{  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
+ } %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
 
-
-\section*{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         INTRODUCTION
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \showtoctrue % active l'affichage des slides de transition
+\section{Introduction}
 
-\begin{frame}{Introduction - 1}
-    \pause
+\begin{frame}{Introduction}
     \begin{exampleblock}{HACL*}
         \textit{"\textbf{H}igh \textbf{A}ssurance \textbf{C}ryptography \textbf{L}ibrary"}\cite{HACL*}\footnote{\url{https://hacl-star.github.io/}} est une bibliothèque cryptographique, écrite en F* ("F star"), implémentant tous les algorithmes de cryptographie modernes et est prouvée mathématiquement sûre. 
         \smallbreak
@@ -42,181 +45,13 @@
     \begin{block}{1996 : Paul C. Kocher, \textit{Timing Attacks on Implementations of Diffie-Hellman, RSA, DSS, and Other Systems} }
         Une mesure précise du temps requis par des opérations sur les clés secrètes permettrait à un attaquant de casser le cryptosystème.
     \end{block}
-    \pause
     2003 : \citeauthor{270176} \citetitle{270176}\\
     \pause
     2011 : \citeauthor{stillPractical} \citetitle{stillPractical}
 \end{frame}
 
-
-\begin{frame}{Introduction - 3}
-    \begin{enumerate}
-        \item[\textbf{QR1}] Est-il possible de propager les garanties de sécurité pendant la compilation ?
-        \item[\textbf{QR2}] Est-il possible d'automatiser la détection de ces failles sur des fichiers compilés ?
-        \item[\textbf{QR3}] Est-il possible d'appliquer ces mécanismes pour assurer la vérification d'une bibliothèque cryptographique ?
-    \end{enumerate}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%         SUMMARY
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Sommaire}
-        \small
-        \tableofcontents
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%         PREMIERE PARTIE
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Méthodes de protection et limitations}
-
-\begin{frame}{État des lieux}
-    \begin{blockSimple}{Usage sécurisé}
-        \centering
-        \begin{tikzpicture}[>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
-
-        % Nœuds avec apparition progressive
-        \node[src] (src) {Source};
-        \node[comp, right=18mm of src] (cmp) {Compilateur};
-        \node[asm, right=18mm of cmp] (asm) {Assembleur};
-
-        % Flèches
-        \draw[link] (src) -- (cmp);
-        \draw[link] (cmp) -- (asm);
-
-        \end{tikzpicture}
-    \end{blockSimple}
-\end{frame}
-
-
-\begin{frame}{Analyse en remontée - 1}
-
-    \begin{blockSimple}{Écrire en assembleur}
-        \begin{columns}
-            \begin{column}{0.3\textwidth}
-                + Efficace\\
-                + Contrôle total
-            \end{column}
-            \begin{column}{0.5\textwidth}
-            - Restreint l'architecture et les usages\\
-            - Beaucoup de connaissance spécifique au processeur ciblé
-            \end{column}
-        \end{columns}        
-    \end{blockSimple}
-
-    \vspace{6em}
-    \begin{blockSimple}{}
-        \centering
-        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
-
-        % Nœuds avec apparition progressive
-        \node[gray] (src) {Source};
-        \node[gray, right=18mm of src] (cmp) {Compilateur};
-        \node[asm, right=18mm of cmp] (asm) {Assembleur};
-
-        % Flèches
-        \draw[link] (src) -- (cmp);
-        \draw[link] (cmp) -- (asm);
-
-        \end{tikzpicture}
-    \end{blockSimple}
-\end{frame}
-
-
-\begin{frame}{Analyse en remontée - 2}
-
-    \begin{blockSimple}{Utilisation des compilateurs}
-        \begin{columns}
-        \begin{column}{0.5\textwidth}
-            \begin{itemize}
-                \item Constantine - 2021
-                \item Jasmin - 2017
-                \item \alt<1>{Raccoon - 2015}{\sout{Raccoon} - 2015}
-                \item CompCert - 2008 (2019)
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-          \onslide<2>{
-            \begin{itemize}
-            \item[-] Couverture des architectures supportée
-            \item[-] Informations à transmettre
-            \item[-] Spécifications ne sont plus respectées
-            \end{itemize}
-          }
-        \end{column}
-    \end{columns}
-    \end{blockSimple}
-    \vspace{3em}
-    \begin{blockSimple}{}
-        \centering
-        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
-
-        % Nœuds avec apparition progressive
-        \node[gray] (src) {Source};
-        \node[comp, right=18mm of src] (cmp) {Compilateur};
-        \node[gray, right=18mm of cmp] (asm) {Assembleur};
-
-        % Flèches
-        \draw[link] (src) -- (cmp);
-        \draw[link] (cmp) -- (asm);
-
-        \end{tikzpicture}
-    \end{blockSimple}
-\end{frame}
-
-\begin{frame}{Analyse en remontée - 3}
-
-    \begin{blockSimple}{Programmation en temps constant}
-        \begin{columns}
-            \begin{column}{0.3\textwidth}
-                + Position haut niveau\\
-                + Couverture d'architectures importantes
-            \end{column}
-            \begin{column}{0.5\textwidth}
-            - Rigueur et conception particulière des actions\\
-            - Identification des points de fuites
-            \end{column}
-        \end{columns}        
-    \end{blockSimple}
-
-    \vspace{4em}
-    \begin{blockSimple}{}
-        \centering
-        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
-
-        % Nœuds avec apparition progressive
-        \node[src] (src) {Source};
-        \node[gray, right=18mm of src] (cmp) {Compilateur};
-        \node[gray, right=18mm of cmp] (asm) {Assembleur};
-
-        % Flèches
-        \draw[link] (src) -- (cmp);
-        \draw[link] (cmp) -- (asm);
-
-        \end{tikzpicture}
-    \end{blockSimple}
-\end{frame}
-
-
-\begin{frame}[fragile]{Opérations dangereuses}
-
+\begin{frame}[fragile]{Petit exemple}
     \begin{columns}
-        \begin{column}{0.4\textwidth}
-            \begin{blockSimple}{Opérations influantes :}
-                \begin{itemize}
-                    \item Accès mémoire
-                    \item Décalage/rotation de valeurs \hfill\onslide<2>{(caché)}
-                    \item Saut conditionnel
-                    \item Division/multiplication
-                \end{itemize}
-            \end{blockSimple}
-        \end{column}
-        \pause
         \begin{column}{0.5\textwidth}
             \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\tiny,linenos, gobble=8]{C}
                 bool check_pwd(msg, pwd){
@@ -256,17 +91,216 @@
             
             \end{tikzpicture}
         \end{column}
-    \end{columns}
+        \pause
+\begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+    
+    \tikzset{stop/.style={draw=red, fill=red!80, opacity=0.2}}
+    
+    \fill[stop] (-6.45,1.85) circle[radius=0.3cm];
+    \fill[stop] (-6,0.71) circle[radius=0.3cm];
 
+  \end{tikzpicture}
+        \pause
+        \begin{column}{0.5\textwidth}
+            \begin{blockSimple}{Opérations influantes :}
+                \begin{itemize}
+                    \item Accès mémoire
+                    \item Décalage/rotation de valeurs \hfill\onslide<2>{(caché)}
+                    \item Saut conditionnel
+                    \item Division/multiplication
+                \end{itemize}
+            \end{blockSimple}
+        \end{column}
+    \end{columns}
 \end{frame}
 
-\begin{frame}{Plus de problème ?}
-    \pause
-    \begin{blockSimple}{Mauvaises nouvelles \alt<2>{?}{!}}
-        2019 : \citeauthor{binsecRel2019}, \citetitle{binsecRel2019}\\
-        \pause
-        2024 : \citeauthor{schneider2024breakingbadcompilersbreak}, \citetitle{schneider2024breakingbadcompilersbreak}
+
+\begin{frame}{Structure de travail}
+    \begin{blockSimple}{}
+        \centering
+        \begin{tikzpicture}[>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
+
+        % Nœuds avec apparition progressive
+        \node[src] (src) {Source};
+        \node[comp, right=18mm of src] (cmp) {Compilateur};
+        \node[asm, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+
+        \end{tikzpicture}
     \end{blockSimple}
+\end{frame}
+
+\begin{frame}{Travail à la source}
+        \centering
+        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
+
+        % Nœuds avec apparition progressive
+        \node[src] (src) {Source};
+        \node[gray, right=18mm of src] (cmp) {Compilateur};
+        \node[gray, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+
+        \end{tikzpicture}
+
+    \vfill
+    \begin{blockSimple}{Programmation en temps constant}
+        \begin{columns}
+            \begin{column}{0.3\textwidth}
+                + Position haut niveau\\
+                + Couverture d'architectures importantes
+            \end{column}
+            \begin{column}{0.5\textwidth}
+            - Rigueur et conception particulière des actions\\
+            - Identification des points de fuites
+            \end{column}
+        \end{columns}        
+    \end{blockSimple}
+
+    \pause
+    2024 : \citeauthor{schneider2024breakingbadcompilersbreak}, \citetitle{schneider2024breakingbadcompilersbreak}
+\end{frame}
+
+\begin{frame}{Travail avec le compilateur}
+ \centering
+        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
+
+        % Nœuds avec apparition progressive
+        \node[gray] (src) {Source};
+        \node[comp, right=18mm of src] (cmp) {Compilateur};
+        \node[gray, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+
+        \end{tikzpicture}
+        \vfill
+    \begin{blockSimple}{Utilisation des compilateurs}
+        \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item Constantine - 2021
+                \item Jasmin - 2017
+                \item \alt<1>{Raccoon - 2015}{\sout{Raccoon} - 2015}
+                \item CompCert - 2008 (2019)
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+          \onslide<2>{
+            \begin{itemize}
+            \item[-] Couverture des architectures supportée
+            \item[-] Informations à transmettre
+            \item[-] Spécifications ne sont plus respectées
+            \end{itemize}
+          }
+        \end{column}
+    \end{columns}
+    \end{blockSimple}
+\end{frame}
+
+
+\begin{frame}{Travail en assembleur}
+        \centering
+        \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
+
+        % Nœuds avec apparition progressive
+        \node[gray] (src) {Source};
+        \node[gray, right=18mm of src] (cmp) {Compilateur};
+        \node[asm, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+
+        \end{tikzpicture}
+    \vfill
+        \begin{blockSimple}{Écrire en assembleur}
+        \begin{columns}
+            \begin{column}{0.3\textwidth}
+                + Efficace\\
+                + Contrôle total
+            \end{column}
+            \begin{column}{0.5\textwidth}
+            - Spécifique à chaque processeur qui exécute\\
+            - Beaucoup de connaissance spécifique au processeur ciblé\\
+            - Long à mettre en place
+            - Portabilité faible
+            \end{column}
+        \end{columns}        
+    \end{blockSimple}
+
+     
+\end{frame}
+
+
+\begin{frame}{Réalisation}
+    \pause
+    \begin{tikzpicture}[remember picture, overlay]
+  \node[xshift = 10cm, yshift=1cm] {
+    \begin{tikzpicture}[scale=0.5, transform shape,>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
+\tikzstyle{arrow} = [thick,->,>=stealth, line width=1.5pt]
+        % Nœuds avec apparition progressive
+        \node[src] (src) {Source};
+        \node[gray, right=18mm of src] (cmp) {Compilateur};
+        \node[asm, right=18mm of cmp] (asm) {Assembleur};
+
+        % Flèches
+        \draw[link] (src) -- (cmp);
+        \draw[link] (cmp) -- (asm);
+        %\draw[->, dashed, bend left=40, >=stealth,] (src.north) to (asm.north);
+        \draw [arrow, bend left, dashed, color=blue!35] (src.north) to (asm.north);
+
+        \end{tikzpicture}
+        };
+    \end{tikzpicture}
+
+    \begin{blockSimple}{Vérification de binaire}
+        $\centerdot$ Approche simple
+        $\centerdot$ Approche systématique
+        $\centerdot$ Approche automatique
+    \end{blockSimple}
+    \pause
+    \begin{block}{Érysichthon}
+        Premier outil ajouté à une intégration continue qui vérifie formellement et complètement une bibliothèque cryptographique.            
+    \end{block}
+
+
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \raggedleft
+            Analyse HACL* :
+        \end{column}
+        \begin{column}{0.7\textwidth}
+            \begin{tabular}{l|c|c}
+                & Prouvé & Attendu \\
+                \rowcolor{lightgray}
+                \hline
+                (\%) Fontions sécurisées & 67,96\% & 95\% \\
+                (\%) Fontions attaquables & 3,08\% & 5\% \\
+                \rowcolor{lightgray}
+                (\%) Analyse interrompue & 28,96\% & 0\% \\
+
+            \end{tabular}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         SUMMARY
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Sommaire}
+    \small
+    \tableofcontents
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -275,8 +309,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Outils de vérifications}
-\begin{frame}{Spécialisations}
+\section{Outils de vérification}
+\begin{frame}{Choix de l'outil}
     \begin{columns}% t = alignement en haut
     % Colonne gauche : tableau
     \column{0.6\textwidth}
@@ -285,32 +319,32 @@
         \toprule
         \textbf{Outil} & \textbf{Cible} & \textbf{Techn.} & \textbf{Garanties} \\
         \rowcolor{lightgray}
-        ctgrind \cite{ctgrind} & Binaire & Dynamique & $\blacktriangle$ \\
-        ABPV13 \cite{ABPV13} & C & Formel & $\bullet$ \\
+        \alt<1,2>{ctgrind \cite{ctgrind} & Binaire & Dynamique & $\blacktriangle$}{ & & &}\\
+        \alt<1>{ABPV13 \cite{ABPV13} & C & Formel & $\bullet$ }{ & & &}\\
         \rowcolor{lightgray}
-        VirtualCert \cite{VirtualCert} & x86 & Formel & $\bullet$ \\
-        ct-verif \cite{ctverif} & LLVM & Formel & $\bullet$ \\
+        \alt<1>{VirtualCert \cite{VirtualCert} & x86 & Formel & $\bullet$ }{ & & &}\\
+        \alt<1>{ct-verif \cite{ctverif} & LLVM & Formel & $\bullet$ }{ & & &}\\
         \rowcolor{lightgray}
-        FlowTracker \cite{FlowTracker} & LLVM & Formel & $\bullet$ \\
-        Blazer \cite{Blazer} & Java & Formel & $\bullet$ \\
+        \alt<1>{FlowTracker \cite{FlowTracker} & LLVM & Formel & $\bullet$ }{ & & &}\\
+        \alt<1>{Blazer \cite{Blazer} & Java & Formel & $\bullet$ }{ & & &}\\
         \rowcolor{lightgray}
-        BPT17 \cite{BPT17} & C & Symbolique & $\blacktriangle$ \\
-        MemSan \cite{MemSan} & LLVM & Dynamique & $\blacktriangle$ \\
+        \alt<1>{BPT17 \cite{BPT17} & C & Symbolique & $\blacktriangle$ }{ & & &}\\
+        \alt<1>{MemSan \cite{MemSan} & LLVM & Dynamique & $\blacktriangle$ }{ & & &}\\
         \rowcolor{lightgray}
-        Themis \cite{Themis} & Java & Formel & $\bullet$ \\
-        COCO-CHANNEL \cite{COCOCHANNEL} & Java & Symbolique & $\bullet$ \\
+        \alt<1>{Themis \cite{Themis} & Java & Formel & $\bullet$ }{ & & &}\\
+        \alt<1>{COCO-CHANNEL \cite{COCOCHANNEL} & Java & Symbolique & $\bullet$ }{ & & &}\\
         \rowcolor{lightgray}
-        DATA \cite{DATA1,DATA2} & Binaire & Dynamique & $\blacktriangle$ \\
-        MicroWalk \cite{MicroWalk} & Binaire & Dynamique & $\blacktriangle$ \\
+        \alt<1,2>{DATA \cite{DATA1,DATA2} & Binaire & Dynamique & $\blacktriangle$}{ & & &}\\
+        \alt<1,2>{MicroWalk \cite{MicroWalk} & Binaire & Dynamique & $\blacktriangle$}{ & & &}\\
         \rowcolor{lightgray}
-        timecop \cite{timecop} & Binaire & Dynamique & $\blacktriangle$ \\
-        SC-Eliminator \cite{SCEliminator} & LLVM & Formel & $\bullet$ \\
+        \alt<1,2>{timecop \cite{timecop} & Binaire & Dynamique & $\blacktriangle$ }{ & & &}\\
+        \alt<1>{SC-Eliminator \cite{SCEliminator} & LLVM & Formel & $\bullet$ }{ & & &}\\
         \rowcolor{lightgray}
-        Binsec/Rel \cite{binsecRel2019} & Binaire & Symbolique & $\blacktriangle$ \\
-        CT-WASM \cite{CTWASM} & WASM & Formel & $\bullet$ \\
+        \alt<1,2>{Binsec/Rel \cite{binsecRel2019} & Binaire & Symbolique & $\blacktriangle$}{\textcolor{red}{ Binsec/Rel \cite{binsecRel2019}} & Binaire & Symbolique & $\blacktriangle$}\\
+        \alt<1>{CT-WASM \cite{CTWASM} & WASM & Formel & $\bullet$ }{ & & &}\\
         \rowcolor{lightgray}
-        FaCT \cite{FaCT} & DSL & Formel & $\bullet$ \\
-        haybale-pitchfork \cite{haybale-pitchfork} & LLVM & Symbolique & $\blacktriangle$ \\
+        \alt<1>{FaCT \cite{FaCT} & DSL & Formel & $\bullet$ }{ & & &}\\
+        \alt<1>{haybale-pitchfork \cite{haybale-pitchfork} & LLVM & Symbolique & $\blacktriangle$ }{ & & &}\\
         \bottomrule
     \end{tabular}
 
@@ -337,19 +371,58 @@
         $\bullet$ = Analyse correcte,$\blacktriangle$ =  Limitée
     \end{scriptsize}
     \end{columns}
+\onslide<3>{}
 \end{frame}
 
+
 \begin{frame}{L'outil idéal}
-    \begin{exampleblock}{Binsec}
+    \begin{exampleblock}{Binsec \cite{binsecRel2019}}
        \textit{Binary Security}\footnote{\url{https://binsec.github.io/}} est une plateforme open source développée pour évaluer la sécurité des logiciels au niveau binaire. 
        
        Il est notamment utilisé pour la recherche de vulnérabilités, la désobfuscation de logiciels malveillants et la vérification formelle de code binaire. Grâce à l'exécution symbolique, Binsec peut explorer et modéliser le comportement d'un programme pour détecter des erreurs; cette détection est réalisée en association avec des outils de fuzzing et/ou des solveurs SMT.
     \end{exampleblock}
 \end{frame}
 
-\section{Automatismes}
-\begin{frame}[fragile]{Premiers scripts}
 
+\begin{frame}{Fonctionnement}
+
+    \begin{blockSimple}{Détail :}
+        \begin{itemize}
+            \item Analyse au niveau binaire
+            \item Supporte plusieurs architectures (x86\_64, ARM, PowerPC, Risc-V)
+            \item Configuration automatisable
+        \end{itemize}
+    \end{blockSimple}
+    \centering
+    \begin{tikzpicture}[node distance=2cm, scale=0.7, transform shape]
+    \tikzset{
+    block/.style={
+        rectangle,
+        draw,
+        rounded corners,
+        minimum width=2.5cm,
+        minimum height=1cm,
+        align=center
+    },
+    arrow/.style={
+        -latex, thick
+    }
+}
+    \node[block,  fill=blue!50] (bin) {Binaire};
+    \node[block, right of = bin, xshift=2cm, fill=green!50] (src) {Script};
+    \node[block, below of = bin, yshift=-0.5cm, xshift=2cm, fill=black] (binsec) {\textcolor{white}{\textbf{Binsec}}};
+    \node[below of = binsec, yshift=1.1cm] (text) {secure/unknown/insecure};
+
+    % Flèches
+    \draw[arrow] (bin) -- (binsec);
+    \draw[arrow] (src) -- (binsec);
+\end{tikzpicture}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Usage}
+    \footnotesize
     \textbf{Code :} Instructions permettant de trouver le mot d'un passe d'un binaire d'exercice
     \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos, fontsize=\tiny]{bash}
 starting from core with
@@ -367,18 +440,35 @@ end
 
 replace <puts>, <printf> by return end
 
-reach <puts> such that @[rdi, 14] = "Good password!"
-then print ascii stream password
+reach <puts> such that @[rdi, 14] = "Good password!" then print ascii stream password
 
 cut at <puts> if @[rdi, 17] = "Invalid password!"
 halt at <printf>
 \end{minted}
+\begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+    
+    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{stop/.style={rectangle, rounded corners, draw=orange, fill=red!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
+    
+    \onslide<5->{
+    \node[stop, fit={(0.3,0.1) (12.74,0.7)}, label={[labelshift]center:Stop}]{};}
+    \onslide<4->{\node[main, fit={(0.3,1.35) (12.74,2.3)}, label={[labelshift]center:Stubs}]{};}
+    \onslide<3->{\node[definition, fit={(0.3,2.9) (12.74,5.5)}, label={[labelshift]center:Initialisation de registres}]{};}
+    \onslide<2->{\node[intro, fit={(0.3,6.1) (12.74,6.1)}, label={[labelshift, yshift=-0.5cm]center:Chargement des données}]{};}
+
+  \end{tikzpicture}
 
 
 \end{frame}
 
+
+\section{Automatisme}
+
 \begin{frame}[fragile]{Simplification}
-\textbf{Codes :} Instructions permettant d'analyser le code précédent compilé vers Risc-V 32bits
+\textbf{Codes :} Test de la fonction \textit{bn\_cmovznz4}
     
 \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos,fontsize=\scriptsize]{C}
 #include <stdlib.h>
@@ -393,6 +483,16 @@ int main(){
   bn_cmovznz4(r, cin, x, y);
 }
 \end{minted}
+\onslide<2>{
+  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+    
+    \tikzset{stop/.style={rectangle, rounded corners, draw=red, fill=red!80, inner sep=0.3cm, opacity=0.2}}
+
+    \node[stop, fit={(0.3,2.3) (12.74,3.5)}]{};
+
+  \end{tikzpicture}
+}
+
 \end{frame}
 
 \begin{frame}[fragile]{Adaptation}
@@ -410,6 +510,35 @@ halt at  0x0000000000000464
 explore all
 
 \end{minted}
+\end{frame}
+
+
+\begin{frame}{Points d'attention}
+
+    \begin{blockSimple}{Dépendances des informations}
+        \begin{itemize}
+            \item Variables secrètes
+            \item Test correct
+        \end{itemize}
+        
+    \end{blockSimple}
+    \pause
+    \begin{tikzpicture}[node distance=2cm, scale=0.7, transform shape]
+        \tikzset{ block/.style={rectangle,draw,rounded corners,minimum width=2.5cm,minimum height=1cm,align=center},
+                arrow/.style={-latex, thick}}
+        \node[block,  fill=blue!50] (bin) {Binaire};
+        \node[block,  fill=purple!50, above of = bin] (source) {Source};
+        \node[block, right of = bin, xshift=2cm, fill=green!50] (src) {Script};
+        \node[block, below of = bin, yshift=-0.5cm, xshift=2cm, fill=black] (binsec) {\textcolor{white}{\textbf{Binsec}}};
+        \node[below of = binsec, yshift=1.1cm] (text) {secure/unknown/insecure};
+
+        % Flèches
+        \draw[arrow] (bin) -- (binsec);
+        \draw[arrow] (src) -- (binsec);
+        \draw[arrow] (source) -- (bin);
+        \draw[arrow] (source) -- (src);
+    \end{tikzpicture}
+    
 \end{frame}
 
 \begin{frame}{Premiers pas vers l'automatisation}
