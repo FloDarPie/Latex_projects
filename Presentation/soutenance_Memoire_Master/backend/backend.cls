@@ -17,6 +17,7 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{tikz}     % To draw
+\usepackage{pgfplots} % To fraw graph
 \usetikzlibrary{arrows.meta, bending, positioning, shapes.geometric, arrows, backgrounds, fit, calc}
 
 \usepackage{multicol, csquotes}
@@ -67,12 +68,11 @@
 
 \newcommand{\ajd}{\DTMtwodigits{\the\day}/\DTMtwodigits{\the\month}/\the\year}
 
-
 \newcommand{\progressbar}{%
   \tikz[remember picture,overlay]{
     \def\shift{-1pt}
     % proportion
-    \pgfmathsetmacro{\progress}{\insertframenumber/\inserttotalframenumber}
+    \pgfmathsetmacro{\progress}{\insertframenumber/ 33 } % FIXÉ sur la Conclusion
     \pgfmathsetlengthmacro{\barwidth}{\paperwidth * \progress}
     \pgfmathsetmacro{\personalWidth}{\paperwidth-\shift}
 

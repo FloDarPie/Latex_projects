@@ -11,7 +11,8 @@
   pages={104-113},
   doi={10.1007/3-540-68697-5_9},
   author={Paul C. Kocher},
-  year=1996
+  year=1996,
+  keywords = {oral}
 }
 
 
@@ -23,7 +24,8 @@ year = {2003},
 address = {Washington, D.C.},
 url = {https://www.usenix.org/conference/12th-usenix-security-symposium/remote-timing-attacks-are-practical},
 publisher = {USENIX Association},
-month = aug
+month = aug,
+  keywords = {oral}
 }
 
 @misc{stillPractical,
@@ -31,7 +33,8 @@ month = aug
       title = {Remote Timing Attacks are Still Practical},
       howpublished = {Cryptology {ePrint} Archive, Paper 2011/232},
       year = {2011},
-      url = {https://eprint.iacr.org/2011/232}
+      url = {https://eprint.iacr.org/2011/232},
+  keywords = {oral}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,7 +48,8 @@ month = aug
       eprint={2410.13489},
       archivePrefix={arXiv},
       primaryClass={cs.CR},
-      url={https://arxiv.org/abs/2410.13489}, 
+      url={https://arxiv.org/abs/2410.13489},
+  keywords = {oral}
 }
 
 @misc{binsecRel2019,
@@ -62,177 +66,9 @@ month = aug
   eprint       = {1912.08788},
   timestamp    = {Fri, 03 Jan 2020 16:10:45 +0100},
   biburl       = {https://dblp.org/rec/journals/corr/abs-1912-08788.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
+  bibsource    = {dblp computer science bibliography, https://dblp.org},
+  keywords = {oral}
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Reste du mémoire
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-@misc{polubelova2020haclxn,
-  title={{HACLxN}: Verified generic {SIMD} crypto (for all your favourite platforms)},
-  author={Polubelova, Marina and Bhargavan, Karthikeyan and Protzenko, Jonathan and Beurdouche, Benjamin and Fromherz, Aymeric and Kulatova, Natalia and Zanella-B{\'e}guelin, Santiago},
-  booktitle={Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security},
-  pages={899--918},
-  year={2020}
-}
-
-@book{anssi_guideForSecureprogramming,
-  author = {ANSSI},
-  title = {Règles de programmation pour le développement sécurisé de logiciels en langage C},
-  year = {2020}
-}
-
-@book{progC_guide,
-  author = {Anne Canteaut},
-  title = {Programmation en langage C},
-  year = {2014}
-}
-
-@techreport{everest,
-  author = {Team, Project Everest},
-  institution = {Project Everest},
-  title = {Project Everest: Perspectives from Developing Industrial-grade High-Assurance Software},
-  year = {2025}
-}
-
-
-
-
-@misc{DPA_Attack,
-  author={Kocher, Paul and Jaffe, Joshua and Jun, Benjamin},
-  editor={Wiener, Michael},
-  title={Differential Power Analysis},
-  booktitle={Advances in Cryptology --- CRYPTO' 99},
-  year={1999},
-  publisher={Springer Berlin Heidelberg},
-  address={Berlin, Heidelberg},
-  pages={388--397},
-  abstract={Cryptosystem designers frequently assume that secrets will be manipulated in closed, reliable computing environments. Unfortunately, actual computers and microchips leak information about the operations they process. This paper examines specific methods for analyzing power consumption measurements to find secret keys from tamper resistant devices. We also discuss approaches for building cryptosystems that can operate securely in existing hardware that leaks information.},
-  isbn={978-3-540-48405-9}
-}
-
-@misc {Thermal_Attack,
-  author = {Ramya Jayaram Masti and Devendra Rai and Aanjhan Ranganathan and Christian M{\"u}ller and Lothar Thiele and Srdjan Capkun},
-  title = {Thermal Covert Channels on Multi-core Platforms},
-  booktitle = {24th USENIX Security Symposium (USENIX Security 15)},
-  year = {2015},
-  isbn = {978-1-939133-11-3},
-  address = {Washington, D.C.},
-  pages = {865--880},
-  url = {https://www.usenix.org/conference/usenixsecurity15/technical-sessions/presentation/masti},
-  publisher = {USENIX Association},
-  month = aug
-}
-
-@misc{Branch_Attack,
-  author={Ac{\i}i{\c{c}}mez, Onur and Ko{\c{c}}, {\c{C}}etin Kaya and Seifert, Jean-Pierre},
-  editor={Abe, Masayuki},
-  title={Predicting Secret Keys Via Branch Prediction},
-  booktitle={Topics in Cryptology -- CT-RSA 2007},
-  year={2006},
-  publisher={Springer Berlin Heidelberg},
-  address={Berlin, Heidelberg},
-  pages={225--242},
-  abstract={This paper announces a new software side-channel attack --- enabled by the branch prediction capability common to all modern high-performance CPUs. The penalty paid (extra clock cycles) for a mispredicted branch can be used for cryptanalysis of cryptographic primitives that employ a data-dependent program flow. Analogous to the recently described cache-based side-channel attacks our attacks also allow an unprivileged process to attack other processes running in parallel on the same processor, despite sophisticated partitioning methods such as memory protection, sandboxing or even virtualization. In this paper, we will discuss several such attacks for the example of RSA, and experimentally show their applicability to real systems, such as OpenSSL and Linux. Moreover, we will also demonstrate the strength of the branch prediction side-channel attack by rendering the obvious countermeasure in this context (Montgomery Multiplication with dummy-reduction) as useless. Although the deeper consequences of the latter result make the task of writing an efficient and secure modular exponentiation (or scalar multiplication on an elliptic curve) a challenging task, we will eventually suggest some countermeasures to mitigate branch prediction side-channel attacks.},
-  isbn={978-3-540-69328-4}
-}
-
-@misc {LLC_attack,
-  author = { Liu, Fangfei and Yarom, Yuval and Ge, Qian and Heiser, Gernot and Lee, Ruby B. },
-  booktitle = { 2015 IEEE Symposium on Security and Privacy (SP) },
-  title = {{ Last-Level Cache Side-Channel Attacks are Practical }},
-  year = {2015},
-  volume = {},
-  ISSN = {1081-6011},
-  pages = {605-622},
-  abstract = { We present an effective implementation of the Prime+Probe side-channel attack against the last-level cache. We measure the capacity of the covert channel the attack creates and demonstrate a cross-core, cross-VM attack on multiple versions of GnuPG. Our technique achieves a high attack resolution without relying on weaknesses in the OS or virtual machine monitor or on sharing memory between attacker and victim. },
-  keywords = {Probes;Indexes;Multicore processing;Monitoring;Cryptography;Virtual machine monitors;Memory management},
-  doi = {10.1109/SP.2015.43},
-  url = {https://yuval.yarom.org/pdfs/LiuYGHL15.pdf},
-  publisher = {IEEE Computer Society},
-  address = {Los Alamitos, CA, USA},
-  month =May
-}
-
-@misc {DRAM_Attack,
-  author = {Peter Pessl and Daniel Gruss and Cl{\'e}mentine Maurice and Michael Schwarz and Stefan Mangard},
-  title = {{DRAMA}: Exploiting {DRAM} Addressing for {Cross-CPU} Attacks},
-  booktitle = {25th USENIX Security Symposium (USENIX Security 16)},
-  year = {2016},
-  isbn = {978-1-931971-32-4},
-  address = {Austin, TX},
-  pages = {565--581},
-  url = {https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/pessl},
-  publisher = {USENIX Association},
-  month = aug
-}
-
-@misc{vanbulck2018nemesis,
-    title     = {Nemesis: Studying Microarchitectural Timing Leaks in Rudimentary {CPU} Interrupt Logic},
-    author    = {Van Bulck, Jo and Piessens, Frank and Strackx, Raoul},
-    booktitle = {25th {ACM} Conference on Computer and Communications Security {(CCS)}},
-    pages     = {178--195},
-    year      = 2018,
-}
-
-@misc{cryptoeprint:2016/224,
-      author = {Yuval Yarom and Daniel Genkin and Nadia Heninger},
-      title = {{CacheBleed}: A Timing Attack on {OpenSSL} Constant Time {RSA}},
-      howpublished = {Cryptology {ePrint} Archive, Paper 2016/224},
-      year = {2016},
-      url = {https://eprint.iacr.org/2016/224}
-}
-
-
-@misc{Moghimi_2017,
-   title={MemJam: A False Dependency Attack Against Constant-Time Crypto Implementations},
-   volume={47},
-   ISSN={1573-7640},
-   url={http://dx.doi.org/10.1007/s10766-018-0611-9},
-   DOI={10.1007/s10766-018-0611-9},
-   number={4},
-   journal={International Journal of Parallel Programming},
-   publisher={Springer Science and Business Media LLC},
-   author={Moghimi, Ahmad and Wichelmann, Jan and Eisenbarth, Thomas and Sunar, Berk},
-  year={2017},
-}
-
-@misc{Fault_Attacks,
-      author = {Hagai Bar-El and Hamid Choukri and David Naccache and Michael Tunstall and Claire Whelan},
-      title = {The Sorcerer’s Apprentice Guide to Fault Attacks},
-      howpublished = {Cryptology {ePrint} Archive, Paper 2004/100},
-      year = {2004},
-      url = {https://eprint.iacr.org/2004/100}
-}
-
-@misc{faultOverview,
-  author={Avizienis, A.},
-  journal={Computer}, 
-  title={Faulty-Tolerant Computing: An Overview}, 
-  year={1971},
-  volume={4},
-  number={1},
-  pages={5-8},
-  keywords={},
-  doi={10.1109/C-M.1971.216738}
-}
-
-@misc{formalConstantTime,
-  author={Barthe, Gilles and Grégoire, Benjamin and Laporte, Vincent},
-  booktitle={2018 IEEE 31st Computer Security Foundations Symposium (CSF)}, 
-  title={Secure Compilation of Side-Channel Countermeasures: The Case of Cryptographic “Constant-Time”}, 
-  year={2018},
-  volume={},
-  number={},
-  pages={328-343},
-  keywords={Timing;Side-channel attacks;Semantics;Standards;Software;Libraries;cryptographic-constant-time;secure-compilation;formal-proofs},
-  doi={10.1109/CSF.2018.00031}
-}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% CONSTANT TIME PROGRAMMING
 
 @misc{CTsaferCrypto,
       author = {Lúcás Críostóir Meier and Simone Colombo and Marin Thiercelin and Bryan Ford},
@@ -304,7 +140,8 @@ month = aug
   author = {Zinzindohou{\'e}, Jean-Karim and Bhargavan, Karthikeyan and Protzenko, Jonathan and Beurdouche, Benjamin},
   url = {https://hacl-star.github.io/},
   title = {{HACL*}: A verified modern cryptographic library},
-  year = {2017}
+  year = {2017},
+  keywords = {oral}
 }
 
 @misc{GeimerEvaluationsSideChannel,

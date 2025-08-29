@@ -1,15 +1,35 @@
-\frametitle{Adaptation}
-\textbf{Codes :} Instructions permettant d'analyser le code précédent compilé vers Risc-V 32bits
+\frametitle{Exemple de test}
+\textbf{Code :}Test de la fonction Hacl\_EC\_K256\_felem\_sqr
+  \begin{minted}[fontsize=\scriptsize]{c}
+// Made by
+// ANDHRÍMNIR - 0.3.0
+// 09-07-2025
+//
 
-    \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos]{bash}
-load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
+#include <stdlib.h>
+#include "Hacl_EC_K256.h"
 
-secret global  r, cin, y, x
+#define BUFFER_SIZE 5
+uint64_t a[BUFFER_SIZE];
+uint64_t out[BUFFER_SIZE];
 
-starting from <main>
 
-with concrete stack pointer
-halt at  0x0000000000000464
-explore all
+int main (int argc, char *argv[]){
+Hacl_EC_K256_felem_sqr(a, out);
+  exit(0);
+}
+  \end{minted}
+\onslide<2>{
+  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
 
-\end{minted}
+    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+    \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
+
+    \node[intro, fit={(0.3,4.1) (12.74,5.9)}, label={[labelshift]center:Phase introductive : 8 lignes}]{};
+    \node[definition, fit={(0.3,2.3) (12.74,3.5)}, label={[labelshift]center:Phase déclarative}]{};
+    \node[main, fit={(0.3,0.8) (12.74,1.7)}, label={[labelshift]center:Phase principale}]{};
+
+  \end{tikzpicture}
+}
