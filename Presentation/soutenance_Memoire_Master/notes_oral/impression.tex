@@ -1,8 +1,39 @@
-\documentclass[a4paper]{article}
+\documentclass[a3paper]{article}
 \usepackage{pdfpages}
+\usepackage{graphicx}
+\usepackage{adjustbox}
 \pagestyle{empty}
 
+% compteur pour les fiches
+\newcounter{fiche}
+
 \begin{document}
-% On inclut le PDF précédent en "n-up"
-\includepdf[pages=-,nup=2x1,frame=true, landscape]{notes.pdf}
+
+\includepdf[
+  pages=-,
+  nup=2x1,
+  frame=true,
+  landscape,
+  pagecommand={\stepcounter{fiche}\null\newpage
+    \begin{adjustbox}{rotate=90,center}
+    \begin{minipage}[t][.9\textwidth][c]{0.5\textheight}
+        \centering
+        {\Huge\bfseries Analyse automatisée d'une bibliothèque cryptographique} \\[2cm]
+        \includegraphics[height=2cm]{../img/theme/Inria-logo-rouge.png} \hspace{1cm}
+        \includegraphics[height=2cm]{../img/theme/LOGO_CEA_ORIGINAL_2022.png} \hspace{1cm}
+        \includegraphics[height=2cm]{../img/theme/ub-logo.png} \\[2cm]
+        {\LARGE\bfseries Fiche \thefiche}
+    \end{minipage}%
+    \begin{minipage}[t][.9\textwidth][c]{0.5\textheight}
+        \centering
+        {\Huge\bfseries Analyse automatisée d'une bibliothèque cryptographique} \\[2cm]
+        \includegraphics[height=2cm]{../img/theme/Inria-logo-rouge.png} \hspace{1cm}
+        \includegraphics[height=2cm]{../img/theme/LOGO_CEA_ORIGINAL_2022.png} \hspace{1cm}
+        \includegraphics[height=2cm]{../img/theme/ub-logo.png} \\[2cm]
+        \stepcounter{fiche}
+        {\LARGE\bfseries Fiche \thefiche}
+    \end{minipage}
+    \end{adjustbox}}
+]{notes.pdf}
+
 \end{document}

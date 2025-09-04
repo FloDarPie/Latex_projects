@@ -21,13 +21,17 @@
   \item Introduction — contexte et objectifs
   \item Méthodes de protection et limitations
   \item Outils de vérifications
+  \begin{itemize}
+    \item Étude sur cas simple
+    \item Contraintes et identification des limitations
+  \end{itemize}
   \item Érysichthon
   \begin{itemize}
     \item Conception générale
     \item Andhrímnir
   \end{itemize}
   \item Résultats
-  \item Conclusion
+  \item Annexes
 \end{itemize}
 
 \subsection*{Introduction}
@@ -35,71 +39,106 @@
   \begin{itemize}
     \item Attaquer sur la sécurité et le besoin d'avoir des libs cryptographiques
     \item Présenter HACL*
-    \item Historique timing attacks
-    \item Introduction de la problématique
+    \item Historique timing attacks et mise à distance
+    \item Exemple et instructions en temps constant
   \end{itemize}
 \end{multicols}
 
-\subsection*{Méthodes de protection et limitations}
+\subsubsection*{Axes de défenses}
+- programmation en temps constant \\
+\important{motivation du stage avec l'article}\\
 - compilateurs
-\begin{multicols}{2}
 \begin{itemize}
-  \item CompCert $=>$ garanties formelles $//$ retard sur les standards
-  \item Jasmine $=>$ annotations de codes, execute toutes les branches $//$ pas employable sur un projet industriel, artefact de recherche
-  \item Raccoon $=>$ annotations de codes $//$ pas le temps constants
-  \item Constantine $=>$ linéarisation $//$ 16.36x taille binaire \& 27.1x temps
+  \item CompCert $=>$ garanties formelles \dotfill retard sur les standards
+  \item Jasmine $=>$ annotations de codes, execute toutes les branches \dotfill pas employable sur un projet industriel, artefact de recherche
+  \item Raccoon $=>$ annotations de codes \dotfill pas le temps constants
+  \item Constantine $=>$ linéarisation \dotfill 16.36x taille binaire \& 27.1x temps
 \end{itemize}
-\end{multicols}
 - assembleur\\
-- programmation en temps constant 
-\begin{itemize}
-  \item présentation
-  \item détails et exemple
-\end{itemize}
 
-\textit{transition}
+\subsubsection*{Réalisation}
+\textbf{vérification de binaire et continuité des Spécifications}\\
+Présentation Érysichthon et résultats
+
+\medbreak
+\textit{Sommaire}
+\newpage
 
 \subsection*{Outils de vérifications}
 - tableau \\
-- \important{Binsec} / présentation
-\newpage
+\textbf{vérification de binaire}\\
+\textbf{vérification correcte}
+\smallbreak
+- \important{Binsec}
+\subsubsection*{Binsec}
+\begin{itemize}
+  \item analyse au binaire
+  \item couvrir de nombreuses architectures
+  \item permet l'automatisation
+\end{itemize}
+
+Commande de choix de l'outil $\bigoplus$ script d'instruction\smallbreak
+
+EXEMPLE
+
 \subsection*{Automatismes}
-\begin{multicols}{2}
-  - Démo de Binsec et comment ça fonctionne\\
-  - adaptation cas d'étude\\
-  - automatisation \important{tableaux}\\
-  - cahier des charges
-\end{multicols}
+\begin{itemize}
+  \item Simplification
+  \item Réduction de la taille des binaires
+  \item Script binsec simple
+\end{itemize}
+\important{tableaux de résultats}\smallbreak
+
+- identifications des points d'attention\\
+- Variables secrètes et test complet
+
+\subsubsection*{Cahier des charges}
+\begin{itemize}
+  \item identification des points clés
+  \item graphes de fonctionnements
+  \item spécialisation x86\_64
+\end{itemize}
+
+
 
 \subsection*{Érysichthon}
-- graphes de fonctionnements\\
-- spécialisation x86\_64\\
-- construction en modules\\
-\textbf{Focus sur Andhrímnir}\\
-- standardisation de la construction des tests\\
-- graphe de fontionnements\\
 
+- construction en modules
+- ensemble des scripts et de Makefile
+
+\subsubsection*{Andhrímnir}
+- Indépendant : automatique et corrects\\
+- Adapté : facilité l'usage et avancer dans la conception de recherche\\
+\smallbreak
+Graphe de fonctionnement
+\smallbreak
+Exemple et standardisation
+\newpage
 \subsection*{Résultats}
-- grahes\\
+- graphes\\
 - discuter des \textbf{unknown}\\
-\important{détail sur les plus importants} : KO - error
+\hspace{5pt}\textbf{ORDRE des arrêts}
+  \begin{itemize}
+    \item max-depth / timeout / killed
+    \item killed
+    \item syscall / KO / error
+    \item KO / error
+  \end{itemize}
+
 
 
 \subsection*{Conclusion}
+(afficher les références)
 
-Retour sur la présentation : \\
-\important{Questions de recherches}
-\begin{enumerate}
-  \item[QR1 :] propagation des garanties de sécurité
-  \item[QR3 :] automat détect° faille
-  \item[QR2 :] application sur biblio
-\end{enumerate}\smallbreak
-Retour sur Érysichthon
-\begin{multicols}{2}
-- outil fonctionnel\\
-- corrections pour Binsec\\
-- modification de HACL*\\
-- ajout à une intégration continue  \\
-\end{multicols}
+
+
+\subsection*{Annexes}
+
+\begin{itemize}
+  \item options de compilation
+  \item construction en vue user
+  \item pourquoi json
+  \item fin de stage / ouvertures autres pb
+\end{itemize}
 
 \end{document}

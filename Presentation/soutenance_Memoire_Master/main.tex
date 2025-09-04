@@ -23,7 +23,8 @@
 \end{frame}
 
 \comment{  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
- } %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
+} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMENTARY
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -105,7 +106,7 @@
             \begin{blockSimple}{Opérations influantes :}
                 \begin{itemize}
                     \item Accès mémoire
-                    \item Décalage/rotation de valeurs \hfill\onslide<2>{(caché)}
+                    \item Décalage/rotation de valeurs
                     \item Saut conditionnel
                     \item Division/multiplication
                 \end{itemize}
@@ -115,7 +116,7 @@
 \end{frame}
 
 
-\begin{frame}{Structure de travail}
+\begin{frame}{Axes de défenses contre les attaques par chronométrage}
     \begin{blockSimple}{}
         \centering
         \begin{tikzpicture}[>={Latex[length=3mm,width=2.5mm]}, link/.style={->, very thick}]
@@ -163,7 +164,10 @@
     \end{blockSimple}
 
     \pause
-    2024 : \citeauthor{schneider2024breakingbadcompilersbreak}, \citetitle{schneider2024breakingbadcompilersbreak}
+    \begin{alertblock}{2024 - \citeauthor{schneider2024breakingbadcompilersbreak}}
+        \citetitle{schneider2024breakingbadcompilersbreak}
+    \end{alertblock}
+
 \end{frame}
 
 \begin{frame}{Travail avec le compilateur}
@@ -229,7 +233,7 @@
             \begin{column}{0.5\textwidth}
             - Spécifique à chaque processeur qui exécute\\
             - Beaucoup de connaissance spécifique au processeur ciblé\\
-            - Long à mettre en place
+            - Long à mettre en place\\
             - Portabilité faible
             \end{column}
         \end{columns}        
@@ -261,13 +265,13 @@
     \end{tikzpicture}
 
     \begin{blockSimple}{Vérification de binaire}
-        $\centerdot$ Approche simple
-        $\centerdot$ Approche systématique
-        $\centerdot$ Approche automatique
+        $\centerdot$ Approche systématisée et automatique
+        $\centerdot$ Analyse correcte et complète\\
+        $\centerdot$ Processus d'intégration continue
     \end{blockSimple}
     \pause
     \begin{block}{Érysichthon}
-        Premier outil ajouté à une intégration continue qui vérifie formellement et complètement une bibliothèque cryptographique.            
+        Premier outil de vérification complète de bibliothèque cryptographique face aux attaques temporelles.            
     \end{block}
 
 
@@ -281,8 +285,8 @@
                 & Prouvé & Attendu \\
                 \rowcolor{lightgray}
                 \hline
-                (\%) Fontions sécurisées & 67,96\% & 95\% \\
-                (\%) Fontions attaquables & 3,08\% & 5\% \\
+                (\%) Fontions sécurisées & 67,96\% & 62,39\% \\
+                (\%) Fontions attaquables & 3,08\% & 27,61\% \\
                 \rowcolor{lightgray}
                 (\%) Analyse interrompue & 28,96\% & 0\% \\
 
@@ -377,14 +381,14 @@
 
 \begin{frame}{L'outil idéal}
     \begin{exampleblock}{Binsec \cite{binsecRel2019}}
-       \textit{Binary Security}\footnote{\url{https://binsec.github.io/}} est une plateforme open source développée pour évaluer la sécurité des logiciels au niveau binaire. 
+       \textit{Binary Security}\footnote{\url{https://binsec.github.io/}} est une plateforme open source développée pour évaluer la sécurité des logiciels au niveau binaire. \smallbreak
        
-       Il est notamment utilisé pour la recherche de vulnérabilités, la désobfuscation de logiciels malveillants et la vérification formelle de code binaire. Grâce à l'exécution symbolique, Binsec peut explorer et modéliser le comportement d'un programme pour détecter des erreurs; cette détection est réalisée en association avec des outils de fuzzing et/ou des solveurs SMT.
+       Il permet la recherche de vulnérabilités, la désobfuscation de logiciels malveillants et la vérification formelle de code binaire. Grâce à l'exécution symbolique, Binsec peut explorer et modéliser le comportement d'un programme pour détecter des erreurs; cette détection est réalisée en association avec des outils de fuzzing et/ou des solveurs SMT.
     \end{exampleblock}
 \end{frame}
 
 
-\begin{frame}{Fonctionnement}
+\begin{frame}[fragile]{Fonctionnement}
 
     \begin{blockSimple}{Détail :}
         \begin{itemize}
@@ -394,7 +398,7 @@
         \end{itemize}
     \end{blockSimple}
     \centering
-    \begin{tikzpicture}[node distance=2cm, scale=0.7, transform shape]
+    \begin{tikzpicture}[node distance=2cm, scale=0.6, transform shape]
     \tikzset{
     block/.style={
         rectangle,
@@ -417,60 +421,106 @@
     \draw[arrow] (bin) -- (binsec);
     \draw[arrow] (src) -- (binsec);
 \end{tikzpicture}
-    
+    \begin{minted}{bash}
+        $ binsec -sse -sse-script $(SCRIPT) -checkct $(BIN)
+    \end{minted}
 \end{frame}
 
 
 \begin{frame}[fragile]{Usage}
     \footnotesize
-    \textbf{Code :} Instructions permettant de trouver le mot d'un passe d'un binaire d'exercice
+    \textbf{Code :} Instructions pour trouver le mot d'un passe d'un crackme (61c8deff33c5d413767ca0ea)
     \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos, fontsize=\tiny]{bash}
-starting from core with
-  argv<64> := rsi
-  arg1<64> := @[argv + 8, 8]
-  size<64> := nondet            # 0 < strlen(argv[1]) < 128
-  assume 0 < size < 128,       all_printables<1> := true
-  @[arg1, 128] := 0
-  for i<64> in 0 to size - 1 do
-    @[arg1 + i] := nondet as password
-    all_printables := all_printables && " " <= password <= "~"
-  end
-  assume all_printables
+starting from core
+return_address<64> := @[rsp, 8]
+replace <puts>, <printf> by
+  return
 end
-
-replace <puts>, <printf> by return end
-
-reach <puts> such that @[rdi, 14] = "Good password!" then print ascii stream password
-
-cut at <puts> if @[rdi, 17] = "Invalid password!"
-halt at <printf>
-\end{minted}
-\begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+replace <__isoc99_scanf> by
+  assert @[rdi, 3] = "%s"z
+  len<64> := nondet         ,assume 0 < len < 50
+  all_printables<1> := true
+  for i<64> in 0 to len - 1 do
+    @[rsi + i] := nondet as key
+    all_printables := all_printables && " " <= key <= "~"
+  end
+  @[rsi + i] := "\x00"      ,assume all_printables
+  return
+end
+reach <printf> such that @[rdi, 16] = "[+] Correct key!"    then print ascii stream key
+cut at <printf> if @[rdi, 18] = "[-] Incorrect key!"
+halt at <__stack_chk_fail>, return_address
+    \end{minted}
     
-    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{stop/.style={rectangle, rounded corners, draw=orange, fill=red!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
+        
+  
+    \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
     
-    \onslide<5->{
-    \node[stop, fit={(0.3,0.1) (12.74,0.7)}, label={[labelshift]center:Stop}]{};}
-    \onslide<4->{\node[main, fit={(0.3,1.35) (12.74,2.3)}, label={[labelshift]center:Stubs}]{};}
-    \onslide<3->{\node[definition, fit={(0.3,2.9) (12.74,5.5)}, label={[labelshift]center:Initialisation de registres}]{};}
-    \onslide<2->{\node[intro, fit={(0.3,6.1) (12.74,6.1)}, label={[labelshift, yshift=-0.5cm]center:Chargement des données}]{};}
+        \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+        \tikzset{main/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+        \tikzset{stop/.style={rectangle, rounded corners, draw=orange, fill=red!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+        \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
+        
+        \onslide<4->{
+        \node[stop, fit={(0.3,0.2) (12.74,1.3)}, label={[labelshift]center:Stop}]{};}
+        \onslide<3->{\node[main,  fit={(0.3,1.9) (12.74,4.5)}, label={[labelshift]center:Stubs}]{};}
+        \onslide<3->{\node[main,  fit={(0.3,5.1) (12.74,5.6)}, label={[labelshift,yshift=-0.5cm]center:Stubs}]{};}        
+        \onslide<2->{\node[intro, fit={(0.3,6.2) (12.74,6.2)}, label={[labelshift, yshift=-0.5cm]center:Chargement des données}]{};}
 
   \end{tikzpicture}
+\end{frame}
+    
+\begin{frame}[fragile]{Retour de Binsec}
+    \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos, fontsize=\tiny]{bash}
+$ binsec -sse -sse-script crackme.ini -sse-depth 10000 core.snapshot
+[sse:result] Path 22 reached address 0x7ffff7e115b0 (<printf>) (0 to go)
+[sse:result] Ascii stream key : "34407373373234353336"
+[sse:info] SMT queries
+             Preprocessing simplifications      Satisfiability queries
+               total          20894               total          80
+               true           5243                sat            41
+               false          10923               unsat          39
+               constant enum  4728                unknown        0
+                                                  time           0.39
+                                                  average        0.00
+           Exploration
+             total paths                      22
+             completed/cut paths              19
+             pending paths                    3
+             stale paths                      0
+             failed assertions                0
+             branching points                 20931
+             max path depth                   7212
+             visited instructions (unrolled)  143268
+             visited instructions (static)    3720
+    \end{minted}
 
+    \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+    
+        \tikzset{command/.style={rectangle, rounded corners, draw=orange, fill=orange, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+        \tikzset{result/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+        \tikzset{key/.style={rectangle, rounded corners, draw=red, fill=red!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
+        \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
+        
+        \onslide<2->{\node[result,  fit={(0.3,0.1) (12.74,6.1)}, label={[labelshift]center:Résultats}]{};}
+        \onslide<2->{\node[command, fit={(0.3,6.8) (12.74,6.8)}, label={[labelshift]center:Commande}]{};}
+        \onslide<3->{\node[key,     fit={(3.9,6) (6,6)}, label={[xshift=1.3cm]center:Clé}]{};}
+        
 
+  \end{tikzpicture}
 \end{frame}
 
 
 \section{Automatisme}
+\subsection{Étude sur cas simple}
+\begin{frame}[fragile]{Étude sur cas simple}
+\begin{columns}
 
-\begin{frame}[fragile]{Simplification}
-\textbf{Codes :} Test de la fonction \textit{bn\_cmovznz4}
+  % Colonne de gauche : code C
+  \column{0.55\textwidth}
+  \textbf{Codes :} Test de la fonction \textit{bn\_cmovznz4}
     
-\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos,fontsize=\scriptsize]{C}
+  \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos,fontsize=\scriptsize]{C}
 #include <stdlib.h>
 #include <stdint.h>
 #include "Hacl_P256.h"
@@ -482,23 +532,20 @@ uint64_t x[SIZE]; uint64_t y[SIZE]; uint64_t r[SIZE];
 int main(){
   bn_cmovznz4(r, cin, x, y);
 }
-\end{minted}
-\onslide<2>{
-  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+  \end{minted}
+
+%   \onslide<2>{
+%     \begin{tikzpicture}[overlay, remember picture, node distance=0.5cm]
+%       \tikzset{stop/.style={rectangle, rounded corners, draw=red, fill=red!80, inner sep=0.3cm, opacity=0.2}}
+%       \node[stop, fit={(0.3,2.3) (12.74,3.5)}]{};
+%     \end{tikzpicture}
+%   }
+
+  % Colonne de droite : script d’analyse
+  \column{0.45\textwidth}
+  \textbf{Codes :} Script Binsec associé
     
-    \tikzset{stop/.style={rectangle, rounded corners, draw=red, fill=red!80, inner sep=0.3cm, opacity=0.2}}
-
-    \node[stop, fit={(0.3,2.3) (12.74,3.5)}]{};
-
-  \end{tikzpicture}
-}
-
-\end{frame}
-
-\begin{frame}[fragile]{Adaptation}
-    \textbf{Codes :} Instructions permettant d'analyser le code précédent compilé vers Risc-V 32bits
-    
-    \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos]{bash}
+  \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,linenos,fontsize=\scriptsize]{bash}
 load sections .plt, .text, .rodata, .data, .got, .got.plt, .bss from file
 
 secret global  r, cin, y, x
@@ -509,169 +556,128 @@ with concrete stack pointer
 halt at  0x0000000000000464
 explore all
 
-\end{minted}
-\end{frame}
+  \end{minted}
 
-
-\begin{frame}{Points d'attention}
-
-    \begin{blockSimple}{Dépendances des informations}
-        \begin{itemize}
-            \item Variables secrètes
-            \item Test correct
-        \end{itemize}
-        
-    \end{blockSimple}
-    \pause
-    \begin{tikzpicture}[node distance=2cm, scale=0.7, transform shape]
-        \tikzset{ block/.style={rectangle,draw,rounded corners,minimum width=2.5cm,minimum height=1cm,align=center},
-                arrow/.style={-latex, thick}}
-        \node[block,  fill=blue!50] (bin) {Binaire};
-        \node[block,  fill=purple!50, above of = bin] (source) {Source};
-        \node[block, right of = bin, xshift=2cm, fill=green!50] (src) {Script};
-        \node[block, below of = bin, yshift=-0.5cm, xshift=2cm, fill=black] (binsec) {\textcolor{white}{\textbf{Binsec}}};
-        \node[below of = binsec, yshift=1.1cm] (text) {secure/unknown/insecure};
-
-        % Flèches
-        \draw[arrow] (bin) -- (binsec);
-        \draw[arrow] (src) -- (binsec);
-        \draw[arrow] (source) -- (bin);
-        \draw[arrow] (source) -- (src);
-    \end{tikzpicture}
-    
-\end{frame}
-
-\begin{frame}{Premiers pas vers l'automatisation}
-    
-    \textbf{Table :} Tableau de résultats d'analyse Binsec pour architecture ARMv7 et ARMv8
-    \begin{center}    
-        \begin{tabular}{|c|c|c|c|c|c|}
-            \hline
-            \rowcolor{blue!10}
-            \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{fonction analysée} & \multicolumn{5}{c|}{\textbf{cmovznz4}} \\
-            \hline
-            \rowcolor{blue!30}
-            \textbf{Clang+LLVM} & \textbf{14.0.6} & \textbf{15.0.6} & \textbf{16.0.4} & \textbf{17.0.6} & \textbf{18.1.8} \\
-            \hline
-            \rowcolor{orange!30!red!50}
-            \textbf{-O0} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
-            \hline
-            \rowcolor{orange!30!red!50}
-            \textbf{-O1} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
-            \hline
-            \rowcolor{orange!30!red!50}
-            \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
-            \hline
-            \rowcolor{orange!30!red!50}
-            \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
-            \hline
-            \rowcolor{orange!30!red!50}
-            \textbf{-Os} & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  \\
-            \hline
-            \rowcolor{orange!30!red!50}
-            \textbf{-Oz} & \cellcolor{green!60}\checkmark  & \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark  &  \cellcolor{green!60}\checkmark \\
-            \hline
-        \end{tabular}   
-    \end{center}
-    \raggedleft
-     \small{
-        \checkmark : \textit{binary secure} ;
-        \textasciitilde : \textit{binary unknown} ;
-        $\times$ : \textit{binary insecure}
-    }
-\end{frame}
-
-\begin{frame}{Reherche de failles}
-    \textbf{Table :} Tableau de résultats d'analyse Binsec pour architecture Risc-V
-    \begin{center}
-    \begin{tabular}{|c|cc|cc|}
-        \hline
-        \rowcolor{blue!10}
-        \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{fonction analysée} & \multicolumn{2}{c|}{\textbf{cmovznz4} - 64 bits} & \multicolumn{2}{c|}{\textbf{cmovznz4} - 32 bits} \\
-        \hline
-        \rowcolor{blue!30}
-        \textbf{Compilateur et architecture} & gcc 15.1.0 & clang 19.1.7 & gcc 15.1.0& clang 19.1.7 \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-O0} &  \cellcolor{orange!60}\textasciitilde  & \cellcolor{red!60}$\times$ & \cellcolor{orange!60}\textasciitilde & \cellcolor{red!60}$\times$ \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-O1} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-O2} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-O3} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-Os} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
-        \hline
-        \rowcolor{orange!30!red!50}
-        \textbf{-Oz} &  \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
-        \hline
-    \end{tabular}
-    \end{center}
-\raggedleft
-     \small{
-        \checkmark : \textit{binary secure} ;
-        \textasciitilde : \textit{binary unknown} ;
-        $\times$ : \textit{binary insecure}
-    }
-\end{frame}
-
-\begin{frame}{Cahier des charges}
-\begin{columns}
-    \column{0.3\textwidth}
-    \begin{blockSimple}{Objectifs du futur outil}
-        \begin{itemize}
-            \item Petits fichiers binaire
-            \item Analyse complète de la bibliothèque
-            \item Analyse correcte
-            \item Automatique
-            \pause
-            \item Couverture [architectures, compilateurs] 
-        \end{itemize}
-    \end{blockSimple}
-    \column{0.5\textwidth}
-    \textbf{Figure :} Flot de travail de l'outil
-    \smallbreak
-    \begin{tikzpicture}[node distance=2cm, scale=1, transform shape]
-
-    % Styles des noeuds
-    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=green!30]
-    \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
-    \tikzstyle{intermediate} = [circle, minimum size=0.5cm, text centered, draw=white, fill=white]
-    \tikzstyle{arrow} = [thick,->,>=stealth]
-    
-    % Noeuds
-    \node (hacl) [startstop] {HACL*};
-    \node (inter) [intermediate, below of=hacl,xshift=1cm, yshift=1cm] {};
-    \node (compilateur) [process, below of=hacl] {Compilateur};
-    \node (binsec) [startstop, below of=compilateur] {Binsec};
-    
-    % Flèches
-    \draw [arrow, red] (hacl) -- node[anchor=west] {-test.c} (compilateur);
-    \draw [arrow, red] (inter) -- ++(2,0) |- node[anchor=west, pos=0.25] {.ini} (binsec);
-    \draw [arrow, blue] (compilateur) -- node[anchor=east] {.exe} (binsec);
-    
-    % Annotations
-    \node[align=center, left of=compilateur, xshift=-0.2cm] {\scriptsize x86\_64\\ \scriptsize ARM\\ \scriptsize Risc-V};
-    \node[align=center, below of=binsec, yshift=30pt] {\scriptsize Secure/Insecure/Unknown};
-    
-    \end{tikzpicture}
 \end{columns}
 \end{frame}
 
-
-
-\section{Érysichthon}
-\subsection{Conception générale}
-
-\begin{frame}{Conception générale}
+\begin{frame}{Analyse de compilateur}
+    
+    \textbf{Table :} Résultats d'analyse Binsec pour plusieurs compilateurs vers ARM
     \begin{center}
-        \begin{tikzpicture}[remember picture, overlay]
-            \begin{scope}[shift={([yshift=-2.3cm, xshift=-1cm]current page.north)}]
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|c|ccccccc|ccccccc|}
+        \hline
+        \rowcolor{blue!10}
+        \cellcolor{inria-2024-gris-bleu!20}\textbf{opt}\textbackslash\textbf{fonction - architecture} 
+            & \multicolumn{7}{|c|}{\textbf{cmovznz4 - 64b}}
+            & \multicolumn{7}{|c|}{\textbf{cmovznz4 - 32b}} \\
+        \hline
+        \rowcolor{blue!30}
+        Compilateur (Clang+LLVM par défaut)  & gcc 15.1.0 & clang 14.0.6 & 15.0.6 & 16.0.4 & 17.0.6 & 18.1.8 & 19.1.7 
+        & gcc 15.1.0 & clang 14.0.6 & 15.0.6 & 16.0.4 & 17.0.6 & 18.1.8 & 19.1.7 \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O0} & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark 
+        & \cellcolor{red!60}$\times$ 
+        & \cellcolor{orange!60}\textasciitilde & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark 
+        & \cellcolor{red!60}$\times$  \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O1} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$
+        & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$ \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O2} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$
+        & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$  \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-O3} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$
+        & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$  \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Os} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$
+        & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$  \\
+        \hline
+        \rowcolor{orange!30!red!50}
+        \textbf{-Oz} & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$
+        & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & 
+        \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{green!60}\checkmark & \cellcolor{red!60}$\times$  \\
+        \hline
+    \end{tabular}}
+    \end{center}
+    \raggedleft
+    \small{
+        \checkmark : \textit{binary secure} ; 
+        \textasciitilde : \textit{binary unknown} ; 
+        $\times$ : \textit{binary insecure}
+    }
+\end{frame}
+
+
+\subsection{Contraintes et identification des limitations}
+\begin{frame}{Points d'attention}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{blockSimple}{Dépendances des informations}
+                \onslide<2>{\begin{itemize}
+                    \item Variables secrètes
+                    \item Test correct
+                \end{itemize}}
+            \end{blockSimple}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \begin{tikzpicture}[node distance=2cm, scale=0.7, transform shape]
+                \tikzset{ block/.style={rectangle,draw,rounded corners,minimum width=2.5cm,minimum height=1cm,align=center},
+                        arrow/.style={-latex, thick}}
+                \node[block,  fill=blue!50] (bin) {Binaire};
+                \node[block, right of = bin, xshift=2cm, fill=green!50] (src) {Script};
+                \node[block, below of = bin, yshift=-0.5cm, xshift=2cm, fill=black] (binsec) {\textcolor{white}{\textbf{Binsec}}};
+                \node[below of = binsec, yshift=1.1cm] (text) {secure/unknown/insecure};
+                
+                % Flèches
+                \draw[arrow] (bin) -- (binsec);
+                \draw[arrow] (src) -- (binsec);
+
+                \node[block,  fill=purple!50, above of = bin] (source) {Source};
+                \draw[arrow] (source) -- (bin);
+                \draw[arrow, dashed] (source) -- (src);
+                
+            \end{tikzpicture}
+        \end{column}
+    \end{columns}
+    
+\end{frame}
+
+
+\begin{frame}{Cahier des charges}
+\begin{columns}
+    \column{0.5\textwidth}
+    \begin{blockSimple}{Objectifs du futur outil}
+        \begin{itemize}
+            \item Petits fichiers binaire
+            \item Analyse correcte
+            \item Analyse complète de la bibliothèque
+            \item Automatique
+            \item Couverture [\textit{architectures, compilateurs}] 
+        \end{itemize}
+    \end{blockSimple}
+    \pause
+    \column{0.5\textwidth}
+    \textbf{Figure :} Flot de travail de l'outil
+    \smallbreak
+    \begin{tikzpicture}[ scale=0.7, transform shape]
+        \begin{scope}[shift={([yshift=-2.3cm, xshift=-1cm]current page.north)}]
     % Styles
     \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
     \tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
@@ -708,11 +714,7 @@ explore all
         \node [zone3, fit=(compilateur) (exe)] {};
     \end{scope}
     \end{scope}
-
-
-
-
-        \node[anchor=north east] at ([xshift=-5mm,yshift=-3cm]current page.north east) {
+\node[anchor=north west] at (ini.north east) {
     \begin{tikzpicture}[font=\small]
     \node[rectangle, draw=black, fill=white, rounded corners, inner sep=2mm] {
         \begin{tabular}{l}
@@ -722,10 +724,10 @@ explore all
         \textcolor{green}{\rule{0.5cm}{0.3cm}} Simple
         \end{tabular}
     };
-\end{tikzpicture}
+    \end{tikzpicture}
 };
     \end{tikzpicture}
-    \end{center}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Adaptation architecturale}
@@ -796,6 +798,9 @@ explore all
 \end{tikzpicture}
 \end{frame}
 
+\section{Érysichthon}
+\subsection{Conception générale}
+
 \begin{frame}{Construction en modules}
     \begin{center}
         \begin{tikzpicture}[auto]
@@ -841,22 +846,118 @@ explore all
 \subsection{Andhrímnir}
 
 \begin{frame}{Andhrímnir - 1}
-    \begin{blockSimple}{Module indépendant}
-        \begin{itemize}
-            \item Réalise des tests complet d'un projet C
-            \item Réalise des tests automatiquement
-        \end{itemize}
-    \end{blockSimple}
-    \pause
-    \begin{blockSimple}{Module adapté}
-        \begin{itemize}
-            \item Optimisation pour HACL*
-            \item Communications avec Érysichthon
-            \item Adaptées pour de l'analyse symbolique
-        \end{itemize}
-    \end{blockSimple}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{blockSimple}{Module indépendant}
+                \begin{itemize}
+                    \item Réalise des tests automatiquement
+                    \item Réalise des tests corrects
+                \end{itemize}
+            \end{blockSimple}
+            \pause
+            \begin{blockSimple}{Module adapté}
+                \begin{itemize}
+                    \item Optimisation pour HACL*
+                    \item Communications avec Érysichthon
+                    \item Adaptées pour l'analyse symbolique avec Binsec
+                \end{itemize}
+            \end{blockSimple}
+        \end{column}
+        \pause
+        \begin{column}{0.45\textwidth}
+            \begin{tikzpicture}[node distance=2cm, scale=0.5, transform shape]
+                \tikzset{ block/.style={rectangle,draw,rounded corners,minimum width=2.5cm,minimum height=1cm,align=center},
+                        arrow/.style={-latex, thick}}
+                \node[block,] (bin) {Binaire};
+                \node[block,  fill=purple!50, above of = bin] (source) {Source};
+                \node[block, right of = bin, xshift=2cm, fill=green!50] (src) {Script};
+                \node[block, below of = bin, yshift=-0.5cm, xshift=2cm] (binsec) {\textbf{Binsec}};
+        
+                % Flèches
+                \draw[arrow] (bin) -- (binsec);
+                \draw[arrow] (src) -- (binsec);
+                \draw[arrow] (source) -- (bin);
+                \draw[arrow, dashed] (source) -- (src);
+
+                \node[above of = source, xshift=5cm] (json) {};
+                \node[block,  fill=red!50, above of = json, yshift=1cm] (hacl) {HACL*};
+                \draw[arrow,  line width=4pt] (hacl.south) -- (source);
+            \end{tikzpicture}
+        \end{column}
+    \end{columns}
 \end{frame}
 
+\begin{frame}{Andhrímnir - 2}
+    \begin{tikzpicture}[scale = 0.7, transform shape]
+    % Définition des styles pour les boîtes et flèches
+    \tikzset{
+      box1/.style={rectangle, draw=black, fill=cyan!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box2/.style={rectangle, draw=black, fill=orange!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box3/.style={rectangle, draw=black, fill=yellow!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box4/.style={rectangle, draw=black, fill=green!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box5/.style={rectangle, draw=black, fill=blue!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box6/.style={rectangle, draw=black, fill=magenta!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box65/.style={rectangle, draw=black, fill=magenta!60, thick, rounded corners, minimum width=1.5cm, minimum height=0.6cm, align=center},
+      box7/.style={rectangle, draw=black, fill=red!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      box8/.style={rectangle, draw=black, fill=blue!45, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
+      arrow1/.style={->, thick, color=cyan!70!black},
+      arrow2/.style={->, thick, color=orange!80!black},
+      arrow3/.style={->, thick, color=yellow!80!black},
+      arrow4/.style={->, thick, color=green!80!black},
+      arrow5/.style={->, thick, color=blue!80!black},
+      arrow6/.style={->, thick, color=magenta!80!black},
+      arrow7/.style={->, thick, color=red!80!black},
+      arrow8/.style={->, thick, color=gray!80!black}
+      }
+      \tikzset{zone1/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.5cm, text width=3cm}}
+
+    % Noeuds principaux (ligne du haut)
+    \node[] (build_test) at (0,0) {};
+    \node[box2, below of=build_test] (parse_h) {Lecture du projet C};
+    \node[box3, right=1cm of parse_h] (read_json) {Vérification mémoire (json)};
+    \node[box4, right=1cm of read_json] (build_local_json) {Accumulation d'informations};
+
+    % Ligne du bas (génération du .c)
+    \node[box5, below=1cm of build_local_json] (build_intro) {Gen. introduction};
+    \node[box6, left=1cm of build_intro] (build_def) {Gen. déclaration};
+    \node[box7, left=1cm of build_def] (add_main) {Gen. main};
+    \node[box8, left=1cm of add_main] (fichier_c) {fichier .c};
+
+    % Flèches horizontales principales
+    \draw[arrow2] (parse_h) -- (read_json);
+    \draw[arrow3] (read_json) -- (build_local_json);
+    \draw[arrow4] (build_local_json) -- (build_intro);
+    \draw[arrow5] (build_intro) -- (build_def);
+    \draw[arrow6] (build_def) -- (add_main);
+    \draw[arrow7] (add_main) -- (fichier_c);
+
+    % Branche auxiliaire depuis build introduction
+    \node[box5, left of = build_intro, yshift=-1cm] (detect_aux) {Détection appel auxiliaire};
+    % Ajout de deux barres obliques sur la flèche build_intro -> build_def
+    \draw[thick] ($(build_intro)!0.5!(build_def) + (0,0.3)$) -- ($(build_intro)!0.5!(build_def) + (0,-0.54)$);
+    \draw[thick] ($(build_intro)!0.55!(build_def) + (0,0.3)$) -- ($(build_intro)!0.55!(build_def) + (0,-0.54)$);
+
+
+    \node[box3, left=1cm of detect_aux, yshift=-2cm] (test_exist) {test si fichier existe};
+    \draw[arrow5] (detect_aux) -- (test_exist);
+
+    % Oui -> Collage -> build definition
+    \node[box4, above of = test_exist, yshift=0.5cm] (collage) {\footnotesize{Collage}};
+    \draw[->, thick, color=green!80!black] (test_exist) -- node[left, font=\scriptsize] {Oui} (collage);
+    \draw[arrow6] (collage) -- (build_def);
+
+    % Non -> Stocker dans liste_temporisée
+    \node[box2, left=0.8cm of test_exist, yshift=-0.8cm] (liste_temp) {Stocker dans liste\_temporisée};
+    \draw[arrow7] (test_exist) -- node[above,font=\scriptsize] {Non} (liste_temp.east);
+
+    \draw [arrow5, dashed] (liste_temp.east) to[out=-30, in=-30] node[black, below, yshift=-0.5cm] {\textit{Recommence le procédé}} (build_intro.east);
+
+    \begin{scope}[on background layer]
+      \node (zoneNode) [zone1, fit=(parse_h) (read_json) (build_local_json) (build_intro) (build_def) (add_main) (fichier_c) (test_exist) (liste_temp) (collage) (detect_aux) (build_test)] {};
+        \node (title) [anchor=north west] at (zoneNode.north west) {\parbox{3.5cm}{\centering \Huge{\textbf{Andhrímnir}}\\\scriptsize{\textit{Génère les tests}}}};
+    \end{scope}
+  \end{tikzpicture}
+\end{frame} 
 
 
 \begin{frame}[fragile]{Exemple de test}
@@ -896,84 +997,12 @@ Hacl_EC_K256_felem_sqr(a, out);
 }
 \end{frame}
 
-\begin{frame}{Andhrímnir - 2}
-    \pause
-    \begin{tikzpicture}[scale = 0.7, transform shape]
-    % Définition des styles pour les boîtes et flèches
-    \tikzset{
-      box1/.style={rectangle, draw=black, fill=cyan!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
-      box2/.style={rectangle, draw=black, fill=orange!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
-      box3/.style={rectangle, draw=black, fill=yellow!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
-      box4/.style={rectangle, draw=black, fill=green!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
-      box5/.style={rectangle, draw=black, fill=blue!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
-      box6/.style={rectangle, draw=black, fill=magenta!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
-      box65/.style={rectangle, draw=black, fill=magenta!60, thick, rounded corners, minimum width=1.5cm, minimum height=0.6cm, align=center},
-      box7/.style={rectangle, draw=black, fill=red!30, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
-      box8/.style={rectangle, draw=black, fill=blue!45, thick, rounded corners, minimum width=2.5cm, minimum height=1cm, align=center},
-      arrow1/.style={->, thick, color=cyan!70!black},
-      arrow2/.style={->, thick, color=orange!80!black},
-      arrow3/.style={->, thick, color=yellow!80!black},
-      arrow4/.style={->, thick, color=green!80!black},
-      arrow5/.style={->, thick, color=blue!80!black},
-      arrow6/.style={->, thick, color=magenta!80!black},
-      arrow7/.style={->, thick, color=red!80!black},
-      arrow8/.style={->, thick, color=gray!80!black}
-      }
-      \tikzset{zone1/.style={rectangle, rounded corners, draw=blue, dashed, fill=blue!10, inner sep=0.5cm, text width=3cm}}
 
-    % Noeuds principaux (ligne du haut)
-    \node[] (build_test) at (0,0) {};
-    \node[box2, below of=build_test] (parse_h) {Lecture du .h};
-    \node[box3, right=1cm of parse_h] (read_json) {Lecture .json};
-    \node[box4, right=1cm of read_json] (build_local_json) {Accumulation d'informations};
-
-    % Ligne du bas (génération du .c)
-    \node[box5, below=1cm of build_local_json] (build_intro) {Gen. introduction};
-    \node[box6, left=1cm of build_intro] (build_def) {Gen. déclaration};
-    \node[box7, left=1cm of build_def] (add_main) {Gen. main};
-    \node[box8, left=1cm of add_main] (fichier_c) {fichier .c};
-
-    % Flèches horizontales principales
-    \draw[arrow1] (build_test) -- (0,0.6) -- (parse_h);
-    \draw[arrow2] (parse_h) -- (read_json);
-    \draw[arrow3] (read_json) -- (build_local_json);
-    \draw[arrow4] (build_local_json) -- (build_intro);
-    \draw[arrow5] (build_intro) -- (build_def);
-    \draw[arrow6] (build_def) -- (add_main);
-    \draw[arrow7] (add_main) -- (fichier_c);
-
-    % Branche auxiliaire depuis build introduction
-    \node[box5, left of = build_intro, yshift=-1cm] (detect_aux) {Détection appel auxiliaire};
-    % Ajout de deux barres obliques sur la flèche build_intro -> build_def
-    \draw[thick] ($(build_intro)!0.5!(build_def) + (0,0.3)$) -- ($(build_intro)!0.5!(build_def) + (0,-0.54)$);
-    \draw[thick] ($(build_intro)!0.55!(build_def) + (0,0.3)$) -- ($(build_intro)!0.55!(build_def) + (0,-0.54)$);
-
-
-    \node[box3, left=1cm of detect_aux, yshift=-2cm] (test_exist) {test si fichier existe};
-    \draw[arrow5] (detect_aux) -- (test_exist);
-
-    % Oui -> Collage -> build definition
-    \node[box4, above of = test_exist, yshift=0.5cm] (collage) {\footnotesize{Collage}};
-    \draw[->, thick, color=green!80!black] (test_exist) -- node[left, font=\scriptsize] {Oui} (collage);
-    \draw[arrow6] (collage) -- (build_def);
-
-    % Non -> Stocker dans liste_temporisée
-    \node[box2, left=0.8cm of test_exist, yshift=-0.8cm] (liste_temp) {Stocker dans liste\_temporisée};
-    \draw[arrow7] (test_exist) -- node[above,font=\scriptsize] {Non} (liste_temp.east);
-
-    \draw [arrow5, dashed] (liste_temp.east) to[out=-30, in=-30] node[black, below, yshift=-0.5cm] {\textit{Recommence le procédé}} (build_intro.east);
-
-    \begin{scope}[on background layer]
-      \node (zoneNode) [zone1, fit=(parse_h) (read_json) (build_local_json) (build_intro) (build_def) (add_main) (fichier_c) (test_exist) (liste_temp) (collage) (detect_aux) (build_test)] {};
-        \node (title) [anchor=north west] at (zoneNode.north west) {\parbox{3.5cm}{\centering \Huge{\textbf{Andhrímnir}}\\\scriptsize{\textit{Génère les tests}}}};
-    \end{scope}
-  \end{tikzpicture}
-\end{frame}
 
 \section{Résultats}
 \begin{frame}{Premières passes}
     \begin{center}
-        \textbf{Graphe :} Résultats d'Érysichthon en x86\_64
+        \textbf{Graphe :} Résultats d'Érysichthon en x86\_64, \texttt{gcc 12.2.0}
     \begin{tikzpicture}[scale = 0.7, transform shape]
       \begin{axis}[
         xlabel={Options de compilation},
@@ -1001,60 +1030,122 @@ Hacl_EC_K256_felem_sqr(a, out);
     \end{center}
 \end{frame}
 
+
+
 \begin{frame}{Analyses}
     \centering
     \textbf{Graphes :} Détail des erreurs interrompant l'analyse Binsec
-    \begin{tikzpicture}[scale = 0.7, transform shape]
-  \begin{axis}[
-    xlabel={Options de compilation},
-    ylabel={Nombre de cas},
-    grid=both,
-    xtick={0,1,2,3,4,5},
-    xticklabels={-O0, -O1, -O2, -O3, -Os, -Oz},
-    width=13cm, height=8cm,
-    legend style={at={(1.05,0.5)}, anchor=west}
-  ]
+    \begin{tikzpicture}[scale = 0.7, transform shape, remember picture]
+      \begin{axis}[
+        xlabel={Options de compilation},
+        ylabel={Nombre de cas},
+        grid=both,
+        xtick={0,1,2,3,4,5},
+        xticklabels={-O0, -O1, -O2, -O3, -Os, -Oz},
+        width=13cm, height=8cm,
+        legend style={at={(1.05,0.5)}, anchor=west}
+      ]
 
-    % KO
-    \addplot[color=red, mark=*] coordinates {(0,0) (1,0) (2,2) (3,2) (4,0) (5,0)};
-    \addlegendentry{KO}
+        % KO
+        \only<1,4,5>{
+          \addplot[color=red, mark=*] coordinates {(0,0) (1,0) (2,2) (3,2) (4,0) (5,0)};
+          \addlegendentry{KO}
+        }
 
-    % syscall
-    \addplot[color=blue, mark=square*] coordinates {(0,0) (1,0) (2,0) (3,0) (4,0) (5,0)};
-    \addlegendentry{syscall}
+        % syscall
+        \only<1,4>{
+          \addplot[color=blue, mark=square*] coordinates {(0,0) (1,0) (2,0) (3,0) (4,0) (5,0)};
+          \addlegendentry{syscall}
+        }
 
-    % max depth
-    \addplot[color=green!70!black, mark=triangle*] coordinates {(0,92) (1,59) (2,45) (3,23) (4,58) (5,59)};
-    \addlegendentry{max depth}
+        % max depth
+        \only<1,2>{
+          \addplot[color=green!70!black, mark=triangle*] coordinates {(0,92) (1,59) (2,45) (3,23) (4,58) (5,59)};
+          \addlegendentry{max depth}
+        }
 
-    % killed
-    \addplot[color=orange, mark=diamond*] coordinates {(0,6) (1,12) (2,12) (3,7) (4,12) (5,12)};
-    \addlegendentry{killed}
+        % killed
+        \only<1,2,3>{
+          \addplot[color=orange, mark=diamond*] coordinates {(0,6) (1,12) (2,12) (3,7) (4,12) (5,12)};
+          \addlegendentry{killed}
+        }
 
-    % error
-    \addplot[color=purple, mark=otimes*] coordinates {(0,19) (1,46) (2,46) (3,46) (4,46) (5,46)};
-    \addlegendentry{error}
+        % error
+        \only<1,4,5>{
+          \addplot[color=purple, mark=otimes*] coordinates {(0,19) (1,46) (2,46) (3,46) (4,46) (5,46)};
+          \addlegendentry{error}
+        }
 
-    % timeout
-    \addplot[color=cyan, mark=pentagon*] coordinates {(0,14) (1,0) (2,6) (3,24) (4,0) (5,0)};
-    \addlegendentry{timeout}
+        % timeout
+        \only<1,2>{
+          \addplot[color=cyan, mark=pentagon*] coordinates {(0,14) (1,0) (2,6) (3,24) (4,0) (5,0)};
+          \addlegendentry{timeout}
+        }
 
-    % symbol
-    \addplot[color=brown, mark=star] coordinates {(0,37) (1,37) (2,37) (3,37) (4,37) (5,37)};
-    \addlegendentry{symbol}
+        % symbol
+        \only<1>{
+          \addplot[color=brown, mark=star] coordinates {(0,37) (1,37) (2,37) (3,37) (4,37) (5,37)};
+          \addlegendentry{symbol}
+        }
 
-  \end{axis}
-\end{tikzpicture}
+      \end{axis}
+    \end{tikzpicture}
 \end{frame}
 
-\section*{Conclusion}
-\begin{frame}{}
-    \begin{center}
-        \Huge
-        \textbf{Conclusion}\\
-        \includegraphics{img/theme/ligne2.png}
-    \end{center}
+    % \begin{tikzpicture}[remember picture,overlay, scale=0.5, transform shape]
+    %     \node at ([xshift=-4.4cm,yshift=-6cm]current page.east) {%
+    %         \begin{tabular}{c|ccc}
+    %             \textbf{Optimisation} & \textbf{Secure} & \textbf{Unknown} & \textbf{Insecure} \\
+    %             \hline
+    %             \rowcolor{blue!5}
+    %             -O0 & 359 & 168 & 21 \\
+    %             -O1 & 372 & 154 & 22 \\
+    %             \rowcolor{blue!5}
+    %             -O2 & 378 & 148 & 22 \\
+    %             -O3 & 382 & 139 & 27 \\
+    %             \rowcolor{blue!5}
+    %             -Os & 372 & 154 & 22 \\
+    %             -Oz & 373 & 153 & 22 \\
+    %         \end{tabular}%
+    %     };
+    %\end{tikzpicture}
+
+
+
+\section{Conclusion}
+% \begin{frame}{}
+%     \begin{center}
+%         \Huge
+%         \textbf{Conclusion}\\
+%         \includegraphics{img/theme/ligne2.png}
+%     \end{center}
+% \end{frame}
+
+\begin{frame}{Conclusion}
+
+    \begin{blockSimple}{Point d'amélioration}
+        \begin{itemize}
+            \item Réduire le nombre d'interruption
+            \item Étendre l'analyse à d'autres compilateurs / architectures
+            \item Établir dans un processus d'intégration continue
+        \end{itemize}
+    \end{blockSimple}
+
+    \begin{blockSimple}{Analyse Hacl*}
+        \begin{tabular}{l|c|c}
+            & Prouvé & Attendu \\
+            \rowcolor{lightgray}
+            \hline
+            (\%) Fontions sécurisées & 67,96\% & 62,39\% \\
+            (\%) Fontions attaquables & 3,08\% & 27,61\% \\
+            % ls | grep '\.c$' | grep -E 'verify|gen|public|to|malloc|reset|free|copy|info' | wc -l
+            \rowcolor{lightgray}
+            (\%) Analyse interrompue & 28,96\% & 0\% \\    
+        \end{tabular}
+    \end{blockSimple}
 \end{frame}
+
+
 
 \begin{frame}{Références}
     \tiny
@@ -1143,6 +1234,78 @@ Hacl_EC_K256_felem_sqr(a, out);
     \draw [arrow, dashed, opacity=0.2] (zone_tests.north) -- (zone_compilation.west);
   \end{tikzpicture}
 \end{frame}
+
+
+\begin{frame}[fragile]{Andhrímnir - Pourquoi utiliser une mémoire ?}
+\begin{columns}
+  % Colonne de gauche
+  \begin{column}{0.48\textwidth}
+    \begin{minted}[fontsize=\tiny]{json}
+{
+ "Meta_data":{
+     "build" : "13-06-2025",
+     "version" : "0.2.0"
+ },
+
+ "Hacl_AEAD_Chacha20Poly1305_encrypt": {
+    "*output":"BUF_SIZE",
+    "*input":"BUF_SIZE",
+    "input_len":"BUF_SIZE",
+    "*data":"AAD_SIZE",
+    "data_len":"AAD_SIZE",
+    "*key":"KEY_SIZE",
+    "*nonce":"NONCE_SIZE",
+    "*tag":"TAG_SIZE",
+    "BUF_SIZE":16384,
+    "TAG_SIZE":16,
+    "AAD_SIZE":12,
+    "KEY_SIZE":32,
+    "NONCE_SIZE":12
+ },
+ ...
+    \end{minted}
+  \end{column}
+
+  % Colonne de droite
+  \begin{column}{0.48\textwidth}
+    \begin{tikzpicture}[node distance=2cm, scale=0.5, transform shape]
+        \tikzset{ block/.style={rectangle,draw,rounded corners,minimum width=2.5cm,minimum height=1cm,align=center},
+                arrow/.style={-latex, thick}}
+        \node[block] (bin) {Binaire};
+        \node[block,  fill=purple!50, above of = bin] (source) {Source};
+        \node[block, right of = bin, xshift=2cm, fill=green!50] (src) {Script};
+        \node[block, below of = bin, yshift=-0.5cm, xshift=2cm] (binsec) {\textbf{Binsec}};
+        
+        % Flèches
+        \draw[arrow] (bin) -- (binsec);
+        \draw[arrow] (src) -- (binsec);
+        \draw[arrow] (source) -- (bin);
+        \draw[arrow, dashed] (source) -- (src);
+        
+        \onslide<1>{
+            \node[above of = source, xshift=5cm] (json) {};
+                \node[block,  fill=red!50, above of = json, yshift=1cm] (hacl) {HACL*};
+                \draw[arrow,  line width=4pt] (hacl.south) -- (source);
+
+        };
+
+        \onslide<2>{
+        \path (source) -- (src) node[midway] {
+            \tikz{\draw[line width=2pt, red] (-0.2,-0.2) -- (0.2,0.2)
+                                 (-0.2,0.2) -- (0.2,-0.2);}
+        };
+
+        \node[block,  fill=blue!50!white!50, above of = source, xshift=5cm] (json) {Mémoire json};
+        \node[block,  fill=red!50, above of = json, yshift=1cm] (hacl) {HACL*};
+        \draw[arrow,  line width=1pt, dashed] (json) -- (source);
+        \draw[arrow,  line width=1pt, dashed] (json) -- (src);
+        \draw[arrow,  line width=4pt] (hacl) -- (json);
+        }
+    \end{tikzpicture}
+  \end{column}
+\end{columns}
+\end{frame}
+
 
 
 \begin{frame}{Fin de stage}
