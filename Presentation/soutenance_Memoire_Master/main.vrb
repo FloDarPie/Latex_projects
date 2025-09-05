@@ -1,35 +1,68 @@
-\frametitle{Exemple de test}
-\textbf{Code :}Test de la fonction Hacl\_EC\_K256\_felem\_sqr
-  \begin{minted}[fontsize=\scriptsize]{c}
-// Made by
-// ANDHRÍMNIR - 0.3.0
-// 09-07-2025
-//
+\frametitle{Andhrímnir - Pourquoi utiliser une mémoire ?}
+\begin{columns}
+  % Colonne de gauche
+  \begin{column}{0.48\textwidth}
+    \begin{minted}[fontsize=\tiny]{json}
+{
+ "Meta_data":{
+     "build" : "13-06-2025",
+     "version" : "0.2.0"
+ },
 
-#include <stdlib.h>
-#include "Hacl_EC_K256.h"
+ "Hacl_AEAD_Chacha20Poly1305_encrypt": {
+    "*output":"BUF_SIZE",
+    "*input":"BUF_SIZE",
+    "input_len":"BUF_SIZE",
+    "*data":"AAD_SIZE",
+    "data_len":"AAD_SIZE",
+    "*key":"KEY_SIZE",
+    "*nonce":"NONCE_SIZE",
+    "*tag":"TAG_SIZE",
+    "BUF_SIZE":16384,
+    "TAG_SIZE":16,
+    "AAD_SIZE":12,
+    "KEY_SIZE":32,
+    "NONCE_SIZE":12
+ },
+ ...
+    \end{minted}
+  \end{column}
 
-#define BUFFER_SIZE 5
-uint64_t a[BUFFER_SIZE];
-uint64_t out[BUFFER_SIZE];
+  % Colonne de droite
+  \begin{column}{0.48\textwidth}
+    \begin{tikzpicture}[node distance=2cm, scale=0.5, transform shape]
+        \tikzset{ block/.style={rectangle,draw,rounded corners,minimum width=2.5cm,minimum height=1cm,align=center},
+                arrow/.style={-latex, thick}}
+        \node[block] (bin) {Binaire};
+        \node[block,  fill=purple!50, above of = bin] (source) {Source};
+        \node[block, right of = bin, xshift=2cm, fill=green!50] (src) {Script};
+        \node[block, below of = bin, yshift=-0.5cm, xshift=2cm] (binsec) {\textbf{Binsec}};
 
+        % Flèches
+        \draw[arrow] (bin) -- (binsec);
+        \draw[arrow] (src) -- (binsec);
+        \draw[arrow] (source) -- (bin);
+        \draw[arrow, dashed] (source) -- (src);
 
-int main (int argc, char *argv[]){
-Hacl_EC_K256_felem_sqr(a, out);
-  exit(0);
-}
-  \end{minted}
-\onslide<2>{
-  \begin{tikzpicture}[overlay , remember picture, node distance=0.5cm]
+        \onslide<1>{
+            \node[above of = source, xshift=5cm] (json) {};
+                \node[block,  fill=red!50, above of = json, yshift=1cm] (hacl) {HACL*};
+                \draw[arrow,  line width=4pt] (hacl.south) -- (source);
 
-    \tikzset{intro/.style={rectangle, rounded corners, draw=green, fill=green!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{definition/.style={rectangle, rounded corners, draw=blue, fill=blue!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{main/.style={rectangle, rounded corners, draw=orange, fill=orange!50, inner sep=0.3cm, opacity=0.2, font=\bfseries}}
-    \tikzset{labelshift/.style={xshift=3cm, yshift=0.5cm}}
+        };
 
-    \node[intro, fit={(0.3,4.1) (12.74,5.9)}, label={[labelshift]center:Phase introductive : 8 lignes}]{};
-    \node[definition, fit={(0.3,2.3) (12.74,3.5)}, label={[labelshift]center:Phase déclarative}]{};
-    \node[main, fit={(0.3,0.8) (12.74,1.7)}, label={[labelshift]center:Phase principale}]{};
+        \onslide<2>{
+        \path (source) -- (src) node[midway] {
+            \tikz{\draw[line width=2pt, red] (-0.2,-0.2) -- (0.2,0.2)
+                                 (-0.2,0.2) -- (0.2,-0.2);}
+        };
 
-  \end{tikzpicture}
-}
+        \node[block,  fill=blue!50!white!50, above of = source, xshift=5cm] (json) {Mémoire json};
+        \node[block,  fill=red!50, above of = json, yshift=1cm] (hacl) {HACL*};
+        \draw[arrow,  line width=1pt, dashed] (json) -- (source);
+        \draw[arrow,  line width=1pt, dashed] (json) -- (src);
+        \draw[arrow,  line width=4pt] (hacl) -- (json);
+        }
+    \end{tikzpicture}
+  \end{column}
+\end{columns}
