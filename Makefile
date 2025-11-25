@@ -1,4 +1,4 @@
-.PHONY: submakefile fast biber biblatex pdf all latexmk
+.PHONY: submakefile fast biber biblatex pdf all latexmk filigrane
 
 # Chemin du projet
 p ?= .
@@ -61,6 +61,9 @@ clean_pdf:
 clean_all: clean clean_pdf
 
 pdf: latexmk
+
+filigrane:
+	@echo "Usage en local avec les modules PyQt6 PyPDF2 reportlab\n-> cd Filigrane && source bin/activate && python3 source.py && deactivate && cd .."
 
 submakefile:
 	cd $(TEX_DIR) && $(MAKE) -f $(notdir $(SUB_MAKEFILE)) $(r)

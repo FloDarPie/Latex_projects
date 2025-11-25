@@ -1,0 +1,474 @@
+\documentclass{muletter}
+\muletterlogofalse
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{blindtext}
+\usepackage{hyperref} 
+\usepackage{nameref}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage[table]{xcolor}
+
+\begin{document}
+
+%% Záhlaví
+\workplace{ucb}
+\receiveddate{07 octobre 2025}
+
+\contactname{Florian Duzés}
+\contactemail{florian.duzes@gmail.com}
+\place{3 chemin de Montréal}
+\date{Montredon-Labessonié}
+\refno{81360, France}
+
+%% Zápatí
+% \name{Masarykova univerzita, Správa univerzitního kampusu Bohunice}
+% \address{Kamenice 735/5, 625 00 Brno, Česká republika}
+% \telephone{+420 549 49 2901}
+% \email{sprava@ukb.muni.cz}
+% \webpage{www.ukb.muni.cz}
+% \bank{KB Brno-město}
+% \account{85636621/0100}
+% \tin{00216224}
+% \vatin{CZ00216224}
+
+%% Další
+\subject{Restitution de dépôt de garantie - appartement conforme et délai dépassé}
+\signature{Florian DUZÉS}
+\designation{}
+\signatureimage{signature.png}
+
+\begin{letter}{
+  Luc Pierart \\
+  Propriétaire \\
+  8 rue marguerite Chapon \\
+  Batiment 8 D-601 \\
+  94800, Villejuif
+}
+
+\opening{M. Pierart,}
+
+À ce jour, vous ne m'avez pas restitué mon dépôt de garantie d'un
+montant de 980 € pour le logement situé au 63 avenue de la République, malgré une première relance datant du 26 septembre 2025 (voir annexe \annexref{annexe:mise-en-demeure}).
+
+Je vous rappelle que suite à mon départ le 31 août 2025, un état des
+lieux conforme a été établi le 31 août 2025 (annexe \annexref{annexe:sortie}). Les clés vous ont été remises ce même 31 août 2025. Aucune dégradation n'a été commise, l'état des lieux de sortie est simplifié si l'on compare à l'état des lieux d'entrée (\annexref{annexe:entree}).
+
+Selon l'article 22 de la loi n° 89-462 du 6 juillet 1989, la
+restitution du dépôt de garantie doit intervenir dans un délai de 1
+mois à compter de la remise des clés, sans quoi, il sera majoré d'une
+somme de 10 \% du loyer mensuel hors charges, pour chaque mois de
+retard.
+
+
+Cette lettre fait suite à votre mél du 3 octobre 2025 (annexe \annexref{annexe:pierart-reponse}) justifiant une retenue de 555 € sur le dépôt de garantie. Ce calcul étant illustré à l'aide d'un tableur que nous pouvons retrouver en annexe \annexref{annexe:pierart-calcul}. La justification de cette retenue semble construite sur des bases erronées que nous allons maintenant détailler.
+
+Premièrement nous pouvons observer que le tableau a été construit pour M. QuentinC, avec un départ du logement le 19 juillet 2025. On peut voir que les calculs des charges d'électricité et de gaz s'appuient sur des consommations totales annuelles. Or nous savons que mon entrée date du 28 mars 2025 (annexe \annexref{annexe:entree}). Les valeurs présentées sont donc inadaptées à ma situation. En effet, je n'ai pas à payer pour l'entièreté des mois où je suis absent du bail locatif.
+
+Deuxièmement, nous pouvons donc construire un tableau prévisionnel des charges imputables à ma présence à l'aide des données présentées en annexe \annexref{annexe:pierart-calcul}, ce tableau est présenté ci-dessous.\\
+Pour le calcul du gaz (actuellement inexact car la consommation suit une loi gaussienne et non une loi linéaire - \textit{pic de consommation en hiver} - et le nombre de jours varie entre chaque mois) :
+\begin{itemize}
+  \item Juillet et août : 37.05 et 40.70 €, valeurs justifiées.
+  \item Juin : 90.82 €, soit 3,0273 par jour
+  \item 1 janvier au 11 juin : 1551.91 €
+  \begin{itemize}
+    \item On enlève le 11 jours de juin du total, soit 1551.91 - (11 * 3.0273) = 1518.61 €
+    \item Consommation mensuelle de janvier à mai : 1518.61 / 5 = 303.722 €
+  \end{itemize}
+  \item Mars : 303.722 / 31 = 9.797 € par jour
+  \item Mars (4 jours) : 39.188 €
+\end{itemize}
+
+Pour le calcul de l'électricité (inexacte pour les mêmes raisons que le gaz et avec des valeurs prévisionnelles) :
+\begin{itemize}
+  \item Juillet et août : 37 et 33 €, valeurs "justifiées".
+  \item Consommation du premier janvier au 29 juin : 562 €
+  \begin{itemize}
+    \item Nombre de jours : 31 + 28 + 31 + 30 + 31 + 29 = 180
+    \item Consommation journalière : 562 / 180 = 3.1222 €
+  \end{itemize}
+  \item Alignement de ce forfait sur les mois :
+  \begin{itemize}
+    \item Mars (4 jours) : 12.488 €
+    \item Avril (30 jours) : 93.666 €
+    \item Mai (31 jours) : 96.788 €
+    \item Juin (30 jours) : 93.666 €
+  \end{itemize}
+  
+\end{itemize}
+
+
+\begin{center}
+  \texttt{Tableau de calcul des charges d'électricité et de gaz - prévisionnel (valeur en euros)}
+  \label{tab:calcul}
+  \setlength{\tabcolsep}{15pt}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{|c|c|c|c|c||c|c|}
+    \hline
+    & GAZ & Gaz/p (\textit{/4})& ELEC & Elec/p (\textit{/5}) & \textbf{Total} & \textbf{Total/p}\\
+    \hline \rowcolor{gray!20}
+    Août & 37.05 & 9,262 & \cellcolor{yellow!65}37 & 7.4 & 74.05 & 16.662 \\
+    \hline
+    Juillet & 40.70 & 10,175 & \cellcolor{yellow!65}33 & 6.6 & 73.7 & 16.775 \\
+    \hline \rowcolor{gray!20}
+    Juin & 90.82 & 22,705 & \cellcolor{yellow!65}93.666 & 18.7332 & 184.486 & 41.4382 \\
+    \hline
+    Mai & \cellcolor{yellow!65}303.722 & 75,9305 & \cellcolor{yellow!65}96.788 & 19.3576 & 400.51 & 95.2881\\
+    \hline \rowcolor{gray!20}
+    Avril & \cellcolor{yellow!65}303.722 & 75,9305 & \cellcolor{yellow!65}93.666 & 18.7332 & 397.388 & 94.6637 \\
+    \hline
+    Mars & \cellcolor{yellow!65}39.188 & 9,797 & \cellcolor{yellow!65}12.488 & 2.4976 & 51.676 & 12.2946 \\
+    \hline
+    \hline \rowcolor{gray!20}
+    \textbf{Total} & 815,202 & 203,800 & 366.608 & 73,321 & 1181.81 & \cellcolor{red!65}277.122 \\
+    \hline
+  \end{tabular}
+   \small{\texttt{Les valeurs en jaune doivent être remplacer par leurs valeurs exactes \\pour justifier d'une réduction de la caution.}}
+\end{center}
+
+La valeur de référence pour un coût prévisionnel des charges de gaz et d'électricité est donc de \textbf{277.12 €} (deux cents soixante-dix-sept euros et douze centimes). Cette valeur reste incertaine et doit être confirmée par votre partage des factures des services d'électricité et de gaz.
+
+On peut réduire cette valeur par l'ensemble des charges déjà payées :
+\begin{center}
+  \texttt{Tableau de charges déjà payées}
+  \setlength{\tabcolsep}{12pt}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{|c|c|c|c|c|c|c||c|}
+    \hline
+    \textit{Mois} & Mars (4 jours) & Avril & Mai & Juin & Juillet & Août & \textbf{Total} \\
+    \hline \rowcolor{gray!20}
+    \textit{Valeurs versées} & $(25 / 30) * 4 = $ 3.33 & 25 & 25 & 25 & 25 & 25 & \cellcolor{red!65}128.33\\
+    \hline
+  \end{tabular}
+\end{center}
+
+Ce qui nous ramène à un hypotétique dû de 277.12 -128.33 = \textbf{148.79 €} (cent quarante-huit euros et soixante-dix-neuf centimes).
+
+Troisièmement, il est normal de régler le coût des taxes de prélèvement des ordures ménagères. En admettant que les valeurs communiquées sont exactes, on peut voir un calcul justifié ci-dessous :
+\newpage
+\begin{center}
+  \texttt{Calcul de la taxe d'enlèvement des ordures ménagères}
+  \setlength{\tabcolsep}{10pt}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{|c|c|c|c||c|}
+    \hline
+    \textit{Année} & \textit{Montant annuel}  & \textit{Montant par locataire} & \textit{Présence annuelle} & \textbf{Total dû} \\
+    \hline \rowcolor{gray!20}
+    2024 & 391 € & 391 / 5 = 78.2 € & 5 / 12 = 0.417 & 78.2 * 0.417 = \cellcolor{red!65}32.60 €\\
+    \hline
+  \end{tabular}
+\end{center}
+
+Cette dette est due et doit donc être réglée. On peut réduire la caution de ce montant.
+
+
+Enfin, on peut voir présenter des frais de plomberie concernant un joint de douche. Pourtant aucun dégât n'apparaît dans l'état des lieux de sortie (annexe \annexref{annexe:sortie}). Les observations de moississures présentes dans la chambre 3 résultent d'un usage normal des locaux et d'une mauvaise ventilation de l'habitation. Ces problèmes ont été préalablement signalés à deux reprises par mél tout au long de l'été (\annexref{annexe:humidité}, \annexref{annexe:deux-humidité}). Aucune suite n'a été donnée à ces signalements, permettant d'entreprendre des réparations ou effectuer des aménagements. Des frais supplémentaires, postérieurs à mon départ, peuvent être ajoutés au calcul de la retenue sur le dépôt de garantie mais dans cette situation sont non recevables.
+
+
+% En amont de la location
+Pour terminer, je souhaite revenir sur l'accord échangé à amont de mon arrivée dans la chambre Nous pouvons observer dans ce mél échangé en amont de mon arrivée dans le logement (annexe \annexref{annexe:location}) que la somme de 177 € a été versé comme loyer du mois de mars 2025. Un montant supérieur à l'occupation de la chambre qui date du 28 mars 2025. Ce mél illustre que 7 jours de loyer non consommé ont été adjoints à la durée d'occupation effective et ont été nécessaires pour accéder à la location de la chambre. Ce montant de 7 jours de loyers s'élève à $ 550 / 30 * 7 = $ \textbf{128.33 €}. Cette somme versée de bon aloi ne saurait rester muette dans les calculs que nous effectuons.
+
+Pour conclure, nous avons une dépense justifiée de 32.60 € (trente deux euros et soixante centimes) pour la taxe d'enlèvement des ordures ménagères. Cette dépense est couverte par le geste décrit précédemment et nous laisse un reste de $128.33 - 32.60 = $\textbf{95.73 €}. Ainsi, à moins de présenter un détail des charges d'électricité et de gaz justifiant une retenue supérieure à 95.73 €, la totalité du dépôt de garantie doit être restituée.
+
+
+% Conclusion - Proposition finale
+Je vous remets donc en demeure de me restituer la somme de 980 € pour le dépôt de garantie, majoré de 98 € de pénalité de retard, dans un délai de 14 jours à compter de la réception de la présente lettre, soit un total de 1078 € (mille soixante-dix-huit euros). Ce courrier faisant suite aux messages téléphoniques et mél du 26 septembre 2025 à 12h32 (annexe \annexref{annexe:mise-en-demeure}).
+
+Passé ce délai, un médiateur de justice sera saisi pour avancer dans la résolution à l'amiable de ce litige. À défaut ou en cas d'échec de la médiation, je me verrai dans l'obligation de saisir le juge des contentieux de la protection du tribunal de Créteil.
+
+
+Je vous prie d'agréer, Monsieur, l'expression de mes salutations distinguées.
+
+%% \ps P.S. Toto je text dodatku.
+
+\closing{Cordialement,}
+
+%% \cc{ Petr Novák \\ Jana Nováková }
+%% \encl{ Příloha 1 \\ Příloha 2 }
+
+
+\newpage
+\annextitle{Annexe A : État des lieux d'entrée'}
+\label{annexe:entree}
+\begin{center}
+  \includegraphics[scale=0.7]{../../../lucPierart/EtatDentree.pdf}
+\end{center}
+\includepdf[
+  pages=2,
+  scale=0.9,
+  pagecommand=\thispagestyle{plain} % pages suivantes normales
+]{../../../lucPierart/EtatDentree.pdf}
+
+\newpage
+\annextitle{Annexe B : État des lieux de sortie}
+\label{annexe:sortie}
+\begin{center}
+  \includegraphics[scale=0.66]{../../../lucPierart/EtatDeSortie.pdf}
+\end{center}
+
+\includepdf[
+  pages=2-,
+  scale=0.9,
+  pagecommand=\thispagestyle{plain} % pages suivantes normales
+]{../../../lucPierart/EtatDeSortie.pdf}
+
+
+\newpage
+\annextitle{Annexe C : Premier courrier de mise en demeure}
+\label{annexe:mise-en-demeure}
+From florian.duzes@gmail.com Fri Sep 26 03:32:20 2025
+Return-Path: <florian.duzes@gmail.com>\\
+
+Message-ID: <6258b32913f501949f6f856030d145ed37f27e83.camel@gmail.com>\\
+Subject: Demande de remboursement de =?ISO-8859-1?Q?d=E9p=F4t?= de garantie
+ non =?ISO-8859-1?Q?restitu=E9?= - =?ISO-8859-1?Q?=C9tat?= des lieux de
+ sortie conforme =?ISO-8859-1?Q?=E0?= =?ISO-8859-1?Q?\_l'=E9tat?= des lieux
+ =?ISO-8859-1?Q?d'entr=E9e?=\\
+From: Florian Duzes <florian.duzes@gmail.com>\\
+To: luc pierart <lucpierart1@gmail.com>\\
+Date: Fri, 26 Sep 2025 12:32:19 +0200
+
+
+Florian DUZÉS
+3 chemin de Montréal
+81360 Montredon-Labessonnié
+
+
+Monsieur Luc PIERART
+8 RUE MARGUERITE CHAPON
+BAT8 D601
+94800 Villejuif
+
+
+
+Objet : Demande de remboursement de dépôt de garantie non restitué -
+État des lieux de sortie conforme à l'état des lieux d'entrée
+
+
+Monsieur,
+
+
+À ce jour, vous ne m'avez pas restitué mon dépôt de garantie d'un
+montant de 980 € pour le logement situé au 63 avenue de la République.
+
+Je vous rappelle que suite à mon départ le 31 août 2025, un état des
+lieux contradictoire a été établi le 31 août 2025. Les clés vous ont
+été remises le 31 août 2025. Aucune dégradation n'a été commise, l'état
+des lieux de sortie est conforme à l'état des lieux d'entrée.
+
+Selon l'article 22 de la loi n° 89-462 du 6 juillet 1989, la
+restitution du dépôt de garantie doit intervenir dans un délai de 1
+mois à compter de la remise des clés, sans quoi, il sera majoré d'une
+somme de 10 \% du loyer mensuel hors charges, pour chaque mois de
+retard.
+
+Je vous mets donc en demeure de me restituer la somme de 980 € pour le
+dépôt de garantie, majoré de 0 € dans un délai de 4 jours à compter de
+la réception de la présente.
+
+Passé ce délai, la somme de 1078 €, soit 980 € majoré de 98 € sera a
+verser avant le 31 octobre. 
+
+
+Je vous prie d'agréer, Monsieur, l'expression de mes salutations
+distinguées.
+
+Florian DUZÉS
+
+
+P-S : 
+
+Si le propriétaire refuse de rembourser le dépôt de garantie malgré
+cette démarche, le locataire peut engager une procédure de conciliation
+(étape facultative et gratuite) :
+
+    auprès de la commission départementale de conciliation dont dépend
+le logement
+    ou auprès d'un conciliateur de justice.
+
+En cas d'échec de la conciliation, le locataire ou le propriétaire peut
+saisir le juge des contentieux de la protection dans un délai de 3 ans
+à partir du jour où le dépôt de garantie aurait dû être versé.
+
+
+
+
+\newpage
+\annextitle{Annexe D : Échange initiant la location}
+\label{annexe:location}
+
+From lucpierart1@gmail.com Fri Mar  7 09:14:15 2025\\
+Delivered-To: florian.duzes@gmail.com\\
+Received: by 2002:a05:6358:408b:b0:1dc:9b27:d4a0 with SMTP id
+ u11csp2437136rwc; Fri, 7 Mar 2025 09:14:15 -0800 (PST)\\
+Return-Path: <lucpierart1@gmail.com>\\
+From: luc pierart <lucpierart1@gmail.com>\\
+Date: Fri, 7 Mar 2025 18:13:59 +0100\\
+Subject: Re: dossier Villejuif\\
+To: Florian Duzes <florian.duzes@gmail.com>\\
+
+
+bonjour M Duzes
+
+bien recu
+ci joint les 3 contrats signés de ma part
+1/ besoin de votre paraphe sur le contrat principal sur chaque pages svp
+(j ai bien remis a partir du 22 mars)
+
+2/ merci de me faire le transfert des que possible de la caution 980eu \&
+177eu pour la periode de mars (10j) et de  m envoyer un screenshot bancaire
+par SMS svp
+
+si 1 et 2 ok , alors etat des lieux le 28 a 16h
+cdmnt
+ps: a noter que pour l etat des lieux , j aurai besoin de la preuve d
+assurance \& du transfert auto de 550eu tous les 6 du mois  (revoir annexe A)
+
+Luc Pierart
+
+
+Le jeu. 6 mars 2025 à 22:24, Florian Duzes <florian.duzes@gmail.com> a
+écrit :
+
+> Bonjour,\\
+>\\
+> Voici les documents demandés. Le virement de la caution sera effectif au\\
+> jour de l'état des lieux, de même que les 10 jours de loyers du 22 au 31\\
+> mars.\\
+>\\
+> Je reste à votre disposition pour toute information complémentaire,\\
+> En vous souhaitant une bonne journée,\\
+> Florian
+
+
+\newpage
+\annextitle{Annexe E : Courrier de signalement de problème d'humidité}
+\label{annexe:humidité}
+
+From florian.duzes@gmail.com Thu Jul 17 05:42:28 2025\\
+Return-Path: <florian.duzes@gmail.com>\\
+Received: <lucpierart1@gmail.com> (version=TLS1\_3 cipher=TLS\_AES\_256\_GCM\_SHA384
+ bits=256/256); Thu, 17 Jul 2025 05:42:28 -0700 (PDT)\\
+Message-ID: <30d61efe304c57bbe3bfd826a2e094d5ff95c9dd.camel@gmail.com>\\
+Subject: Point appartement - =?ISO-8859-1?Q?=E9tat?=\\
+From: Florian Duzes <florian.duzes@gmail.com>\\
+To: luc pierart <lucpierart1@gmail.com>\\
+Date: Thu, 17 Jul 2025 14:42:26 +0200
+
+Bonjour Luc,
+
+Ne vous croisant plus, je vous adresse ce mél pour faire un point sur
+la chambre 3.
+
+Premier point : lit et matelas;\\
+Ce matelas mousse, usé des précédentes location, et ce sommier, au
+lattes disjointes, sont adéquats pour un usage temporaire, un sommeil
+limité. Pour un usage quotidien, cela ne suffit pas et entraîne un
+inconfort.
+
+Second point : qualité de l'air;\\
+Il y a des mauvaises odeurs. Mettre du parfum, laisser la chambre
+ouverte toute la journée ou ouvrir les fenêtres de la rue ne suffisent
+pas à pallier cet inconvénient. La salle de bain pourrie à cause de
+l'humidité provoquer par l'usage normale de la douche. Les vêtements et
+autres tissus absorbent les odeurs. L'équipement s'encrasse de
+poussière avec vos venues et ouvertures de fenêtres.
+
+Voici donc mes demandes, avec un délai d'exécution de 1 mois :\\
+ - nouveau sommier et matelas\\
+ - réparation (pour la salle de bain) et mise en place d'une
+ventilation (dans la chambre)
+
+Je reste à votre disposition pour de plus ample échange,
+Cordialement,
+Florian Duzés
+
+PS: Je n'ai pas eu de nouvelles des visites pour le locataire qui me
+succédera, est-ce que celle-ci ont toujours lieux ou ont été annulées ?
+
+
+
+\newpage
+\annextitle{Annexe F : Relance de signalement de problème d'humidité}
+\label{annexe:deux-humidité}
+
+From florian.duzes@gmail.com Wed Aug 20 04:49:38 2025\\
+Return-Path: <florian.duzes@gmail.com>\\
+Received: <lucpierart1@gmail.com> (version=TLS1\_3 cipher=TLS\_AES\_256\_GCM\_SHA384
+ bits=256/256); Wed, 20 Aug 2025 04:49:38 -0700 (PDT)\\
+Message-ID: <e9c78ff329a6b35d1e9016f4873601e2982afafb.camel@gmail.com>
+Subject: Re: Point appartement - =?ISO-8859-1?Q?=E9tat?=\\
+From: Florian Duzes <florian.duzes@gmail.com>\\
+To: luc pierart <lucpierart1@gmail.com>\\
+Date: Wed, 20 Aug 2025 13:49:37 +0200
+
+Bonjour Luc,
+
+Un mois viens de passer et si on peut s'arranger quand au confort d'un
+sommier, c'est plus compliqué quand à la qualité de l'air et sa
+circulation dans la chambre 3.
+
+Est-ce que vous avez pris une décision à ce sujet : ajouter une VMC,
+laissé en l'état ? 
+
+J'espère que vos vacances furent bonnes,
+En attendant de vos nouvelles,
+Cordialement,
+Florian
+
+
+
+\newpage
+\annextitle{Annexe G : Reponse de M. Pierart et réduction de la caution}
+\label{annexe:pierart-reponse}
+
+From lucpierart1@gmail.com Fri Oct  3 10:14:02 2025\\
+Delivered-To: florian.duzes@gmail.com\\
+Received: by 2002:a05:6358:6a50:b0:206:fdaf:7c66 with SMTP id
+ c16csp5321440rwh; Fri, 3 Oct 2025 10:14:02 -0700 (PDT)\\
+From: luc pierart <lucpierart1@gmail.com>\\
+Date: Fri, 3 Oct 2025 19:13:43 +0200\\
+Message-ID: <CADpZJe9HTi17+9t7\_DYSZ2dWe\_hH4Co2dBubLmfexKpazHUqGA@mail.gmail.com>\\
+Subject: caution DUZES - VILLEJUIF\\
+To: Florian Duzes <florian.duzes@gmail.com>
+
+Bonjour M DUZES
+
+vous trouverez ci joint le detail des retenues sur votre caution suite a l
+etat des lieux de sortie du 31/08/2025 du 63 av republique 94800 Villejuif
+
+1/ les taxes poubelles annuelles sont dues par le locataire au prorata
+
+2/ les charges electricite et gaz ont ete ajusté au reel avec justificatif
+joint  (voir extrait du contrat ci joint : charge au reel)
+l 'EDF est divisé en 5 avec la startup mais  le gaz en 4 car non inclus
+dans le contrat de la startup car non utilisé (douche, etc)
+
+3/ la reparation des joints de la douche :
+je peux bien sur faire venir un professionnel si vous le desirez mais la
+facture sera forcement plus lourde (transport pour le devis + materiaux +
+transport pour realisation travaux + main d oeuvre)
+
+merci de me redonner l adresse a laquelle j envoie le cheque de 425eu
+
+Luc Pierart
+
+
+
+\newpage
+\annextitle{Annexe H : Calcul de M. Pierart et justification de la réduction de la caution}
+\label{annexe:pierart-calcul}
+
+\begin{center}
+  \includegraphics[angle=90, width=0.7\textheight]{../../../lucPierart/departLocataire.png}
+\end{center}
+
+% \newpage
+% \annextitle{Annexe I : Coût du matériel}
+% \label{annexe:joint}
+% \begin{center}
+%   \includegraphics[width=0.5\textwidth]{../../../lucPierart/jointDouche.png}
+% \end{center}
+
+\end{letter}
+\end{document}

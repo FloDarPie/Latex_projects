@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{draftwatermark} % Paquet pour ajout de filigrane
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{lipsum}
+
+
+% Paramètres de configuration du filigrane
+\SetWatermarkLightness{0.5}
+\SetWatermarkAngle{25}
+\SetWatermarkScale{2}
+\SetWatermarkFontSize{2cm}
+\SetWatermarkText{Texte en filigrane}
+
+\SetWatermarkColor{gray!80}
+
+
+
+
+\begin{document}
+\lipsum[1-5]
+\end{document}
+
+
+\documentclass{article}
+\usepackage{draftwatermark}
+\usepackage{pdfpages}
+
+\SetWatermarkText{Filigrane}
+\SetWatermarkColor{gray!30}
+\SetWatermarkScale{3}
+
+\begin{document}
+\includepdf[pages=-]{document.pdf}
+\end{document}

@@ -1,0 +1,37 @@
+\gdef\muletter@string@czech@telephone{%
+  T%
+}%
+\gdef\muletter@string@czech@email{%
+  E%
+}%
+\gdef\muletter@string@czech@webpage{%
+  W%
+}%
+\gdef\muletter@string@czech@bank{%
+  Bankovn\'i spojen\'i%
+}%
+\gdef\muletter@string@czech@account{%
+  \v{C}\'U%
+}%
+\gdef\muletter@string@czech@tin{%
+  I\v{C}%
+}%
+\gdef\muletter@string@czech@vatin{%
+  DI\v{C}%
+}%
+\gdef\muletter@string@czech@afterfooter{%
+  V~odpov\v{e}di, pros\'im, uv\'ad\v{e}jte na\v{s}e \v{c}\'islo
+  jednac\'i.%
+}%
+\gdef\muletter@string@czech@yourletter{%
+  V\'{a}\v{s} dopis zn. / ze dne%
+}%
+\gdef\muletter@string@czech@refno{%
+  \v{C}\'islo jednac\'i%
+}%
+\gdef\muletter@string@czech@contactinfo{%
+  Vy\v{r}izuje / e-mail%
+}%
+\gdef\muletter@string@czech@placedate{%
+  M\'isto / datum%
+}%
