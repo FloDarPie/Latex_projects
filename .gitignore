@@ -27,3 +27,4 @@
 *.rubbercache
 *.run.xml
 *ERROR
+**/test
