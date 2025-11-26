@@ -24,11 +24,12 @@ class LatexWatermarkApp(QMainWindow):
 
         # Paramètres par défaut
         self.pdf_path = ""
-        self.watermark_text = "Travail en cours - version incomplète"
-        self.watermark_color = QColor(166, 166, 166, 100)  # Gris clair ,intensité
+        self.watermark_text = "Travail en cours - version 1"
+        self.watermark_color = QColor(0, 0, 0, 256)  # Gris clair ,intensité
+        #self.watermark_color = QColor(166, 166, 166, 100)  # Gris clair ,intensité
         self.watermark_font_size = 2 # en cm
         self.watermark_angle = 25
-        self.watermark_lightness = 50
+        self.watermark_lightness = 100
 
         helper.helper_loaded()
         # Interface
@@ -56,6 +57,8 @@ class LatexWatermarkApp(QMainWindow):
         self.selected_pdf_label = QLabel("Aucun PDF sélectionné")
         col1_layout.addWidget(self.selected_pdf_label)
 
+
+        
         col1_layout.addStretch()
         main_layout.addWidget(col1, stretch=1)
 
@@ -64,16 +67,29 @@ class LatexWatermarkApp(QMainWindow):
         col2.setFrameShape(QFrame.Shape.Panel)
         col2_layout = QVBoxLayout(col2)
 
-        # Texte du filigrane
+        # --- Texte du filigrane ---
+        text_layout = QHBoxLayout()  # Layout horizontal pour le champ texte + bouton
         col2_layout.addWidget(QLabel("Texte du filigrane :"))
-        # Utilisation d'un QLineEdit avec une taille minimale et une politique d'expansion
+
+        # Champ de texte (QLineEdit)
         self.watermark_text_input = QLineEdit(self.watermark_text)
-        self.watermark_text_input.setMinimumWidth(200)  # Largeur minimale pour éviter la troncature
+        self.watermark_text_input.setMinimumWidth(200)
         self.watermark_text_input.setSizePolicy(
-            QSizePolicy.Policy.Expanding,  # Permet d'étendre horizontalement
-            QSizePolicy.Policy.Fixed       # Hauteur fixe
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Fixed
         )
-        col2_layout.addWidget(self.watermark_text_input)
+
+        # Bouton "Valider"
+        self.validate_text_button = QPushButton("Valider")
+        self.validate_text_button.clicked.connect(self.validate_watermark_text)  # Lien vers une méthode
+
+        # Ajout des widgets au layout horizontal
+        text_layout.addWidget(self.watermark_text_input)
+        text_layout.addSpacing(1)  # Espacement de 1 unité entre le champ et le bouton
+        text_layout.addWidget(self.validate_text_button)
+
+        # Ajout du layout horizontal à la colonne 2
+        col2_layout.addLayout(text_layout)
 
         # --- Couleur du filigrane ---
         color_layout = QHBoxLayout()  # Layout horizontal pour le bouton + carré de couleur
@@ -130,8 +146,10 @@ class LatexWatermarkApp(QMainWindow):
         col3_layout = QVBoxLayout(col3)
 
         col3_layout.addWidget(QLabel("Aperçu du filigrane :"))
+        self.preview_width = 200
+        self.preview_height = int(self.preview_width * 1.414)  # Rapport format A4
         self.preview_label = QLabel()
-        self.preview_label.setFixedSize(200, 200)
+        self.preview_label.setFixedSize(self.preview_width, self.preview_height)
         self.preview_label.setStyleSheet("background-color: white; border: 1px solid black;")
         self.preview_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         col3_layout.addWidget(self.preview_label, alignment=Qt.AlignmentFlag.AlignCenter)
@@ -154,6 +172,11 @@ class LatexWatermarkApp(QMainWindow):
         if self.pdf_path:
             self.selected_pdf_label.setText(os.path.basename(self.pdf_path))
             self.apply_button.setEnabled(True)  # Active le boutton pour la compilation
+
+    def validate_watermark_text(self):
+        """Met à jour le texte du filigrane et l'aperçu."""
+        self.watermark_text = self.watermark_text_input.text()
+        self.update_preview()
 
     def choose_color(self):
         color = QColorDialog.getColor(self.watermark_color, self, "Choisir la couleur du filigrane")
@@ -180,13 +203,20 @@ class LatexWatermarkApp(QMainWindow):
 
         painter = QPainter(pixmap)
         try:
-            font_size_px = int(self.watermark_font_size * 37.8)  # 1 cm ≈ 37.8 pixels
+            font_size_px = helper.preview_convertor(self.preview_width, self.watermark_font_size)
             painter.setFont(QFont("Arial", font_size_px))
             painter.setPen(self.watermark_color)
 
             # Centre la rotation
             painter.translate(pixmap.width() / 2, pixmap.height() / 2)
-            painter.rotate(self.watermark_angle)
+            painter.rotate(360- self.watermark_angle)
+            font_metrics = painter.fontMetrics()
+            text_width = font_metrics.horizontalAdvance(self.watermark_text)
+            text_height = font_metrics.height()
+
+            # Centre le texte en tenant compte de sa taille
+            painter.translate(pixmap.width() / 2 - text_width,
+                            text_height / 2)
             painter.drawText(0, 0, self.watermark_text)  # Dessine le texte centré
         finally:
             painter.end()
@@ -220,6 +250,7 @@ class LatexWatermarkApp(QMainWindow):
             except Exception as e:
                 QMessageBox.critical(self, "Erreur", f"Une erreur est survenue : {e}")
         QMessageBox.information(self, "Succès", f"Filigrane appliqué. Résultat : {output_pdf}")
+        helper.cleaner()
 
     def generate_tex_file(self):
         # Convertir QColor en format LateX, valeur au format héxadécimal
@@ -227,6 +258,7 @@ class LatexWatermarkApp(QMainWindow):
         return f"""\\documentclass{{article}}
 \\usepackage{{draftwatermark}}
 \\usepackage{{pdfpages}}
+\\usepackage{{anyfontsize}}
 \\usepackage{{xcolor}}
 \\definecolor{{watermarkcolor}}{{HTML}}{{{color}}}
 
