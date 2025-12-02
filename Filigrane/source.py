@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QFileDialog, QLabel, QLineEdit, QSpinBox,
     QColorDialog, QMessageBox, QFrame, QGridLayout, QSizePolicy,
-    QDoubleSpinBox, QSlider
+    QDoubleSpinBox, QSlider, QListWidget
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QPainter, QFont, QPixmap
@@ -25,8 +25,8 @@ class LatexWatermarkApp(QMainWindow):
         # Paramètres par défaut
         self.pdf_path = ""
         self.watermark_text = "Travail en cours - version 1"
-        self.watermark_color = QColor(0, 0, 0, 256)  # Gris clair ,intensité
-        #self.watermark_color = QColor(166, 166, 166, 100)  # Gris clair ,intensité
+        #self.watermark_color = QColor(0, 0, 0, 256)  # Noir, DEBUG
+        self.watermark_color = QColor(166, 166, 166, 100)  # Gris clair ,intensité
         self.watermark_font_size = 2 # en cm
         self.watermark_angle = 25
         self.watermark_lightness = 100
@@ -42,23 +42,38 @@ class LatexWatermarkApp(QMainWindow):
         main_layout = QHBoxLayout(central_widget)
         main_layout.setSpacing(10)
 
-        # --- Colonne 1 : Sélection du PDF ---
+        # --- Colonne 1 : Sélection du PDF/Dossier ---
         col1 = QFrame()
         col1.setFrameShape(QFrame.Shape.Panel)
         col1_layout = QVBoxLayout(col1)
 
+        # --- Sélection d'un PDF individuel ---
         self.label_pdf = QLabel("Sélectionnez un PDF à filigraner :")
         col1_layout.addWidget(self.label_pdf)
 
-        self.select_button = QPushButton("            Choisir un PDF            ")
+        self.select_button = QPushButton("Choisir un PDF")
         self.select_button.clicked.connect(self.select_pdf)
-        col1_layout.addWidget(self.select_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        col1_layout.addWidget(self.select_button)
 
         self.selected_pdf_label = QLabel("Aucun PDF sélectionné")
         col1_layout.addWidget(self.selected_pdf_label)
 
+        # --- Séparation visuelle ---
+        col1_layout.addWidget(QLabel("--- OU ---"), alignment=Qt.AlignmentFlag.AlignCenter)
 
-        
+        # --- Sélection d'un dossier ---
+        self.label_folder = QLabel("Sélectionnez un dossier de PDFs :")
+        col1_layout.addWidget(self.label_folder)
+
+        self.select_folder_button = QPushButton("Choisir un dossier")
+        self.select_folder_button.clicked.connect(self.select_folder)
+        col1_layout.addWidget(self.select_folder_button)
+
+        # Liste des fichiers PDF dans le dossier
+        self.files_list = QListWidget()
+        self.files_list.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
+        col1_layout.addWidget(self.files_list)
+
         col1_layout.addStretch()
         main_layout.addWidget(col1, stretch=1)
 
@@ -170,8 +185,26 @@ class LatexWatermarkApp(QMainWindow):
         file_dialog = QFileDialog()
         self.pdf_path, _ = file_dialog.getOpenFileName(self, "Ouvrir un PDF", "", "PDF Files (*.pdf)")
         if self.pdf_path:
+            self.files_list.clear() # Désactive les pdfs de la partie équipe
             self.selected_pdf_label.setText(os.path.basename(self.pdf_path))
             self.apply_button.setEnabled(True)  # Active le boutton pour la compilation
+
+    def select_folder(self):
+        """Ouvre une boîte de dialogue pour sélectionner un dossier."""
+        folder_path = QFileDialog.getExistingDirectory(self, "Sélectionner un dossier de PDFs")
+        if folder_path:
+            self.files_list.clear()
+
+            self.selected_pdf_label.setText("Aucun PDF sélectionné") # Désactive le pdf de la partie solo
+            self.pdf_path = ""
+            # Lister les fichiers PDF dans le dossier
+            for file in os.listdir(folder_path):
+                if file.lower().endswith('.pdf'):
+                    self.files_list.addItem(file)
+            self.current_folder = folder_path
+            # Active le boutton pour la compilation
+            if self.files_list.count() > 0:
+                self.apply_button.setEnabled(True) 
 
     def validate_watermark_text(self):
         """Met à jour le texte du filigrane et l'aperçu."""
@@ -223,36 +256,62 @@ class LatexWatermarkApp(QMainWindow):
 
         self.preview_label.setPixmap(pixmap)
 
-
-
     def apply_watermark(self):
-        if not self.pdf_path:
-            QMessageBox.warning(self, "Erreur", "Veuillez d'abord sélectionner un PDF.")
-            return
+        """Applique le filigrane au PDF sélectionné ou aux PDFs du dossier."""
+        if hasattr(self, 'current_folder') and self.files_list.count() > 0:
+            # Mode dossier : appliquer à tous les PDFs sélectionnés
+            selected_files = [self.files_list.takeItem(0).text() for _ in range(self.files_list.count())]
+            for i in selected_files:
+                self.files_list.addItem(i)
+            files_to_mark = [os.path.join(self.current_folder, item) for item in selected_files]
+            if not files_to_mark:
+                QMessageBox.warning(self, "Aucun fichier sélectionné", "Veuillez sélectionner au moins un PDF.")
+                return
 
-        # Générer le fichier .tex
-        tex_content = self.generate_tex_file()
-        tex_path = "watermark_temp.tex"
-        with open(tex_path, "w", encoding="utf-8") as f:
-            f.write(tex_content)
+            """ Mode multi fichiers"""
+            for pdf_path in files_to_mark:
+                tex_content = self.generate_tex_file(pdf_path)
+                tex_path = "watermark_temp.tex"
+                with open(tex_path, "w", encoding="utf-8") as f:
+                    f.write(tex_content)
+                output_pdf = pdf_path.replace(".pdf", "_watermarked.pdf")
+                for i in range(2):
+                    try:
+                        subprocess.run(["pdflatex", "-shell-escape", tex_path], check=True)
+                        if os.path.exists("watermark_temp.pdf"):
+                            os.rename("watermark_temp.pdf", output_pdf)
+                        else:
+                            QMessageBox.critical(self, "Erreur", "Le fichier PDF résultant n'a pas été généré.")
+                    except subprocess.CalledProcessError as e:
+                        QMessageBox.critical(self, "Erreur", f"La compilation LaTeX a échoué : {e}")
+                    except Exception as e:
+                        QMessageBox.critical(self, "Erreur", f"Une erreur est survenue : {e}")
+        
+        else : # self.pdf_path:
+            # Mode fichier unique
+            tex_content = self.generate_tex_file(self.pdf_path)
+            tex_path = "watermark_temp.tex"
+            with open(tex_path, "w", encoding="utf-8") as f:
+                f.write(tex_content)
 
-        # Compiler avec pdflatex
-        output_pdf = self.pdf_path.replace(".pdf", "_watermarked.pdf")
-        for i in range(2):
-            try:
-                subprocess.run(["pdflatex", "-shell-escape", tex_path], check=True)
-                if os.path.exists("watermark_temp.pdf"):
-                    os.rename("watermark_temp.pdf", output_pdf)
-                else:
-                    QMessageBox.critical(self, "Erreur", "Le fichier PDF résultant n'a pas été généré.")
-            except subprocess.CalledProcessError as e:
-                QMessageBox.critical(self, "Erreur", f"La compilation LaTeX a échoué : {e}")
-            except Exception as e:
-                QMessageBox.critical(self, "Erreur", f"Une erreur est survenue : {e}")
+            # Compiler avec pdflatex
+            output_pdf = self.pdf_path.replace(".pdf", "_watermarked.pdf")
+            for i in range(2):
+                try:
+                    subprocess.run(["pdflatex", "-shell-escape", tex_path], check=True)
+                    if os.path.exists("watermark_temp.pdf"):
+                        os.rename("watermark_temp.pdf", output_pdf)
+                    else:
+                        QMessageBox.critical(self, "Erreur", "Le fichier PDF résultant n'a pas été généré.")
+                except subprocess.CalledProcessError as e:
+                    QMessageBox.critical(self, "Erreur", f"La compilation LaTeX a échoué : {e}")
+                except Exception as e:
+                    QMessageBox.critical(self, "Erreur", f"Une erreur est survenue : {e}")
+
         QMessageBox.information(self, "Succès", f"Filigrane appliqué. Résultat : {output_pdf}")
         helper.cleaner()
 
-    def generate_tex_file(self):
+    def generate_tex_file(self, pdf_path):
         # Convertir QColor en format LateX, valeur au format héxadécimal
         color = self.watermark_color.name()[1:]
         return f"""\\documentclass{{article}}
@@ -267,7 +326,7 @@ class LatexWatermarkApp(QMainWindow):
 \\SetWatermarkFontSize{{{int(self.watermark_font_size)}cm}}
 \\SetWatermarkAngle{{{self.watermark_angle}}}
 \\begin{{document}}
-\\includepdf[pages=-]{{{self.pdf_path}}}
+\\includepdf[pages=-]{{{pdf_path}}}
 \\end{{document}}
 """
 
